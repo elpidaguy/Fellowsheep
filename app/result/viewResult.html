@@ -1,0 +1,109 @@
+  <style type="text/css">
+    h1 {
+    text-align: center;
+    width: 30px;
+}
+td{
+  font-weight:bold;
+  font-size:20px;
+}
+  </style>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#staffList">Staff List</a></li>
+              <li><a href="#staffAttendance">Staff Attendance</a></li>
+            </ul>
+          </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+          <li>
+            <div class="dropdown" ng-show="loggedIn">
+              <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+                  <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div  ng-init="getTestResultData();" style="margin-top: 70px">
+      <div class="container" style="margin-right: 30px;margin-top: 50px;">
+        <br>
+        <button ng-show="!showEditableResult" style="margin-left: 5px;" class="btn btn-primary w3-right" ng-click="toggleEditableResult()"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button ng-show="showEditableResult" style="margin-left: 5px;" class="btn btn-primary w3-right" ng-click="toggleEditableResult()"><i class="fa fa-eye" aria-hidden="true"></i></button>
+        <button class="btn btn-primary w3-right" ng-click="submitResult()" ng-show="showEditableResult">Submit</button>
+        <button ng-show="!showEditableResult" class="btn btn-danger w3-right" style="margin-right: 5px" ng-click="exportResult('result')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+</div>
+      <div id="result" class="container">
+      <br>
+      <h2 class="w3-center" style="font-weight:bold">{{testresult[0].batchname}}</h2>
+        <h3 class="w3-center">{{testresult[0].testname}}  </h3>
+        <h3 class="w3-center"> Exam Date: {{testresult[0].examdate}}</h3>
+        <br>
+
+<table class="table table-responsive table-striped table-hover table-bordered w3-center">
+  <tr>
+    <td>Total Marks</td>
+    <td></td>
+    <td ng-repeat="total in testresult[0].subject" ng-show="!showEditableResult">{{total.totalmarks}}</td>
+    <td ng-repeat="total in testresult[0].subject" ng-show="showEditableResult"><input style="width: 50px" type="text" ng-model="total.totalmarks"></td>
+    <td ng-show="!showEditableResult">{{testresult[0].totaltestmarks}}</td>
+    <td ng-show="showEditableResult"><input type="text" style="width: 50px" ng-model="testresult[0].totaltestmarks"></td>
+    <td>100%</td>
+  </tr>
+  <thead style="background-color: #0079bf; color: white">
+    <th>Sr NO</th>
+    <th>Name OF Student</th>
+    <th ng-repeat="sub in testresult[0].subject">{{sub.subject}}</th>
+    <th>Total</th>
+    <th>Per(%)</th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="stud in testresult[0].studentid" ng-init="studindex=$index;">
+      <td>{{$index+1}}</td>
+      <td>{{stud.studentname}}</td>
+      <td ng-repeat="marks in testresult[0].subject" ng-show="!showEditableResult">{{marks.submarks[studindex]}}</td>
+  <td ng-repeat="marks in testresult[0].subject"  ng-show="showEditableResult"><input type="text" style="width: 50px" ng-model="marks.submarks[studindex]"></td>
+      <td>{{calc(studindex)}}</td>
+      <td>{{calcpercentage(studindex)}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+

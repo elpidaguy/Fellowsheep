@@ -1,0 +1,212 @@
+<style type="text/css">
+  .table{
+    font-size: 10px;
+    font-weight: bold;
+  }
+</style>
+<div ng-init="loginAuth()">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary btn-xs navbar-brand">
+          ESPL
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
+          <li class="active"><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<form ng-submit="savesyllabus();" name="editsyllabus" class="editsyllabus" required>
+<div style="margin-top: 70px" class="row">
+
+ 
+  <div class="col-md-8" ng-init="getSyllabus(1)" style="margin-top:2%;margin-left:2%;margin-right: 2%">
+
+<!--      <div class="container" ng-init="getSyllabus(1)" style="margin-top:10%;margin-left:10%;margin-right: 10%">
+ -->    <!-- <span style="font-size: 30px; margin-left: 40%"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{syll[0].syllBatch}} - {{syll[0].syllyear}}</span> -->
+ <div>
+ </div>
+    <table class="table table-bordered table-responsive" style="margin-right: 70px">
+ 
+      <thead class="w3-cyan w3-text-white">
+        <tr>
+        <td>#</td>
+        <td>SUBJECT</td>
+        <td><div><span >TOPIC NAME</span><span class="w3-right" style="margin-right: 100px">HOURS</span></div></td>
+        <td>ADD NEW TOPIC</td>
+        <!-- <td><i class="fa fa-cog fa-spin fa-fw"></i></td> -->
+      </tr>
+      </thead>
+      <tbody>
+         <tr ng-repeat="x in syll[0].syllabus.subject" ng-init="subjectindex=$index">
+          <td>{{$index+1}} </td>
+          <td rowspan="syll[0].syllabus.subject[$parent.$index].topic[$index].topicname.length">
+            <div class="row w3-display-container">
+              <div class="col-md-10">
+                <input class="form-control" type="text" name="subject" ng-model="syll[0].syllabus.subject[$index].subject" required>
+              </div>
+              <div class="col-md-2">
+              	<a style="float: right;" href="" class="btn btn-default w3-display-hover" data-toggle="modal" data-target="#deleteSubjectmodal" ng-click="storesubjectindex(subjectindex)" ><i class="fa fa-times" aria-hidden="true"></i></a>
+              	<!--  <button style="float: right;" class="btn btn-default w3-display-hover"><i class="fa fa-times" aria-hidden="true"></i></button> -->
+               <!--  <button style="float: right;" class="btn btn-default w3-display-hover" data-toggle="modal" data-target="#deleteSubjectmodal" ng-click="storesubjectindex(subjectindex)"><i class="fa fa-times" aria-hidden="true"></i></button> -->
+              </div>
+            </div>
+          </td>
+          <td>
+            <table>
+              <!-- <tr  ng-repeat="y in syll[0].syllabus.subject[($parent.$index)+0].topic"> -->
+            	<tr  ng-repeat="y in x.topic">
+                	<td>
+                  <div class="row w3-display-container">
+                  <div class="col-md-8">
+                    <input class="form-control" type="text" name="topic" ng-model="syll[0].syllabus.subject[($parent.$index)+0].topic[$index].topicname" required>
+                  </div>
+                  <div class="col-md-2">
+                    <input style="width: 60px;float: right" class="form-control w3-right" type="number" name="showhr" ng-model="syll[0].syllabus.subject[($parent.$index)+0].topic[$index].hours" placeholder="hh" required>
+                  </div>
+                  <div class="col-md-2">
+                    <a style="float: right;" href="" class="btn btn-default w3-display-hover" ng-click="deletetopic(subjectindex,$index)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+           <td align="center" rowspan="syll[0].syllabus.subject[($parent.$index)+0].topic[$index].topicname.length">
+            <input class="form-control" type="text" name="addtopic" ng-model="newtopic[$index]" placeholder="Add topic in {{syll[0].syllabus.subject[$index].subject}}"><br>
+            <input class="form-control" type="number" name="hr" ng-model="hour[$index]" placeholder="Total Hours"><br>
+            <a class="btn btn-primary btn-sm" href="" ng-click="addtopic($index)"><i class="fa fa-plus"></i> ADD
+            </a></td>
+        </tr> 
+       <!--  <tr ng-repeat="x in syll[0].syllabus.subject" ng-init="subjectindex=$index">
+          <td>{{$index+1}} </td>
+          <td rowspan="syll[0].syllabus.subject[subjectindex].topic[$index].topicname.length">
+            <div class="row w3-display-container">
+              <div class="col-md-10">
+                <input class="form-control" type="text" name="subject" ng-model="syll[0].syllabus.subject[$index].subject">
+              </div>
+              <div class="col-md-2">
+                <button style="float: right;" class="btn btn-default w3-display-hover" data-toggle="modal" ng-click="storesubjectindex(subjectindex)" data-target="#confirmModal"><i class="fa fa-times" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </td>
+          <td>
+            <table>
+              <tr ng-repeat="y in syll[0].syllabus.subject[subjectindex].topic">
+                <td>
+                  <div class="row w3-display-container">
+                  <div class="col-md-8">
+                    <input class="form-control" type="text" name="topic" ng-model="syll[0].syllabus.subject[subjectindex].topic[$index].topicname">
+                  </div>
+                  <div class="col-md-2">
+                    <input style="width: 60px;float: right" class="form-control" type="number" name="showhr" ng-model="hour[$index]" placeholder="hh">
+                  </div>
+                  <div class="col-md-2">
+                    <a style="float: right;" href="" class="btn btn-default w3-display-hover" ng-click="deletetopic(subjectindex,$index)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+           <td align="center" rowspan="syll[0].syllabus.subject[subjectindex].topic[$index].topicname.length">
+            <input class="form-control" type="text" name="addtopic" ng-model="newtopic[$index]" placeholder="Add topic in {{syll[0].syllabus.subject[$index].subject}}"><br>
+            <input class="form-control" type="number" name="hr" ng-model="hour[$index]" placeholder="Total Hours"><br>
+            <a class="btn btn-primary btn-sm" href="" ng-click="addtopic($index)"><i class="fa fa-plus"></i> ADD
+            </a></td>
+        </tr>  -->
+         
+      </tbody>
+    </table>
+  
+
+  </div>
+   <div style="border: 3px solid green; padding: 10px;border-radius: 5px;" class="col-md-3">
+    <div class="w3-center">
+      <i style="font-size: 40px" class="fa fa-book" aria-hidden="true"></i> <span style="font-size: 30px"><br>Add Subject</span><hr>
+    </div>
+      <input class="form-control" type="text" name="subject" ng-model="newsubject" placeholder= "Add new Subject">
+      <br>
+        <a class="btn btn-primary btn-sm" href="" ng-click="addsubjectinsyll()"> <i class="fa fa-plus"></i> ADD</a>
+        <hr>
+        <div>
+          <!-- <a href="" class="btn btn-success " ng-click="savesyllabus();">Submit</a> -->
+          <input type="submit" class="btn btn-success " name="" value="submit">
+          <a href="" class="btn btn-danger" ng-click="reloadRoute();">Reset</a>
+        </div>
+
+
+   </div>
+  
+
+</div>
+</form>
+
+
+<!-- Modal -->
+  <div class="modal fade" id="deleteSubjectmodal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Confirm Delete?</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to delete entire subject with all its topics?</p>
+        </div>
+        <div class="modal-footer">
+          <a href="" class="btn btn-success" data-dismiss="modal" ng-click="deletesubject();"> Delete</a>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>

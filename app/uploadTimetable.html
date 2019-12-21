@@ -1,0 +1,147 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary btn-xs navbar-brand">
+          ESPL
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <!-- <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>
+        <li><a href="#viewDiscounts">Discounts</a></li>
+        <li class="active" ng-show="loggedIn"><a href="#uploadTest">Test</a></li>
+        </ul> -->
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div ng-init="loginAuth();gettesttimetable()" style="margin-top: 65px" >
+
+  <!-- <ul class="breadcrumb">
+  <li>Test</li>
+  <li>Upload Timetable</li>
+  </ul> -->
+  	
+  <div>
+	    <div class="container-fluid">
+	    	<div style="margin-top: 10px" class="row">
+	    		<div class="col-md-9">
+		    		<table class="table table-responsive table-striped table-condensed table-hover table-bordered">
+					    <thead style="background-color: #0079bf; color: white">
+					      <tr>
+					        <th>#</th>
+					        <th>Timetable</th>
+					        <th>Batch</th>
+                  <th>Download PDF</th>
+					        <!-- <th><i class="fa fa-cog fa-spin fa-fw"></i></th> -->
+					      </tr>
+					    </thead>
+					    <tbody>
+		                    <tr ng-repeat="x in ttlist">
+		                    	<td>{{$index+1}}</td>
+		                    	<td>{{x.timetablename}}</td>
+                          <td><span ng-repeat="q in x.batch">{{q}} | </span></td>
+		                    	<td align="center">
+						              <a class="btn btn-danger btn-sm" ng-href={{x.timtable}} target="_blank"><i class="fa fa-download" aria-hidden="true"></i> Download Timetable</a>
+                          <a class="btn btn-danger btn-sm" ng-href={{x.portion}} target="_blank"><i class="fa fa-download" aria-hidden="true"></i> Download Portion</a>
+						              </td>
+		                    </tr>
+		                </tbody>
+					</table>
+				</div>
+
+        <div style="border: 3px solid green; padding: 10px;border-radius: 5px;" class="col-md-3" ng-init="getBatchforStaffAttendance();">
+          <div align="center">
+            <img src="assets/icons/exam.png" alt="Exam" width="30%" height="30%"> <span style="font-size: 30px"><br>Upload Timetable</span><hr>
+          </div>
+            <form ng-submit="uploadTimetable();" name="myform" novalidate>
+
+            <div class="form-group">
+              <label for="testName">Timetable Name: </label>
+                <input type="text" class="form-control" id="ttName" ng-model="ttName" placeholder="Type Name of Timetable" required>
+            </div>
+
+            <div class="form-group">
+              <label for="course">Batches : </label><br>
+              <select class="form-control" id="batch" name="ttBatch" ng-model="ttBatch" multiple required>
+                    <option ng-repeat="batch in batches">{{batch}}</option>
+              </select>
+            </div>
+           
+
+            <div class="form-group">
+              <label for="fup" class="btn btn-info btn-file">Browse Timetable PDF</label>
+              <input type = "file" name="timetablePDF" file-model = "timetablePDF" accept="pdf/*" class="btn btn-info" id="fup"  style="display: none;" required />
+            </div>
+
+             <div class="form-group">
+              <label for="fup1" class="btn btn-info btn-file">Browse Portion PDF</label>
+              <input type = "file"  name="portionPDF" file-model1 = "portionPDF" accept="pdf/*" class="btn btn-info" id="fup1"  style="display: none;" required />
+            </div>
+          
+
+            
+            
+
+           <input type="submit" class="btn btn-success" id="submit" value="Create" /> 
+
+           <!--  <button type="button" class="btn btn-danger" ng-click="uploadTimetable();"> Create</button> -->
+             
+            
+          </form>
+
+          <!-- <form role="form" enctype="multipart/form-data" name="myForm">
+              <input type="text" class="form-control" ng-model="ttName">
+              <select id="batch" name="ttBatch" ng-model="ttBatch" multiple required>
+                    <option ng-repeat="batch in batches">{{batch}}</option>
+              </select>
+              <input type="file" file-model ng-model="filesArray" multiple>
+              <button type="submit" ng-click="uploadTimetable()">save</button>
+          </form> -->
+
+          </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>

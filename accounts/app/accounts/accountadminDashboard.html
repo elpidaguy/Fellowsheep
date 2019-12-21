@@ -1,0 +1,349 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary w3-text-white w3-hover-red btn-xs navbar-brand">ESPL <i class="fa fa-bars" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#accountadminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li>
+            <a href="#studentsInOut"><i class="fa fa-user fa-lg" aria-hidden="true"></i> Students</a>
+          </li>
+          <li>
+            <a href="#papersinout"><i class="fa fa-file fa-lg" aria-hidden="true"></i> Exam Paper</a>
+          </li>
+          <li>
+            <a href="#accountsalary"><i class="fa fa-money fa-lg" aria-hidden="true"></i> Salary</a>
+          </li>
+          <li>
+            <a href="#accountPassBook"><i class="fa fa-university fa-lg" aria-hidden="true"></i> Passbook</a>
+          </li>
+
+          <li>
+            <a href="#chequerecords"><i class="fa fa-briefcase fa-lg" aria-hidden="true"></i> Cheque Records</a>
+          </li>
+
+          <li >
+            <a href="#accounterrors"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i> Account Error</a>
+          </li>
+          <li >
+            <a href="#feedbackadmin"><i class="fa fa-commenting fa-lg" aria-hidden="true"></i> Parent's FeedBack</a>
+          </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <div class="dropdown" ng-show="accounts">
+              <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user fa-lg" aria-hidden="true"></i> {{loginData.staffname}}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#changepwd"><i class="fa fa-cog fa-lg" aria-hidden="true"></i> Settings</a></li>
+                  <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i> Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+  </nav>
+
+<div class="container-fluid">
+  <div class="row">
+  <div class="col-xs-8">
+
+   <div style="margin-top: 80px" ng-init="checkLogin();getinitdata()">
+
+      <div style="margin-top: 30px" id="leavetable" class="panel panel-primary">
+      <div class="panel-heading" align="center">
+        <h3 class="panel-title">ESPL PASSBOOK</h3>
+      </div>
+
+      <div class="panel-body w3-white">
+  
+            <div class="w3-row-padding w3-margin-bottom">
+ 
+        <div class="w3-quarter">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">TOTAL BALANCE</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #1768ea" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{accountbalance}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+        
+
+        <div class="w3-half">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">LAST UPDATE</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #d9534f" class="fa fa-building w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{lastupdatedate}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+        
+    </div>
+
+
+      </div>
+    </div>
+  </div>
+
+   
+    <div style="margin-top: 20px">
+
+      <div style="margin-top: 30px" id="leavetable" class="panel panel-primary">
+      <div class="panel-heading" align="center">
+        <h3 class="panel-title">ESPL TOTAL IN/OUT</h3>
+      </div>
+      
+      <div class="panel-body w3-white">
+  
+            <div class="w3-row-padding w3-margin-bottom">
+ 
+        <div class="w3-quarter">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">TOTAL IN</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #1768ea" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{totalin}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+        
+
+        <div class="w3-quarter">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">PENDING</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #d9534f" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{pendingin}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+         <div class="w3-quarter">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">PAID</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #5cb85c" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{paidin}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+        
+    </div>
+
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <div class="col-xs-4">
+  <div style="margin-top: 80px" ng-init="getinitdata()">
+
+    <div class="panel panel-success">
+<div class="panel-heading clearfix">
+ 
+        <h3 class="panel-title pull-left" style="padding-top: 7.5px;">ESPL SALARY</h3> 
+
+        
+        <button type="button" ng-click='showmodal()' class="btn btn-warning pull-right"><span class="glyphicon glyphicon-download"></button>
+           <div class="clearfix"></div>
+         
+
+      </div>
+    <div class="w3-white">
+<table st-set-filter="customFilter" st-table="displayedCollection" st-safe-src="salarydata  "  class="table table-condensed table-bordered table-striped" > 
+      <thead  >
+      <tr style="color: white;background-color: #395627">
+        <th ng-repeat="head in headers" st-sort="{{head}}">
+          {{head|titlecase}} 
+        </th>
+        <th>
+          DETAILS
+        </th>
+       </tr>
+ 
+      </thead>
+      <tbody>
+        <tr ng-repeat="rec in displayedCollection">
+       <td > {{rec['no']}}</td>    
+       <td > {{rec['salary']}}</td> 
+       <td > {{rec['amt']}}</td> 
+       <td > {{rec['tds']}}</td>
+         <td ><button type="button" ng-click='showpie(rec)' class="btn btn-danger btn-center"><span class="glyphicon glyphicon-eye-open"></button></td>
+     </tr>
+      </tbody>
+      <tfoot>
+        
+        <tr>
+        <td colspan="{{headers.length}}" class="text-center">
+          <div st-pagination="" st-items-by-page="8"></div>
+        </td>
+      </tr>
+      </tfoot>
+
+      </table>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+</div>
+</div>
+ 
+    
+   <div class="container-fluid">
+  <div class="row">
+  <div class="col-xs-8">
+
+   <div class="panel panel-warning">
+<div class="panel-heading" align="center">
+        <h3 class="panel-title">BRANCH PERFORMANCE</h3>
+      </div>
+    <div class="w3-white">
+   <div id="columnchart_material" style="height: 400px"></div>
+</div>
+    </div>
+
+</div>
+
+  <div class="col-xs-4">
+
+ <div class="panel panel-warning">
+<div class="panel-heading" align="center">
+        <h3 class="panel-title">CITY PERFORMANCE</h3>
+      </div>
+    <div class="w3-white">
+    <div id="piechart" style="width: 650px; height: 400px;"></div>
+</div>
+    </div>
+
+</div>
+</div>
+</div>
+
+    <div class="modal fade" id="modalsalaryrange" tabindex="-1" role="dialog" aria-labelledby="modalsalaryrangeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalsalaryrangeLabel"><center> <p class="bg-primary">MONTH WISE SALARY</p></center></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+         
+
+    <div class="row">
+      
+
+
+        <!-- Half of the modal-body div-->
+        <div class="col-xs-6">
+            <h5>START MONTH</h5>
+
+                <datepicker date-format="MM-yyyy">
+                   <input  type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="seleced_startdate">
+                </datepicker>
+         
+        </div>
+        <div class="col-xs-6">
+            <h5>END MONTH</h5>
+
+                <datepicker date-format="MM-yyyy">
+                   <input  type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="seleced_enddate">
+                </datepicker>
+         
+        </div>
+
+
+  
+    </div>
+</div>
+
+ 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+        <button type="button" class="btn btn-primary" ng-click="downloadsalaryreport()">DOWNLOAD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="modalbifur" tabindex="-1" role="dialog" aria-labelledby="modalbifurLabel" aria-hidden="true">
+  <div class="modal-dialog " style="width:750px;height: 600px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalbifurLabel"><center> <p class="bg-primary">SALARY BIFURCATION</p></center></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+         
+<div id="columnchart_values""></div>
+    
+</div>
+
+ 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+   
+ 
+
+<script>
+    $(document).ready(function(){
+      $('#sidebarCollapse').on('click', function () {
+       $('#sidebar').toggleClass('active');
+       $('#main').toggleClass('active');
+     });
+    });
+  </script>

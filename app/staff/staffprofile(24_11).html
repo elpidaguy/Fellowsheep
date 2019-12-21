@@ -1,0 +1,592 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Tangerine" rel="stylesheet">	
+<link href="https://fonts.googleapis.com/css?family=Oleo+Script|Tangerine" rel="stylesheet">
+<style type="text/css">
+p {
+  color: #669999;
+}
+.jumbotron {
+  color: white;
+  /*text-align: center;*/
+  /*text-shadow: 2px 2px 8px black;*/
+  min-height: 250px;
+  text-indent: 5em;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div style="margin-top: 70px">
+<div ng-init="getStaffInfo();getCities();getStaffAttendancedetails();editstaffflagstatus=true;getstaffpayment();showDetails=false">
+    <div class="container-fluid">
+      <div class="jumbotron row" style="background-color: #0079bf; color: whitesmoke;">
+        <div class="col-md-3">
+          <img src="assets/images/teacher.png" style="height: 200px;width: 200px;">
+        </div>
+        <div align="left" class="col-md-9">
+          <h3 style="font-size: 30px; font-family: 'Montserrat', sans-serif;color: white">{{staffInfo[0].fname+" "+staffInfo[0].mname+" "+staffInfo[0].lname}}</h3>
+          <br>
+          <h4 style="color: white">Teaches <strong><span ng-repeat="x in staffInfo[0].subject"> {{x}} | </span></strong> At ESPL</h4>
+          <br>
+          <i class="fa fa-phone"></i> &emsp; {{staffInfo[0].mobile}}          
+          <i class="fa fa-map-marker"></i>&emsp; {{staffInfo[0].address}}
+          <i class="fa fa-envelope-o"></i>&emsp; {{staffInfo[0].email}}
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <ul  class="nav nav-pills nav-justified">
+<!-- <li class="active">
+<a href="#1a" target="_self" data-toggle="tab">Admission</a>
+</li> -->
+<li><a data-target="#4a" data-toggle="tab">Attendance</a></li>
+<li><a data-target="#6a" data-toggle="tab">Information</a></li>
+<li><a data-target="#5a" target="_self" data-toggle="tab">Payment</a></li>
+</ul>
+<div class="tab-content clearfix">
+  <div  class="tab-pane active" id="4a">
+    <br>
+    <div ng-if="staffAttendanceInfo.length">
+      <table class="table table-bordered">
+        <thead class="w3-cyan">
+          <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Batch</th>
+            <th>Subject</th>
+            <th>Topic</th>
+            <th>Duration(Min)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="info in staffAttendanceInfo">
+            <td>{{info.date}}</td>
+            <td>{{info.startTime}}</td>
+            <td>{{info.endTime}}</td>
+            <td>{{info.batch}}</td>
+            <td>{{info.subject}}</td>
+            <td>{{info.topic}}</td>
+            <td>{{info.duration}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-if="!staffAttendanceInfo.length"><h1><strong>No Lectures Conducted Yet</strong></h1></div>
+  </div>
+  <div class="tab-pane" id="6a">
+    <div ng-show="showeditables=='true' && editstaffflagstatus">
+      <button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-right" ng-click="editStaffProfileStatus()"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+    </div>
+    <div ng-show="!editstaffflagstatus"><button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-right" ng-click="submitStaffProfile()">SUBMIT</button>
+    </div>
+    <div class="col-md-12">
+      <br>
+      <div style="text-transform: lowercase;" class="container col-md-6">
+        <table class="table table-striped table-bordered">
+          <tbody>
+            <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>DOB :</strong></td><td><span ng-show="editstaffflagstatus">{{staffInfo[0].dob}}</span><datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)"><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].dob"></td> </tr>
+
+            <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Mobile :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].mobile}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="number" ng-model="staffInfo[0].mobile"></td> </tr>
+
+<!-- <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Branch : </strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].classbranch}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].classbranch"></td> </tr>
+-->
+<tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Blood Group :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].bg}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].bg"></td> </tr>
+
+<tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Aadhar Number:</strong></td><td><span ng-show="editstaffflagstatus">{{staffInfo[0].aadhar}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="number" ng-model="staffInfo[0].aadhar"></td> </tr>
+
+<tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Bank Name :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].bankname}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].bankname"></td> </tr>
+
+<tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Bank Branch Name :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].bankbranch}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].bankbranch"></td> </tr>
+
+<tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>IFSC Code :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].ifsc}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].ifsc"></td> </tr>
+
+<tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Time Slots Available :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].start+" To "+staffInfo[0].end}}</span>
+
+ <div class="input-group" moment-picker="start" format="hh:mm a" inline="true">
+        <input ng-show="!editstaffflagstatus" class="form-control" ng-model="staffInfo[0].start">
+      </div>
+
+      <div class="input-group"  ng-show="!editstaffflagstatus" moment-picker="end" format="hh:mm a">
+        <input class="form-control" placeholder="Select End time" ng-model="staffInfo[0].end" ng-model-options="{ updateOn: 'blur' }">
+      </div>
+
+  <!-- <input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].start">
+  <input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].end">
+
+ -->
+</td> </tr>
+
+
+  <!-- <tr ng-init="getcurrentcitystaff(staffInfo[0].cityid);"> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>City For Mahesh Tutorials:</strong></td><td><span ng-show="editstaffflagstatus"> {{currentCity}}</span>
+<select ng-model="staffInfo[0].cityid" ng-show="!editstaffflagstatus" style="width: 100%" type="text" class="form-control" required>
+     <option value="">Select City</option> 
+    <option ng-repeat="city in result1.cities" value="{{city._id}}"> {{city.cityname}} </option>
+  </select>
+</td> </tr> -->
+
+  <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Designation :</strong></td>
+    <td><span ng-show="editstaffflagstatus"> {{staffInfo[0].designation}}</span><select ng-show="!editstaffflagstatus" name="designation" class="form-control cap" ng-model="staffInfo[0].designation">
+    <div> 
+        <!-- <option ng-value="">Select Center</option> -->
+        <option>Director</option>
+        <option>Science Head</option>
+        <option>Accounts Head</option>
+        <option>SSC Head</option>
+        <option>CBSE Head</option>
+        <option>ICSE Head</option>
+        <option>Center Head</option>
+        <option>Center Co-Ordinator</option>
+        <option>Business Developer</option>
+        <option>Marketing Executive</option>
+        <option>Branch Admin</option>
+        <option>Accounts Admin</option>
+        <option>Telecaller</option>
+        <option>Office Assistant</option>
+        <option>Employed Teacher</option>
+        <option>Assistant Teacher</option>
+
+    </div>
+    </select></td> </tr>
+    <tr ng-show="staffInfo[0].stafftype!='Employee'">
+      <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;" ><strong>Subject('s) :</strong></td>
+      <td><span ng-show="editstaffflagstatus"> <span ng-repeat="x in staffInfo[0].subject"> {{x}} | </span></span>
+        <select ng-show="!editstaffflagstatus" name="subject" class="form-control cap" ng-model="staffInfo[0].subject" multiple>
+        <option>Algebra</option>
+        <option>Geometry</option>
+        <option>Physics</option>
+        <option>Chemistry</option>
+        <option>Biology</option>
+        <option>History</option>
+        <option>Geography</option>
+        <option>Marathi</option>
+        <option>Hindi</option>
+        <option>Sanskrit</option>
+        <option>French</option>
+    </select></td>
+    </tr>
+</tbody>
+</table>           
+</div>
+<div style="text-transform: lowercase;" class="container col-md-6">
+  <table class="table table-striped table-bordered">
+    <tbody>
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Gender :</strong></td><td>{{staffInfo[0].gender}}</td> </tr>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Address :</strong></td><td><span ng-show="editstaffflagstatus">  {{staffInfo[0].address}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].address"></td> </tr>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>City :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].staffcity}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].staffcity"></td> </tr>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Pin Code:</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].pincode}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="number" ng-model="staffInfo[0].pincode"></td> </tr>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Email : </strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].email}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="email" ng-model="staffInfo[0].email">
+      </td> </tr>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>PAN Number :</strong></td><td><span ng-show="editstaffflagstatus" style="text-transform:uppercase"> {{staffInfo[0].pan}}</span><input ng-show="!editstaffflagstatus" style="width: 100%;text-transform:uppercase" type="text" ng-model="staffInfo[0].pan"></td> </tr>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Bank Account Number :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].bank}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="number" ng-model="staffInfo[0].bank"></td> </tr>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Bank Account Holder Name :</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].accountname}}</span><input ng-show="!editstaffflagstatus" style="width: 100%" type="text" ng-model="staffInfo[0].accountname"></td> </tr>
+
+<div ng-if="staffInfo[0].salarydetails.length!=undefined">
+<tr ng-show="staffInfo[0].salarydetails.mode=='Contract'" >
+<td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Payment :</strong></td>
+<td>
+<div ng-repeat="t in staffInfo[0].salarydetails.contractlist">STD- {{t.std}} Course-{{t.course}} Rate-{{t.rate}}</div>
+</td></tr>
+<tr ng-show="staffInfo[0].salarydetails.mode=='Salary'">
+<td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Per Month Salary :</strong></td>
+<td>{{staffInfo[0].salarydetails.permonthsalary}}</td>
+</tr>
+</div>
+
+      <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Days Available :</strong></td>
+      <td> <select multiple class="form-control" id="select" ng-show="!editstaffflagstatus" ng-model="staffInfo[0].daysavailable" data-style="btn-primary">
+          <option>Sunday</option>
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+        </select>
+        <div ng-repeat="d in staffInfo[0].daysavailable"><span ng-show="editstaffflagstatus"> {{d}}</span>
+       </div>
+      </td> </tr>
+      <!-- <tr> <td width="33%"><strong>Mother Ofc Address :</strong></td><td>{{staffInfo[0].motherOfficeAddress}}</td> </tr> -->
+     <tr> <td width="33%" style="background-color: #343638; color: whitesmoke; font-family: 'Montserrat', sans-serif;"><strong>Joining Date:</strong></td><td><span ng-show="editstaffflagstatus"> {{staffInfo[0].joindate}}</span><datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+        <input  ng-show="!editstaffflagstatus" class="w3-input w3-border from" ng-model="staffInfo[0].joindate" type="text" id="joindate" ng-value="joindate"  required>
+      </datepicker></td> </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+<div class="tab-pane" id="5a">
+  <br>
+  <div >
+    <button ng-show="showeditables=='true'" class="btn w3-cyan w3-right" data-toggle="modal" data-target="#myModalHorizontal" type="button">Salary Details
+    </button>
+  </div>
+  <br>
+  <br>
+  <div ng-show="mode=='Contract'">
+    <br>
+    <br>
+   <table class="table table-bordered">
+      <thead class="w3-cyan">
+        <tr>
+          <th>Month</th>
+          <th>Duration(Min)</th>
+          <th>Total</th>
+          <th>TDS</th>
+          <th>Payable Amount</th>
+          <th>Cheque Number</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat-start="pay in payment" ng-click="showDetails = !showDetails;showindex=$index;">
+          <td>{{pay.month}}</td>
+          <td>{{pay.totalduration}}</td>
+          <td>{{pay.totalpayment | number:0}}</td>
+          <td>{{pay.totalpayment/10 | number:0}}</td>
+          <td>{{(pay.totalpayment-(pay.totalpayment/10)) | number:0}}</td>
+          <td> 95416 </td>
+          <td><i class="fa fa-ban btn-danger btn-sm" aria-hidden="true"></i></td>
+        </tr>
+        <tr ng-repeat-end ng-show="showDetails">
+        <td colspan="5">
+<table class="table table-bordered" style="border: 1px solid black;" >
+  <thead style="background-color: #0079bf">
+   <th>Date</th>
+  <th>Batch</th>
+  <th>Duration(Min)</th>
+  <th>Rate</th>
+  <th>Total</th>
+  <th>TDS</th>
+  <th>Payable Amount</th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="detail in payment[showindex].detail">
+      <td>{{detail.date}}</td>
+      <td>{{detail.batch}}</td>
+      <td>{{detail.duration}}</td>
+      <td>{{detail.rate}}</td>
+      <td>{{(detail.duration*(detail.rate/60)) | number:0}}</td>
+      <td>{{((detail.duration*(detail.rate/60))/10) | number:0}}</td>
+      <td>{{((detail.duration*(detail.rate/60))-((detail.duration*(detail.rate/60))/10)) | number:0}}</td>
+     </tr>
+  </tbody>
+</table>
+</td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+<br>
+<br>
+<br>
+<br>
+<div ng-show="mode=='Salary'">   
+<table class="table table-bordered">
+  <thead style="background-color: #0079bf">
+    <th>Month</th>
+    <th>Total Salary</th>
+    <th>TDS</th>
+    <th>Payable Amount</th>
+    <th>Cheque Number</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="p in payment">
+      <td>{{p.month}}</td>
+      <td>{{p.salary}}</td>
+      <td>{{p.salary/10}}</td>
+      <td>{{p.salary-(p.salary/10)}}</td>
+      <td>598745</td>
+      <td><i class="fa fa-ban btn-danger btn-sm" aria-hidden="true"></i></td>
+    </tr>
+  </tbody>
+</table>
+
+  </div>
+</div>
+<div class="modal fade" id="myModalHorizontal" tabindex="-1" role="dialog" 
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog" style="width:850px;">
+  <div class="modal-content">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <button type="button" class="close" 
+      data-dismiss="modal" ng-click="reloadstaffPage();">
+      <span aria-hidden="true" >&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+      Payment Details
+    </h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" role="form" name="" id="salaryform">
+    <div>
+        <div class="form-group">
+          <label  class="col-sm-2 control-label">Payment Type</label>
+          <div class="col-sm-10">
+            <select class="form-control"  ng-model="staffInfo[0].salarydetails.mode" ng-value="staffInfo[0].salarydetails.mode" ng-change="changemode(staffInfo[0].salarydetails.mode)">
+              <option>Salary</option>
+              <option>Contract</option>
+            </select>
+          
+          </div>
+        </div>
+       <div class="form-group" ng-show="staffInfo[0].salarydetails.mode=='Salary';">
+          <label  class="col-sm-2 control-label">Per Month Salary</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="staffInfo[0].salarydetails.permonthsalary" placeholder="salary"/>
+          </div>
+        </div>
+        <div ng-show="staffInfo[0].salarydetails.mode=='Contract';" style="border: 3px solid green; padding: 10px;border-radius: 5px;">
+          <div class="form-group">
+            <div ng-repeat="item in staffInfo[0].salarydetails.contractlist track by $index" class="col-md-12">
+              <div class="col-sm-3">
+                <input type="text" name="" ng-value="item.course" readonly="true">
+              </div>
+              <div class="col-sm-3">
+                <input type="" name="" ng-value="{{item.std}}" readonly="true">
+              </div>
+              <div class="col-sm-3">
+                <input type="" name="" ng-value="{{item.rate}}" readonly="true">
+              </div>
+               <div class="col-sm-3">
+                <button ng-click="deletepaymententry($index);"><i class="fa fa-times" aria-hidden="true"></i></button> 
+              </div>
+            </div>
+            <label class="col-sm-1 control-label">Course</label>
+            <div class="form-group col-sm-3">
+              <select class="form-control" ng-model="current.course">
+                <option>STATE</option> 
+                <option>CBSE</option>
+                <option>ICSE</option>
+                <option>SCIENCE</option>
+              </select>
+            </div>
+            <label class="col-sm-1 control-label">Standard</label>
+            <div class="form-group col-sm-1">
+              <select class="form-control" ng-model="current.std">
+                <option>8</option> 
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+              </select>
+            </div>
+            <label class="col-sm-1 control-label">Per Hour Rate</label>
+            <div class="form-group col-sm-3">
+              <input type="number" ng-model="current.rate" name="rate" class="form-control" placeholder="Rate"/>
+            </div>
+
+            <div class="col-sm-1 btn-primary btn-sm" ng-click="updatecontract()">
+              <i class="fa fa-plus w3-center" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="modal-footer">
+      <button type="submit" data-dismiss="modal" ng-click="editsalarydetails();" class="btn btn-primary">
+        Save changes
+      </button>
+
+    </div>
+    </form>
+   <!--  <form class="form-horizontal" role="form">
+      <div ng-if="staffInfo[0].salarydetails.length==undefined">
+        <div class="form-group">
+          <label  class="col-sm-2 control-label">Payment Type</label>
+          <div class="col-sm-10">
+            <select class="form-control"  ng-model="mode" ng-change="changemode(mode)">
+              <option>Salary</option>
+              <option>Contract</option>
+            </select>
+           <p>defined</p> 
+           {{staffInfo[0].salarydetails.length}}
+                       {{mode}}
+          </div>
+        </div>
+        <div class="form-group" ng-show="mode=='Salary';">
+          <label  class="col-sm-2 control-label">Per Month Salary</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="permonthsalary" placeholder="salary"/>
+          </div>
+        </div>
+        <div ng-show="mode=='Contract';" style="border: 3px solid green; padding: 10px;border-radius: 5px;">
+          <div class="form-group">
+            <div ng-repeat="item in contractlist track by $index" class="col-md-12">
+              <div class="col-sm-4">
+                <input type="text" name="" ng-value="item.course" readonly="true">
+              </div>
+              <div class="col-sm-4">
+                <input type="" name="" ng-value="{{item.std}}" readonly="true">
+              </div>
+              <div class="col-sm-4">
+                <input type="" name="" ng-value="{{item.rate}}" readonly="true">
+              </div>
+            </div>
+            <label class="col-sm-1 control-label">Course</label>
+            <div class="col-sm-3">
+              <select class="form-control" ng-model="current.course">
+                <option>SSC</option> 
+                <option>CBSE</option>
+                <option>ICSE</option>
+                <option>SCIENCE</option>
+              </select>
+            </div>
+            <label class="col-sm-1 control-label">Standard</label>
+            <div class="col-sm-1">
+              <select class="form-control" ng-model="current.std">
+                <option>8</option> 
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+              </select>
+            </div>
+            <label class="col-sm-1 control-label">Per Hour Rate</label>
+            <div class="col-sm-3">
+              <input type="text" ng-model="current.rate" class="form-control" placeholder="Rate"/>
+            </div>
+            <div class="col-sm-1 btn-primary btn-sm" ng-click="addnewcontract()">
+              <i class="fa fa-plus w3-center" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div  ng-if="staffInfo[0].salarydetails.length!=undefined">
+        <div class="form-group">
+          <label  class="col-sm-2 control-label">Payment Type</label>
+          <h2>{{staffInfo[0].salarydetails.length}}</h2>
+          <h2>not undefined</h2>
+          {{contractlist}}
+          <div class="col-sm-10">
+            <select class="form-control"  ng-model="staffInfo[0].salarydetails.mode">
+              <option>Salary</option>
+              <option>Contract</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" ng-show="staffInfo[0].salarydetails.mode=='Salary';">
+          <label  class="col-sm-2 control-label">Per Month Salary</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="staffInfo[0].salarydetails.permonthsalary" placeholder="salary"/>
+          </div>
+        </div>
+        <div ng-show="staffInfo[0].salarydetails.mode=='Contract';" style="border: 3px solid green; padding: 10px;border-radius: 5px;">
+          <div class="form-group">
+            <div ng-repeat="item in staffInfo[0].salarydetails.contractlist track by $index" class="col-md-12">
+              <div class="col-sm-4">
+                <input type="text" name="" ng-value="item.course" readonly="true">
+              </div>
+              <div class="col-sm-4">
+                <input type="" name="" ng-value="{{item.std}}" readonly="true">
+              </div>
+              <div class="col-sm-4">
+                <input type="" name="" ng-value="{{item.rate}}" readonly="true">
+              </div>
+            </div>
+            <label class="col-sm-1 control-label">Course</label>
+            <div class="col-sm-3">
+              <select class="form-control" ng-model="current.course">
+                <option>SSC</option> 
+                <option>CBSE</option>
+                <option>ICSE</option>
+                <option>SCIENCE</option>
+              </select>
+            </div>
+            <label class="col-sm-1 control-label">Standard</label>
+            <div class="col-sm-1">
+              <select class="form-control" ng-model="current.std">
+                <option>8</option> 
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+              </select>
+            </div>
+            <label class="col-sm-1 control-label">Per Hour Rate</label>
+            <div class="col-sm-3">
+              <input type="text" ng-model="current.rate" class="form-control" placeholder="Rate"/>
+            </div>
+            <div class="col-sm-1 btn-primary btn-sm" ng-click="updatecontract()">
+              <i class="fa fa-plus w3-center" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="modal-footer">
+      <button type="submit" data-dismiss="modal" ng-click="editsalarydetails();" class="btn btn-primary">
+        Save changes
+      </button>
+
+    </div>
+ </form> -->
+</div>
+</div>
+</div>
+</div>

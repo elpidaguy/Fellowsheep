@@ -1,0 +1,433 @@
+<style type="text/css">
+    	.modal-body .form-horizontal .col-sm-2,
+.modal-body .form-horizontal .col-sm-10 {
+    width: 100%
+}
+
+.modal-body .form-horizontal .control-label {
+    text-align: left;
+}
+.modal-body .form-horizontal .col-sm-offset-2 {
+    margin-left: 15px;
+}
+    </style>
+    <!--  <link rel="stylesheet" href="style.css" />
+      <script type="text/javascript" src="customSelect.js"></script> -->
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary w3-text-white w3-hover-red btn-xs navbar-brand">ESPL <i class="fa fa-bars" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+              <li ng-show="loggedIn"><a href="#attendance">View Attendance</a></li>
+              <li ng-show="loggedIn"><a href="#studentattendance">Manual Attendance</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#staffList">Staff List</a></li>
+              <li><a href="#staffAttendance">Staff Attendance</a></li>
+            </ul>
+          </li>
+          <li><a href="#viewDiscounts">Discounts</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+          <li ng-show="loggedIn"><a href="#search"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
+          <li class="active"><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+          <!-- <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Login</a></li> -->
+          <li>
+            <div class="dropdown" ng-show="loggedIn">
+              <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user fa-lg" aria-hidden="true"></i> {{loginData.staffname}}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#changepwd"><i class="fa fa-cog fa-lg" aria-hidden="true"></i> Settings</a></li>
+                  <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i> Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+  </nav>
+
+<div class="container-fluid" style="margin-top: 65px" ng-init="loginAuth();">
+
+  <!-- <ul class="breadcrumb">
+  <li><a href="#adminpanel">Admin Panel</a></li>
+  </ul> -->
+
+<div style="margin-top: 10px" class="row">
+	<!-- <div class="col-md-3">
+		<a style=" text-decoration: none;" href="" class="btn-primary" data-toggle="modal" data-target="#myModalHorizontal" ng-click="getUsertypes();getCities(); getStaffNames();">
+			<div class="panel panel-default">
+			  <div style="height: 150px;" class="panel-body btn-primary">
+			  	<i style="opacity: 0.2; " class="fa fa-sign-in fa-5x" aria-hidden="true"></i>
+			    <h2 style="color: white; margin-top: 5px; ">ADD LOGIN RIGHTS</h2>
+			  </div>
+			</div>
+		</a>
+	</div> -->
+
+   <div class="col-md-3" >
+    <a style=" text-decoration: none;" href="#manageuser" ng-click="getStaffNames();" class="btn-primary">
+      <div class="panel panel-default">
+        <div style="height: 150px;" class="panel-body btn-primary">
+          <i style="opacity: 0.2" class="fa fa-user-o fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px";">MANAGE USERS</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+	<div class="col-md-3" ng-click="getCities();">
+		<a style=" text-decoration: none;" href="#addstaff" class="btn-primary">
+			<div class="panel panel-default">
+			  <div style="height: 150px;" class="panel-body btn-danger">
+			  	<i style="opacity: 0.2" class="fa fa-user-secret fa-5x" aria-hidden="true"></i>
+			    <h2 style="color: white; margin-top: 5px";">ADD NEW STAFF</h2>
+			  </div>
+			</div>
+		</a>
+	</div>
+
+	<div class="col-md-3">
+		<a style=" text-decoration: none;" href="#managecity" class="btn-primary">
+			<div class="panel panel-default">
+			  <div style="height: 150px;" class="panel-body btn-warning">
+			  	<i style="opacity: 0.2" class="fa fa-university fa-5x" aria-hidden="true"></i>
+			    <h2 style="color: white; margin-top: 5px">MANAGE CITY</h2>
+			  </div>
+			</div>
+		</a>
+	</div>
+
+	<div class="col-md-3">
+		<a style=" text-decoration: none;" href="#feeSetting" class="btn-primary">
+			<div class="panel panel-default">
+			  <div style="height: 150px;" class="panel-body btn-success">
+			  	<i style="opacity: 0.2" class="fa fa-money fa-5x" aria-hidden="true"></i>
+			    <h2 style="color: white; margin-top: 5px">MANAGE FEES</h2>
+			  </div>
+			</div>
+		</a>
+	</div>
+
+	<div class="col-md-3">
+		<a style=" text-decoration: none;" href="#createSchedule" class="btn-info">
+			<div class="panel panel-default">
+			  <div style="height: 150px;" class="panel-body btn-warning">
+			  	<i style="opacity: 0.2" class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+			    <h2 style="color: white; margin-top: 5px">YEARLY SCHEDULE</h2>
+			  </div>
+			</div>
+		</a>
+	</div>
+
+  <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#hallTicket" class="btn-primary">
+      <div class="panel panel-default">
+        <div style="height: 150px;" class="panel-body btn-primary">
+          <i style="opacity: 0.2" class="fa fa-money fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">HALL TICKET</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#createSyllabus" class="btn-primary">
+      <div class="panel panel-info">
+        <div style="height: 150px;" class="panel-body btn-danger">
+          <i style="opacity: 0.2" class="fa fa-calendar-check-o fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">YEARLY SYLLABUS</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#newcreateTimetable" class="btn-primary">
+      <div class="panel panel-default">
+        <div style="height: 150px;" class="panel-body btn-primary">
+          <i style="opacity: 0.2" class="fa fa-calendar-plus-o fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">DAILY TIMETABLE</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+ <!--  <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#createDailyreport" class="btn-primary">
+      <div class="panel panel-info">
+        <div style="height: 150px;" class="panel-body btn-success">
+          <i style="opacity: 0.2" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px"> oldDAILY REPORT</h2>
+        </div>
+      </div>
+    </a>
+  </div> -->
+
+  <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#newcreateDailyreport" class="btn-primary">
+      <div class="panel panel-info">
+        <div style="height: 150px;" class="panel-body btn-success">
+          <i style="opacity: 0.2" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">DAILY REPORT</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#createResult" class="btn-primary">
+      <div class="panel panel-default">
+        <div style="height: 150px;" class="panel-body btn-danger">
+          <i style="opacity: 0.2" class="fa fa-file-pdf-o fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">CREATE RESULT</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+<div class="col-md-3">
+    <a style=" text-decoration: none;" href="#assignStaffRfid" class="btn-primary">
+      <div class="panel panel-info">
+        <div style="height: 150px;" class="panel-body btn-success">
+          <i style="opacity: 0.2" class="fa fa-id-badge fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">ASSIGN STAFF RFID</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+<!--   <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#createLecturerecord" class="btn-primary">
+      <div class="panel panel-info">
+        <div style="height: 150px;" class="panel-body btn-danger">
+          <i style="opacity: 0.2" class="fa fa-file-text-o fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">LECTURE RECORD</h2>
+        </div>
+      </div>
+    </a>
+  </div> -->
+
+  <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#assignRfid" class="btn-primary">
+      <div class="panel panel-default">
+        <div style="height: 150px;" class="panel-body btn-warning">
+          <i style="opacity: 0.2" class="fa fa-id-badge fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">ASSIGN RFIDS</h2>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- <div class="col-md-3">
+    <a style=" text-decoration: none;" href="#createTimetable" class="btn-primary">
+      <div class="panel panel-default">
+        <div style="height: 150px;" class="panel-body btn-success">
+          <i style="opacity: 0.2" class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+          <h2 style="color: white; margin-top: 5px">DAILY TIMETABLE</h2>
+        </div>
+      </div>
+    </a>
+  </div> -->
+
+</div>
+
+   <div class="modal fade"  id="assignRFID" role="dialog" >
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Assign RFID</h4>
+        </div>
+        <div class="modal-body">
+          <form ng-submit="assignRFID()" >
+              <label><b>Student</b></label><br>
+                 <select ng-model="studentid" class="form-control">
+                  <option value="">Select Student</option>
+               <option style="text-transform: capitalize;" ng-repeat="x in studentList" value="{{x._id}}"> {{x.firstName}} {{x.middleName}} {{x.lastName}} </option> 
+                  </select>
+              <label><b>RFID</b></label><br>
+                  <!-- <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Select <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation">
+                        <div class="input-group input-group-sm search-control"> <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-search"></span>
+            </span>
+                            <input type="text" class="form-control" placeholder="Query" ng-model="query"></input>
+                        </div>
+                    </li>
+                    <li role="presentation" ng-repeat='rfid in rfids | filter:query'> <a href="#"> {{rfid.rfid}} </a>
+                    </li>
+                </ul>
+            </div> -->
+            <!--  <div custom-select="rfid for rfid in rfids | filter: $searchTerm" ng-model="fruit" autofocus></div> -->
+            <!--   <div custom-select="rfid for rfid in rfids | filter: $searchTerm" custom-select-options="level1Options" ng-model="level1"></div> -->
+              <select ng-model="rfid" class="form-control">
+                  <option value=""></option>
+                   <option style="text-transform: capitalize;" ng-repeat="rfid in rfids | filter:f" value="{{rfid.rfid}}"> {{rfid.rfid}}</option> 
+          
+              </select>
+
+<!-- 
+  <select ng-model="usertype" required="required"
+  ng-options="option.usertypename as option.name for usertypename in usertypes" >
+    <option style="display:none" value="">select a type</option>
+</select>  -->
+
+
+                  <br><br>
+              <button class="btn btn-primary" type="submit" >ASSIGN</button>
+          </form>
+        </div>
+      
+      </div>
+      
+    </div>
+  </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModalHorizontal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Access To New User 
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                 
+                <form  name="adduser" class="form-horizontal" role="form"  required>
+                  <div class="form-group">
+                    <label  class="col-sm-2 col-md-6 control-label"
+                              for="fullname">User Full Name</label>
+                    <div class="col-sm-10">
+                        <select  ng-model="staffname" class="form-control" ng-change="generate(staffname)" required>
+                          <option ng-repeat="name in staffnames" value="{{name}}"> {{name}} </option>
+                        </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label  class="col-sm-2 control-label"
+                              for="username">User Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" ng-value="username" ng-model="username"
+                        id="username" placeholder="User Name" readonly="true" required />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                          for="inputPassword3" >Password</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" ng-value="password" ng-model="password"
+                            id="inputPassword3" placeholder="Password" readonly="true" required />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-2 col-md-6 control-label"
+                              for="utype">User Type</label>
+                    <div class="col-sm-10">
+                        <select  ng-model="usertype" class="form-control" ng-change="checkuser(usertype);" required>
+                          <option style="text-transform: capitalize;" ng-repeat="usertypename in usertypes" value="{{usertypename.typeid}}" > {{usertypename.typename}} </option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-2 control-label"
+                              for="city">City</label>
+                    <div class="col-sm-10">
+                        <select ng-model="cityid" ng-change="getBranches(cityid)"  class="form-control" required>
+                         <!--  <option value="">Select City</option> -->
+                          <option ng-repeat="city in result1.cities" value="{{city._id}}"> {{city.cityname}} </option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-show="!super">
+                    <label  class="col-sm-2 control-label"
+                              for="branch">Branch</label>
+                    <div class="col-sm-10">
+                        <select ng-model="branchid" class="form-control">
+                          <option ng-repeat="branch in singleBranchResult" value="{{branch._id}}"> {{branch.branchname}} </option>
+                        </select>
+                    </div>
+                  </div>
+            
+                   <div class="form-group">
+                    <label  class="col-sm-2 control-label"
+                              for="uemail">User Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="userEmail" ng-model="email" id="uemail" placeholder="User Email" required />
+                         <div ng-messages="adduser.userEmail.$error">
+                        <div ng-message="email">Your email address is invalid</div>
+                        </div>
+                    </div>
+
+                  </div>
+                   <div class="form-group">
+                    <label  class="col-sm-2 control-label"
+                              for="usermobile">User Mobile</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" ng-model="mobile"
+                        id="usermobile" placeholder="Mobile" required/>
+                        <div ng-messages="adduser.mobile.$error">
+  <div ng-message="required">This field is required</div>
+</div>
+                    </div>
+                  </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                  <button type="submit" ng-click="insertUser();" class="btn btn-primary" data-dismiss="modal">
+                    Save changes
+                </button>
+                <!--  <input type="submit"  class="btn btn-primary" id="submit" value="Submit" data-dismiss="modal" on-click="insertUser()"/> -->
+              <!--   <button type="submit"  class="btn btn-primary" > -->
+          <!--           Save changes
+                </button>
+            </div>
+ -->             </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>

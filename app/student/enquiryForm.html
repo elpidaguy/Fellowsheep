@@ -1,0 +1,385 @@
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<script>
+        $.skylo({
+            state: 'danger',
+            initialBurst: 6,
+            flat: true
+        });
+        $(document).ready(function () {
+            $.skylo('start');
+            // Add smooth scrolling on all links inside the navbar
+            $(".container-fluid a").on('click', function (event) {
+                var $div = $(this).parent();
+                var $input = $div.find("input").first();
+                //console.log($input.val());
+                if ($input.val() !== "") {
+
+                  if ($(this).attr('id')=='btn1' && /^[A-Za-z]+$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is really a name(no spaces allowed)!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                  if ($(this).attr('id')=='btn2' && /^[A-Za-z]+$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is really a name(no spaces allowed)!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                  if ($(this).attr('id')=='btn3' && /^[A-Za-z]+$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is really a name(no spaces allowed)!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                  if ($(this).attr('id')=='btn9' && /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is valid Email Address!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                  if ($(this).attr('id')=='btn10' && /^\d{10}$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is valid mobile number!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                  if ($(this).attr('id')=='btn14' && /^\d{10}$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is valid mobile number!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                  if ($(this).attr('id')=='btn15' && /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is valid Email Address!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                  if ($(this).attr('id')=='btn11' && /^[A-Za-z]+$/.test($input.val())==false) {
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: ':(',
+                        message: 'I don`t think this is really a name(no spaces allowed)!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                    return;
+                  }
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+                        // Prevent default anchor click behavior
+                        event.preventDefault();
+                        // Store hash
+                        var hash = this.hash;
+                        // Using jQuery's animate() method to add smooth page scroll
+                        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 800, function () {
+                            $('div').removeClass('animated animated fadeInLeft');
+                            $(this).find(hash).find('.input-lg').focus();
+                            $.skylo('inch', 7);
+                            if (hash === '#section16') {
+                                $("#hurray").typed({
+                                    strings: ["<h2>Hurray!!, We have successfully noted all your information.<br> Now just click the button below to complete the procedure. :)</h2>"],
+                                    typeSpeed: 30,
+                                    backDelay: 750,
+                                    showCursor: false,
+                                    loop: false,
+                                    contentType: 'html', // or text
+                                    // defaults to false for infinite loop
+                                    loopCount: false
+                                });
+                            }
+                        });
+                    }
+                } else{
+                    $('div').removeClass('animated animated fadeInLeft');
+                    event.preventDefault();
+                    iziToast.show({
+                        theme: 'dark',
+                        title: 'Empty :(',
+                        message: 'You forgot to enter field!',
+                        position: 'topRight',
+                        icon: 'fa fa-ban',
+                        progressBarColor: 'rgb(0, 255, 184)'
+                    });
+                }
+            });
+        });
+</script>
+<style>
+    .term {
+      color:white;
+      font-size: 30px;
+      font-family: 'Raleway', sans-serif;
+    }
+
+    input {
+
+      background-color: rgba(0,0,0,0);
+      color: white;
+      border: none;
+      border-color: transparent;
+    }
+
+    body {
+      position: relative;
+      opacity: 0.9;
+    }
+
+    /*#section1 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-1.jpg") no-repeat center fixed;}*/
+    #section1 {min-height:700px;background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);}
+    #section2 {min-height:700px;background-image: linear-gradient(to left, #bf8dfd, #d57fe7, #e571ce, #ee66b4, #f25d99);}
+    #section3 {min-height:700px;background-image: linear-gradient(to left, #f8fd8d, #ffc066, #ff7b80, #fc4cbb, #725df2);}
+    #section4 {min-height:700px;background-image: linear-gradient(to left, #7efefd, #00e1ff, #00c0ff, #0098ff, #5d67f2);}
+    #section5 {min-height:700px;background-image: linear-gradient(to left, #fedb7e, #ffc8a4, #ffc4d7, #f4cef6, #d0d8f7);}
+    #section6 {min-height:700px;background-image: linear-gradient(to left, #7efeeb, #92e18f, #c2b738, #ee7a23, #ff005d);}
+    #section7 {min-height:700px;background-image: linear-gradient(to right top, #535ddc, #ef44be, #ff5c79, #ffaf25, #f4ff00);}
+    #section8 {min-height:700px;background-image: linear-gradient(to right top, #53dc8f, #00dab7, #00d5da, #00cef3, #00c3ff);}
+    #section9 {min-height:700px;background-image: linear-gradient(to right top, #3d5653, #345959, #295b62, #1c5d6b, #0d5e76);}
+    #section10 {min-height:700px;background-image: linear-gradient(to right top, #df3171, #953d86, #483f76, #19314a, #181a1b);}
+    #section11 {min-height:700px;background-image: linear-gradient(to right top, #dfd431, #c88c30, #935133, #4d2827, #000000);}
+    #section12 {min-height:700px;background-image: linear-gradient(to right top, #ffffff, #e7d0eb, #e29cc2, #dc6682, #c23333);}
+    #section13 {min-height:700px;background-image: linear-gradient(to right top, #00fff4, #3dbfab, #3e836f, #2f4c3e, #171b18);}
+    #section14 {min-height:700px;background-image: linear-gradient(to right top, #ffa000, #faa500, #f5aa02, #efaf07, #eab30e);}
+    #section15 {min-height:700px;background-image: linear-gradient(to right top, #1d22c3, #004fd9, #006fe5, #008cea, #0ea7ea);}
+    #section16 {min-height:700px;background-image: linear-gradient(to right top, #ff1451, #ff0071, #ff0097, #f900bf, #dd0eea);}
+
+/*    #section2 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-1.jpg") center fixed no-repeat;}
+    #section3 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-2.jpg") center fixed no-repeat;}
+    #section4 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-3.jpg") center fixed no-repeat;}
+    #section5 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-4.jpg") center fixed no-repeat;}
+    #section6 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-5.jpg") center fixed no-repeat;}
+    #section7 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-6.jpg") center fixed no-repeat;}
+    #section8 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-8.jpg") center fixed no-repeat;}
+    #section9 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-15.jpg") center fixed no-repeat;}
+    #section10 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-16.jpg") center fixed no-repeat;}
+    #section11 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-17.jpg") center fixed no-repeat;}
+    #section12 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-2.jpg") center fixed no-repeat;}
+    #section13 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-5.jpg") center fixed no-repeat;}
+    #section14 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-6.jpg") center fixed no-repeat;}
+    #section15 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-4.jpg") center fixed no-repeat;}
+    #section16 {min-height:700px;background: #cccccc url("assets/images/Elegant_Background-2.jpg") center fixed no-repeat;}*/
+
+    /*#section16 {min-height:700px;background: #cccccc url("assets/images/14.png") center fixed no-repeat;}*/
+    #section16 {min-height:700px;background-image: linear-gradient(to right top, #8cabd9, #6abfde, #68d0ce, #91dbb2, #cadf9a);}
+</style>
+<form name="enquiryForm">
+  <div id="section1" class="container-fluid">
+    <div id="section1div" style="margin: 22%;-vendor-animation-delay: 15s;opacity: 1.0;" class="animated fadeInLeft">
+      <div class="term">
+        <span>Hello there...What's Your Name?</span> <br>
+        <input onkeydown="if(event.keyCode === 13)$('#btn1').click()" type="text" class="input-lg" ng-model="enquiry_fname" value="" placeholder="Only First Name" autofocus required />
+      </div><br>
+        <a id="btn1" href="#section2" class="btn btn-success" onclick="$('#section2div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section2" class="container-fluid">
+    <div id="section2div" style="margin: 22%;-vendor-animation-delay: 15s;">
+      <div class="term">
+        <span>Hello {{enquiry_fname}} ,What's your middle name?</span> <br>
+        <input id="mname" onkeydown="if(event.keyCode === 13)document.getElementById('btn2').click()" type="text" class="input-lg" ng-model="enquiry_mname" value="" placeholder="Middle Name" required/>
+      </div><br>
+      <a id="btn2" href="#section3" class="btn btn-success" onclick="$('#section3div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section3" class="container-fluid">
+    <div id="section3div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>And to complete the Fullname, Your Last name is ?</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn3').click()" type="text" class="input-lg" ng-model="enquiry_lname" value="" placeholder="Last Name" required/>
+      </div><br>
+      <a id="btn3" href="#section4" class="btn btn-success" onclick="$('#section4div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section4" class="container-fluid">
+    <div id="section4div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>Your mother was happiest on the day you were born...</span> <br>
+        <datepicker class="col-md-4" date-format="dd/MM/yyyy">
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn4').click()" type="text" placeholder="(DD/MM/YYYY)" class="input-lg" ng-model="enquiry_dob" value="" name="dob" required/>
+        </datepicker>
+        <br>
+        <br>
+      </div>
+      <br>
+      <a id="btn4" href="#section5" class="btn btn-success" onclick="$('#section5div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <!-- <label>press <strong>Enter</strong></label> -->
+    </div>
+  </div>
+
+  <div id="section5" class="container-fluid">
+    <div id="section5div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>"The most comfortable place in your life is Home"</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn5').click()" type="text" placeholder="Residential Address" class="input-lg" ng-model="enquiry_address" value="" required/>
+      </div><br>
+      <a id="btn5" href="#section6" class="btn btn-success" onclick="$('#section6div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section6" class="container-fluid">
+    <div id="section6div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>The pathway to educational excellence lies within each school.<br>What's your school name?</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn6').click()" type="text" class="input-lg" ng-model="enquiry_schoolName" value="" placeholder="School Name" required/>
+      </div><br>
+      <a id="btn6" href="#section7" class="btn btn-success" onclick="$('#section7div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section7" class="container-fluid">
+    <div id="section7div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span> How much time do You spend in school?</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn7').click()" type="text" placeholder="Eg.12pm-5pm" class="input-lg" ng-model="enquiry_schoolTiming" value="" required/>
+      </div><br>
+      <a id="btn7" href="#section8" class="btn btn-success" onclick="$('#section8div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section8" class="container-fluid">
+    <div id="section8div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span> In which class you study?</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn8').click()" type="text" placeholder="10th" class="input-lg" ng-model="enquiry_std" value="" required/>
+      </div><br>
+      <a id="btn8" href="#section9" class="btn btn-success" onclick="$('#section9div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section9" class="container-fluid">
+    <div id="section9div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>have any email address to share?</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn9').click()" type="text" class="input-lg" ng-model="enquiry_email" value="" placeholder="Email Address" required/>
+      </div><br>
+      <a id="btn9" href="#section10" class="btn btn-success" onclick="$('#section10div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section10" class="container-fluid">
+    <div id="section10div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>Whats's your mobile number?</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn10').click()" type="text" class="input-lg" ng-model="enquiry_mobile" value="" placeholder="Mobile Number" required/>
+      </div><br>
+      <a id="btn10" href="#section11" class="btn btn-success" onclick="$('#section11div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section11" class="container-fluid">
+    <div id="section11div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>One of the greatest titles in the world is parent, and one of the biggest blessings in the world is to have parents to call mom and dad.</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn11').click()" type="text" placeholder="Parent's name" class="input-lg" ng-model="enquiry_pname" value="" required/>
+      </div><br>
+      <a  id="btn11" href="#section12" class="btn btn-success" onclick="$('#section12div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section12" class="container-fluid">
+    <div id="section12div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>Your parents work hard to fulfill the dreams of their children</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn12').click()" type="text" placeholder="Occupation" class="input-lg" ng-model="enquiry_pOcc" value="" required/>
+      </div><br>
+      <a  id="btn12" href="#section13" class="btn btn-success" onclick="$('#section13div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section13" class="container-fluid">
+    <div id="section13div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>Enter your parent's office address.</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn13').click()" type="text" class="input-lg" ng-model="enquiry_pAdd" value="" placeholder="Address" required/>
+      </div><br>
+      <a id="btn13" href="#section14" class="btn btn-success" onclick="$('#section14div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+   <div id="section14" class="container-fluid">
+    <div id="section14div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>Enter your parent's mobile number.</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn14').click()" type="text" class="input-lg" ng-model="enquiry_pMobile" value="" placeholder="Parent's Mobile" required/>
+      </div><br>
+      <a id="btn14" href="#section15" class="btn btn-success" onclick="$('#section15div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section15" class="container-fluid">
+    <div id="section15div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+        <span>Enter your parent's email Id.</span> <br>
+        <input onkeydown="if(event.keyCode === 13)document.getElementById('btn15').click()" type="email" class="input-lg" ng-model="enquiry_pmail" value="" placeholder="Parent's Email ID" required/>
+      </div><br>
+      <a id="btn15" href="#section16" class="btn btn-success" onclick="$('#section16div').addClass('animated fadeInLeft');">OK <i class="fa fa-check"></i></a>  <label>press <strong>Enter</strong></label>
+    </div>
+  </div>
+
+  <div id="section16" class="container-fluid">
+    <div id="section16div" style="margin: 22%;-vendor-animation-delay: 5s;">
+      <div class="term">
+          <img width="130px" height="130px" src="assets/icons/checked.png"><br>
+          <div id="hurray"></div>
+      </div><br>
+      <a ng-hide="enquiryForm.$invalid" id="submit" ng-click="addnewenquirystudent()" class="btn btn-success">Submit :)</a>
+    </div>
+  </div>

@@ -1,0 +1,245 @@
+
+    <style>
+        .segmented-control {
+            padding: 10px;
+            margin: 10px;
+        }
+
+        input[type="radio"]:checked + label {
+            background-color: #027AFB;
+            color: white;
+        }
+
+        .segmented-control label {
+            border-top: 1px solid #027AFB;
+            border-bottom: 1px solid #027AFB;
+            padding: 10px 30px;
+            margin: -4px;
+            margin-left: -14px;
+            color: #027AFB;
+        }
+
+        .sc-label:first-of-type {
+            border-left: 1px solid #027AFB;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-right: 1px solid #027AFB;
+        }
+
+        .sc-label:last-of-type {
+            border-right: 1px solid #027AFB;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-left: 1px solid #027AFB;
+        }
+
+        .segmented-control input[type="radio"] {
+            visibility: hidden;
+        }
+    </style>
+
+</head>
+<body>
+    <h1 class="text-center">MAHESH TUTORIALS</h1>
+    <div class="panel panel-info" style="margin:20px;">
+        <div class="panel-heading" style="background-color: #3a4a63">
+            <h2 class="panel-title text-center">TEACHER FORM</h2>
+        </div>
+         <div class="panel-body">
+            <form ng-submit="insertStaff()">
+                <div class="col-md-12 col-sm-12">
+
+                    <div id="fnamediv" class="form-group col-md-4 col-sm-4">
+                        <label for="fname"> First Name*	</label>
+                        <input type="text" ng-model="fname" class="form-control input-sm" id="fname" placeholder="First Name" ng-value="">
+                    </div>
+                    <div id="mnamediv" class="form-group col-md-4 col-sm-4">
+                        <label for="mname">Middle Name* </label>
+                        <input type="text" ng-model="mname" class="form-control input-sm" id="mname" placeholder="Middle Name" ng-value="">
+                    </div>
+                    <div id="lnamediv" class="form-group col-md-4 col-sm-4">
+                        <label for="lname">Surname* </label>
+                        <input type="text" ng-model="lname" class="form-control input-sm" id="lname" placeholder="Surname(if any)" ng-value="">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label>Gender* </label>
+                        <div class="radio">
+                            <label>
+                                <input ng-model="gender" name="gender" id="male" value="male" type="radio">
+                                Male
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input ng-model="gender" name="gender" id="female" value="female" type="radio">
+                                Female
+                            </label>
+                        </div>
+                    </div>
+                    <div id="dobdiv" class="form-group col-md-6 col-sm-6">
+                        <label for="dob" class="control-label">Date of Birth* </label>
+                        <input type="text" ng-model="dob" class="form-control input-sm" id="dob" placeholder="" ng-value="">
+                    </div>
+                    <div id="emaildiv" class="form-group col-md-6 col-sm-6">
+                        <label for="email" class="col-lg-2 control-label">Email*</label>
+                        <input type="text" ng-model="email" class="form-control input-sm" id="email" placeholder="" ng-value="">
+                    </div>
+                    <div id="studentMobilediv" class="form-group col-md-6 col-sm-6">
+                        <label for="studentMobile" class="col-lg-2 control-label">Mobile*</label>
+                        <input type="text" ng-model="mobile" class="form-control input-sm" id="studentMobile" placeholder="">
+                    </div>
+                    <div id="addressdiv" class="form-group col-md-6 col-sm-6">
+                        <label for="address" class="col-lg-2 control-label">Address*</label>
+                        <textarea id="address" ng-model="address" class="form-control input-sm" rows="3" ng-value=""></textarea>
+                    </div>
+                    <div id="citydiv" class="form-group col-md-6 col-sm-6">
+                        <label for="city" class="col-lg-2 control-label">City*</label>
+                        <input type="text" ng-model="city" class="form-control input-sm" id="city" placeholder="" ng-value="">
+                    </div>
+                    <div id="pincodediv" class="form-group col-md-6 col-sm-6">
+                        <label for="pincode" class="col-lg-2 control-label">Pincode*</label>
+                        <input type="text" ng-model="pincode" class="form-control input-sm" id="pincode" placeholder="" ng-value="">
+                    </div>
+                    <div id="aadhardiv" class="form-group col-md-6 col-sm-6">
+                        <label for="aadhar" class="col-lg-6 control-label">Aadhar Number*</label>
+                        <input type="text" ng-model="aadhar" class="form-control input-sm" id="aadhar" placeholder="" ng-value="">
+                    </div>
+                    <div id="pandiv" class="form-group col-md-6 col-sm-6">
+                        <label for="pan" class="col-lg-6 control-label">Pan*</label>
+                        <input type="text" ng-model="pan" class="form-control input-sm" id="pan" placeholder="" ng-value="">
+                    </div>
+                    <div id="bgdiv" class="form-group col-md-6 col-sm-6">
+                        <label for="blood">Blood Group</label>
+                        <input type="text" ng-model="bg" class="form-control input-sm" id="bg" placeholder="" ng-value="">
+                    </div>
+                    <div id="bankdiv" class="form-group col-md-6 col-sm-6">
+                        <label for="bank">Bank Account Number</label>
+                        <input type="text" ng-model="bankAcc" class="form-control input-sm" id="bank" placeholder="" ng-value="">
+                    </div>
+                    <div id="banknamediv" class="form-group col-md-6 col-sm-6">
+                        <label for="bankName">Bank Name </label>
+                        <input type="text" ng-model="bankName" class="form-control input-sm" id="bankName" placeholder="" ng-value="">
+                    </div>
+                    <div id="banknamediv" class="form-group col-md-6 col-sm-6">
+                        <label for="branch">Bank Branch</label>
+                        <input type="text" ng-model="branch" class="form-control input-sm" id="branch" placeholder="" ng-value="">
+                    </div>
+                    <div id="ifscdiv" class="form-group col-md-6 col-sm-6">
+                        <label for="ifsc">IFSC Code</label>
+                        <input type="text" ng-model="ifsc" class="form-control input-sm" id="ifsc" placeholder="" ng-value="">
+                    </div>
+                    <!-- <div id="ifscdiv" class="form-group col-md-12 col-sm-12">
+                        <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Staff Type
+                        <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                       <li> <a href="" target="_self" data-toggle="modal" data-target="#myModalsalary">Salary</a></li>
+                       <li> <a href="" target="_self" data-toggle="modal" data-target="#myModalcontract">Contract-based</a></li>
+                        </ul>
+                        </div>
+                    </div> -->
+<!-- <div class="modal fade" id="myModalsalary" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+           
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Monthly Salary
+                </h4>
+            </div>
+            
+           
+            <div class="modal-body">
+                
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label  class="col-sm-2 control-label"
+                              for="salary">Per Month salary</label>
+                    <div class="col-sm-10">
+                        <input type="salary" ng-model="perMonthSal" class="form-control" 
+                        id="salary"/>
+                    </div>
+                  </div>
+                </form>
+                </div>
+            
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="modal fade" id="myModalcontract" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Contract Based Salary
+                </h4>
+            </div>
+            
+            
+            <div class="modal-body">
+                
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label  class="col-sm-2 control-label"
+                              for="salary">Per Hour Rate</label>
+                    <div class="col-sm-10">
+                        <input type="salary" ng-model="perHourSal" class="form-control" 
+                        id="salary"/>
+                    </div>
+                  </div>
+                </form>
+                </div>
+            
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div> -->
+                    <div id="subdiv" class="form-group col-md-6 col-sm-6">
+                        <label for="subject" class="col-lg-6 control-label">Subject</label>
+                        <input type="text" ng-model="subject" class="form-control input-sm" id="subject" placeholder="" ng-value="enquiryList[0].subject">
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        <label for="classbranch" class="col-lg-6 control-label">Branch</label>
+                        <input type="text" ng-model="classbranch" class="form-control input-sm" id="classbranch" placeholder="">
+                    </div>
+                    <div align="center" class="form-group col-md-12 col-sm-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+</body>

@@ -1,0 +1,632 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary w3-text-white w3-hover-red btn-xs navbar-brand">ESPL <i class="fa fa-bars" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+              <li ng-show="loggedIn"><a href="#attendance">View Attendance</a></li>
+              <li ng-show="loggedIn"><a href="#studentattendance">Manual Attendance</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#staffList">Staff List</a></li>
+              <li><a href="#staffAttendance">Staff Attendance</a></li>
+              <li><a href="#viewDiscounts">Discounts</a></li>
+              <li><a href="#papersinout">Paper Checking</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn && showeditables=='false' && (loginData._id=='5ae070fe46465d6ba788168f'||loginData._id=='5a76ea0c46465d0cc3356e1a'||loginData._id=='5a76e8c646465d0cc3356e17')"><a href="#newcreateTimetable">Timetable</a></li>
+          <li ng-show="loggedIn"><a href="#parentsfeedback">Parents FeedBack</a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+          <li ng-show="loggedIn"><a href="#search"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+          <!-- <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Login</a></li> -->
+          <li>
+            <div class="dropdown" ng-show="loggedIn">
+              <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user fa-lg" aria-hidden="true"></i> {{loginData.staffname}}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#changepwd"><i class="fa fa-cog fa-lg" aria-hidden="true"></i> Settings</a></li>
+                  <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i> Logout</a></li>
+                </ul>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+  </nav>
+
+<div style="margin-top: 65px" ng-init="gettodaystimetable();getdashschedule();countDashboard();getLeavelist()">
+      
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#analysis" target="_self" data-toggle="tab">ANALYSIS</a></li>
+    <li><a href="#timetable" target="_self" data-toggle="tab">TIMETABLE</a></li>
+    <li><a href="#schedule" target="_self" data-toggle="tab">SCHEDULE</a></li>
+    <li><a href="#dreport" target="_self" data-toggle="tab">DAILY REPORT</a></li>
+    <li><a href="#syllabus" target="_self" data-toggle="tab">SYLLABUS</a></li>
+  </ul>
+
+  <div style="margin-top: 10px" id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="analysis">
+      <div class="w3-row-padding w3-margin-bottom">
+
+        <!-- <div class="w3-quarter">
+          <div class="w3-container w3-red w3-padding-16">
+            <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h3 style="color: white;">{{dashCount.studentCount}}</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4 style="color: white;">Total Students</h4>
+          </div>
+        </div> -->
+
+        <div class="w3-quarter">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Total Students</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #1768ea" class="fa fa-users w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{dashCount.studentCount}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+        
+        <!-- <div class="w3-quarter">
+          <div class="w3-container w3-blue w3-padding-16">
+            <div class="w3-left"><i class="fa fa-university w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h3 style="color: white;">{{dashCount.branchCount}}</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4 style="color: white;">Total Branches</h4>
+          </div>
+        </div> -->
+
+        <div class="w3-quarter">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Total Branches</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #d9534f" class="fa fa-building w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{dashCount.branchCount}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+        
+        <!-- <div class="w3-quarter">
+          <div class="w3-container w3-teal w3-padding-16">
+            <div class="w3-left"><i class="fa fa-book w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h3 style="color: white;">{{dashCount.batchCount}}</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4 style="color: white;">Total Batches</h4>
+          </div>
+        </div> -->
+
+        <div class="w3-quarter">
+        <div class="panel panel-warning">
+          <div class="panel-heading">
+            <h3 class="panel-title">Total Batches</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #f0ad4e" class="fa fa-university w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{dashCount.batchCount}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+        
+        <!-- <div class="w3-quarter">
+          <div class="w3-container w3-orange w3-text-white w3-padding-16">
+            <div class="w3-left"><i class="fa fa-eercast w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h3 style="color: white;">{{dashCount.productCount}}</h3>
+            </div>
+            <div class="w3-clear"></div>
+            <h4 style="color: white;">Total Products</h4>
+          </div>
+        </div> -->
+
+        <div class="w3-quarter">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">Total Products</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #3fad46" class="fa fa-eercast w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{dashCount.productCount}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+    </div>
+
+
+      <div ng-show="loggedIn && showeditables=='true'" id="leavetable" class="panel panel-primary">
+		  <div class="panel-heading" align="center">
+		    <h3 class="panel-title">Leave Applications</h3>
+		  </div>
+		  <div class="panel-body">
+		<table class="table table-bordered w3-card w3-white">
+          <thead class="w3-blue">
+            <tr>
+              <th>#</th>
+              <th>Staff Name</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Total Days</th>
+              <th>Reason</th>
+              <th><i class="fa fa-cog fa-spin"></i></th>
+            </tr>
+          </thead>
+          <tbody style="background-color: #fff">
+            <tr ng-repeat="a in leaves">
+              <td>{{$index+1}}</td>
+              <td>{{a.staffname}}</td>
+              <td>{{a.fromDate}}</td>
+              <td>{{a.toDate}}</td>
+              <td>{{a.totalDays}}</td>
+              <td>{{a.reason}}</td>
+              <td>
+                <button class="btn btn-success" ng-click="leaveaction(a._id,a.staffid,0,a.staffmobile)">Approve</button>
+                <button class="btn btn-danger" ng-click="leaveaction(a._id,a.staffid,1,a.staffmobile)">Disapprove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+		  </div>
+		</div>
+	</div>
+      <!-- <div class="container">
+        <div align="center">
+          <h3>Leave Applications</h3>
+        </div>
+        <table class="table table-bordered">
+          <thead class="w3-blue">
+            <tr>
+              <th>#</th>
+              <th>Staff Name</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Total Days</th>
+              <th>Reason</th>
+              <th><i class="fa fa-cog fa-spin"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="a in leaves">
+              <td>{{$index+1}}</td>
+              <td>{{a.staffname}}</td>
+              <td>{{a.fromDate}}</td>
+              <td>{{a.toDate}}</td>
+              <td>{{a.totalDays}}</td>
+              <td>{{a.reason}}</td>
+              <td>
+                <button class="btn btn-success" ng-click="leaveaction(a.staffid,a.leaveDate,a.staffmobile,0)">Approve</button>
+                <button class="btn btn-danger" ng-click="leaveaction(a.staffid,a.leaveDate,a.staffmobile,1)">Disapprove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+
+      <div class="tab-pane fade row" id="timetable">
+        <div class="col-md-12">
+
+          <div class="panel panel-primary">
+            <div align="center" class="panel-heading">
+              <h3 class="panel-title">Today's Timetable</h3>
+            </div>
+            
+            <div class="panel-body">
+              <div ng-if="dashtimetable[0].timetable.length" style="overflow: auto;">
+                <table class="table table-bordered w3-card w3-white" >
+                  <thead class="w3-pink">
+                    <tr>
+                      <!-- <th ng-repeat="y in dashtimetable[0].timetable[0]['timetable']">{{y.batchName}}</th> -->
+                     <th ng-repeat="y in dashtimetable[0].timetable[0]['timetable']|filter:{status:true}">{{y.batchName}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td ng-repeat="z in dashtimetable[0].timetable[0]['timetable']|filter:{status:true}" ng-init="batchindex = $index">
+                        <table style="padding: 0;margin: 0;width: 100%">
+                          <tr ng-repeat="q in z['batchtimetable']">
+                            <td>
+                              <table class="table table-bordered" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                                <tr>
+                                  <td align="center" style="background-color: black; color: white;padding:1px;">
+                                    <span style="font-size: 10px;font-weight: 900;text-transform: lowercase;">{{q.stime}} to {{q.etime}}</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="center" style="background-color: #16a7ff;padding: 0;color: black;">
+                                    <span style="font-size: 11px;font-weight: 900;">{{q.teachername}}</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="center" style="background-color: #fddc02;padding: 0;color: black;">
+                                    <span style="font-size: 11px;font-weight: 900;">{{q.subject}}</span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div ng-if="!dashtimetable[0].timetable.length" align="center">
+                <div class="alert alert-info">
+                  <strong>Heads up!</strong> Timetable for today is yet to be Created!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+
+          <div class="panel panel-primary">
+            <div align="center" class="panel-heading">
+              <h3 class="panel-title">Tommorow's Timetable</h3>
+            </div>
+            <div class="panel-body">
+                <div ng-if="dashtimetable[1].timetable.length" style="overflow: auto;">
+                  <table class="table table-bordered w3-card w3-white">
+                    <thead class="w3-cyan">
+                      <tr>
+                        <th ng-repeat="y in dashtimetable[1].timetable[0]['timetable']|filter:{status:true}">{{y.batchName}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td ng-repeat="z in dashtimetable[1].timetable[0]['timetable']|filter:{status:true}" ng-init="batchindex = $index">
+
+                          <table style="padding: 0;margin: 0;width: 100%">
+                            <tr ng-repeat="q in z['batchtimetable']">
+                              <td>
+                                <table class="table table-bordered" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                                  <tr>
+                                    <td align="center" style="background-color: black; color: white;padding:1px;">
+                                      <span style="font-size: 10px;font-weight: 900;text-transform: lowercase;">{{q.stime}} to {{q.etime}}</span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="center" style="background-color: #16a7ff;padding: 0;color: black;">
+                                      <span style="font-size: 11px;font-weight: 900;">{{q.teachername}}</span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="center" style="background-color: #fddc02;padding: 0;color: black;">
+                                      <span style="font-size: 11px;font-weight: 900;">{{q.subject}}</span>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div ng-if="!dashtimetable[1].timetable.length" align="center">
+                  <div class="alert alert-info">
+                  <strong>Heads up!</strong> Timetable for tommorow is yet to be Created!
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-md-12">
+
+          <div class="panel panel-primary">
+            <div align="center" class="panel-heading">
+              <h3 class="panel-title">Day After Tomorrow's Timetable</h3>
+            </div>
+            
+            <div class="panel-body">
+              <div ng-if="dashtimetable[0].timetable.length" style="overflow: auto;">
+                <table class="table table-bordered w3-card w3-white" >
+                  <thead class="w3-pink">
+                    <tr>
+                      <!-- <th ng-repeat="y in dashtimetable[0].timetable[0]['timetable']">{{y.batchName}}</th> -->
+                     <th ng-repeat="y in dashtimetable[2].timetable[0]['timetable']|filter:{status:true}">{{y.batchName}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td ng-repeat="z in dashtimetable[2].timetable[0]['timetable']|filter:{status:true}" ng-init="batchindex = $index">
+                        <table style="padding: 0;margin: 0;width: 100%">
+                          <tr ng-repeat="q in z['batchtimetable']">
+                            <td>
+                              <table class="table table-bordered" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                                <tr>
+                                  <td align="center" style="background-color: black; color: white;padding:1px;">
+                                    <span style="font-size: 10px;font-weight: 900;text-transform: lowercase;">{{q.stime}} to {{q.etime}}</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="center" style="background-color: #16a7ff;padding: 0;color: black;">
+                                    <span style="font-size: 11px;font-weight: 900;">{{q.teachername}}</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="center" style="background-color: #fddc02;padding: 0;color: black;">
+                                    <span style="font-size: 11px;font-weight: 900;">{{q.subject}}</span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div ng-if="!dashtimetable[2].timetable.length" align="center">
+                <div class="alert alert-info">
+                  <strong>Heads up!</strong> Timetable for Day After Tomorrow is yet to be Created!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div align="center" class="tab-pane fade" id="dreport">
+        <div class="container-fluid">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="panel-title">
+                <h2>DAILY REPORT</h2>
+              </div>
+            </div>
+            <div class="panel-body" style="overflow: auto;">
+              <!-- <div class="alert alert-danger">UNDER CONSTRUCTION!!</div> -->
+
+              <div style="margin-top: 10px" class="row">
+					<div class="col-md-4">
+						<div class="w3-black w3-padding">
+							<h1 style="color: white"> {{onedailyreport[0]["batch"]}}</h1>
+						</div>
+					</div>
+
+					<div class="col-md-8">
+
+				    <table class="table-bordered w3-card" style="font-size: 13px;border-collapse: collapse;height: 15px;width: 15px">
+				      <thead class="w3-black">
+				        <th style="padding: 5px">JAN</th>
+				        <th style="padding: 5px">FEB</th>
+				        <th style="padding: 5px">MAR</th>
+				        <th style="padding: 5px">APR</th>
+				        <th style="padding: 5px">MAY</th>
+				        <th style="padding: 5px">JUN</th>
+				        <th style="padding: 5px">JUL</th>
+				        <th style="padding: 5px">AUG</th>
+				        <th style="padding: 5px">SEP</th>
+				        <th style="padding: 5px">OCT</th>
+				        <th style="padding: 5px">NOV</th>
+				        <th style="padding: 5px">DEC</th>
+				      </thead>
+
+				      <tbody >
+				      <!--   <div ng-if="subjectindex>0" ng-init="topiclength=(onedailyreport[0].syllabusdetails.syllabus.subject[subjectindex-1].topic)length+topiclength;"> -->
+				        <tr style="height:25px">
+				      <td style="background-color: {{reportcolors['01']}};"></td>
+				      <td style="background-color: {{reportcolors['02']}};"></td>
+				      <td style="background-color: {{reportcolors['03']}};"></td>
+				      <td style="background-color: {{reportcolors['04']}};"></td>
+				      <td style="background-color: {{reportcolors['05']}};"></td>
+				      <td style="background-color: {{reportcolors['06']}};"></td>
+				      <td style="background-color: {{reportcolors['07']}};"></td>
+				      <td style="background-color: {{reportcolors['08']}};"></td>
+				      <td style="background-color: {{reportcolors['09']}};"></td>
+				      <td style="background-color: {{reportcolors['10']}};"></td>
+				      <td style="background-color: {{reportcolors['11']}};"></td>
+				      <td style="background-color: {{reportcolors['12']}};"></td>
+				    </tr>
+
+				      </tbody>
+				    </table>
+				  </div>
+				</div>
+
+				<div style="margin-top: 25px" ng-init="getdashdailyreport();getdailyreportcolor();lenprev=0;">
+				     <div style="overflow-x:scroll;overflow-y:auto;">
+						<table class="table table-bordered w3-card w3-white">
+							<thead class="w3-black">
+								<th>#</th>
+								<th>SUBJECT</th>
+								<th>TOPICS</th>
+								<th>HRS</th>
+								<th>TEACHER</th>
+				        <th ng-repeat="q in onedailyreport[0].lecturedetails.lecrecord[0][0] track by $index">{{$index+1}}</th>
+							</thead>
+
+							<!-- <tbody ng-repeat="x in onedailyreport[0].syllabusdetails.syllabus.subject" ng-init="subjectindex=$index;lenprev=lenprev + (onedailyreport[0].syllabusdetails.syllabus.subject[subjectindex-1].topic).length;"> -->
+				        <tbody ng-repeat="x in onedailyreport[0].syllabusdetails.syllabus.subject" ng-init="subjectindex=$index;">
+				      <!--   <div ng-if="subjectindex>0" ng-init="topiclength=(onedailyreport[0].syllabusdetails.syllabus.subject[subjectindex-1].topic)length+topiclength;"> -->
+								<tr ng-repeat="y in x.topic" >
+									<td class="w3-blue" rowspan="{{x.topic.length}}" ng-hide="$index>0">{{subjectindex+1}}</td>
+									<td class="w3-amber" rowspan="{{x.topic.length}}" ng-hide="$index>0">{{x.subject}}</td>
+									<td class="w3-blue-gray">{{y.topicname}}</td>
+									<td class="w3-blue-gray">{{y.hours}} </td>
+									<!-- <td class="w3-blue-gray">{{onedailyreport[0].lecturedetails.teacherlist[lenprev+$index]}}</td> -->
+				          <td class="w3-blue-gray">{{onedailyreport[0].lecturedetails.teacherlist[subjectindex][$index]}}</td>
+				           <td ng-repeat="k in onedailyreport[0].lecturedetails.lecrecord[subjectindex][$index] track by $index" ng-init="coloridx=mySplit(k['date'],1);" style="color:white;background-color: {{reportcolors[coloridx]}};">{{mySplit(k['date'],0)}}</td>
+				         <!--  <td ng-repeat="k in onedailyreport[0].lecturedetails.lecrecord[lenprev+$index] track by $index" ng-init="coloridx=mySplit(k['date'],1)" style="color:white;background-color: {{reportcolors[coloridx]}};">{{mySplit(k['date'],0)}}</td> -->
+								</tr>
+				       <!--  </div> -->
+							</tbody>
+						</table>
+				  </div>
+				</div>
+
+            </div>
+          </div>
+      </div>
+      </div>
+
+
+
+      <div align="center" class="tab-pane fade" id="schedule">
+        <div class="container-fluid">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="panel-title">
+                <h2>{{batchName}} ({{dashschedule['academicyear']}})</h2>
+              </div>
+            </div>
+            <div class="panel-body" style="overflow: auto;">
+              <table cellspacing="0" cellpadding="0" class="table-responsive w3-card w3-white">
+                <tbody>
+                  <tr valign="top">
+                    <td ng-repeat="month in dashschedule['schedule']">
+                      <table class="table table-bordered">
+                        <thead>
+                          <th style="background-color: #9c7ca5;">D</th>
+                          <th style="background-color: #9ed2e5;">D</th>
+                          <th style="background-color: #0088ee;">{{month.month}}</th>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="date in month['schedule']['date']">
+                            <td style="background-color: #9c7ca5;">{{date}}</td>
+                            <td style="background-color: #9ed2e5;" ng-style="{color: month['schedule']['day'][$index] == 'Sun'? 'red':'white'}">{{month['schedule']['day'][$index][0]}}</td>
+                            <td style="background-color: {{scheduleColor[month['schedule']['work'][$index]]}}">{{month['schedule']['work'][$index]}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+      </div>
+
+      <div align="center" class="container tab-pane fade" id="syllabus">
+        <section ng-show="showsyllabuslist">
+          <div ng-init="getSyllabus();countP=10;">
+            <table class="table table-responsive table-striped table-condensed table-hover table-bordered w3-card w3-white">
+              <thead style="background-color: #0053d8; color: white">
+                <tr>
+                  <th>#</th>
+                  <th>Acedemic Year</th>
+                  <th>Syllabus Name</th>
+                  <th><i class="fa fa-cog fa-spin fa-fw"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="x in allsyll | itemsPerPage:countP">
+                  <td>{{$index+1}}</td>
+                  <td>{{x.syllyear}}</td>
+                  <td>{{x.syllName}}</td>
+                  <td><a class="btn btn-success btn-xs" ng-click="savesyllabusId(x._id);showsyllabus();getSyllabus(1)"><i class="fa fa-eye" aria-hidden="true"></i> View </a></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="row">
+              <div class="col-md-6">
+                <dir-pagination-controls
+                max-size="5"
+                direction-links="true"
+                boundary-links="true" >
+              </dir-pagination-controls>
+            </div>
+            <div class="col-md-6">
+              <select  ng-model="countPerPage" ng-change="countP = countPerPage" style="width: 30%;">
+                <option value="" selected disabled>Items Per Page</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="99">All</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="viewsyllabus" ng-show="viewsyllabus" >
+          <div>
+            <table id="subjecttable" class="table table-bordered table-condensed w3-card w3-white">
+              <thead class="w3-cyan w3-text-white">
+                <tr>
+                  <th style="padding-left: 10px">#</th>
+                  <th style="padding-left: 10px">SUBJECT</th>
+                  <th style="padding-left: 10px">TOPIC / HRS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="x in syll[0].syllabus.subject" ng-init="subjectindex=$index">
+                  <td style="padding-left: 10px">{{$index+1}}</td>
+                  <td style="padding-left: 10px">
+                    <span>{{syll[0].syllabus.subject[$index].subject}}</span>
+                  </td>
+                  <td>
+                    <table style="width: 100%; height: 100%" class="table-bordered">
+                      <tbody>
+                        <tr ng-repeat="y in syll[0].syllabus.subject[subjectindex].topic">
+                          <td style="padding-left: 10px">
+                            {{syll[0].syllabus.subject[subjectindex].topic[$index].topicname}}
+                          </td>
+                          <td style="padding-left: 10px">
+                            {{syll[0].syllabus.subject[subjectindex].topic[$index].hours}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>     
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function(){
+      $('#sidebarCollapse').on('click', function () {
+       $('#sidebar').toggleClass('active');
+       $('#main').toggleClass('active');
+     });
+    });
+  </script>

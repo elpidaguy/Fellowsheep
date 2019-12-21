@@ -1,0 +1,225 @@
+<style type="text/css">
+  .table{
+    font-size: 10px;
+    font-weight: bold;
+    border-collapse: collapse;
+    width: 50%;
+  }
+
+  table, th, td {
+    border: 1px solid #0088ee;
+}
+
+  .container {
+    /*width: 30em;*/
+    overflow-x: auto;
+    white-space: nowrap;
+}
+</style>
+<script>
+  $(".a-popup").ColorPickerSliders({
+    order: {
+      hsl: 1
+    }
+  });
+
+  function getc(){
+    console.log("in getc");
+    myDivObj = document.getElementById("bgc")
+    if ( myDivObj ){
+      localStorage.bgccolor=  myDivObj.value;
+      console.log(localStorage.bgccolor);
+    }else{
+      alert ( 'damn' );
+    }
+  } 
+    </script>
+<div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div style="margin-top:65px">
+		<div class="container-fluid w3-padding w3-cyan">
+			 <span style="color: white;font-size: 25px;">TIMETABLE</span>
+      <!-- {{schedules[0]['batch']}} -->
+      <!-- <div ng-show="showEditableYearlySchedule" class="col-md-3">
+        <span>For Batches : </span>
+        <span>{{schedules[0]['batch']}}</span>
+      </div>
+      <div class="col-md-3" ng-show="showEditableYearlySchedule">
+              <label for="batch">Add Batch: </label><br>
+              <select class="form-control" ng-model="mulbatchdata" multiple="">
+                    <option value="{{batch.batchname}}" ng-repeat="batch in scheduleBatch">{{batch.batchname}}</option>
+                  </select>
+      </div> -->
+      <!-- <div ng-show="!showEditableYearlySchedule" class="col-md-3">
+        <span>color :</span>
+        <input type="text" ng-model="colorbgc" id ="bgc" class="a-popup" data-color-format="hex" onblur="getc()"> 
+      </div>
+      <div ng-show="!showEditableYearlySchedule" class="col-md-2">
+        <span>for: </span>
+        <input style="color: black" type="text" ng-model="colorfor" > 
+      </div>
+      <div ng-show="!showEditableYearlySchedule" class="col-md-2">
+        <button class="btn btn-sm btn-danger" ng-click=addcolor()>add</button> 
+      </div> -->
+      <button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-right" ng-click="toggleEditableYearlySchedule()"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+      <button class="btn btn-primary btn-sm w3-right" ng-click="submitDailyTimetable()" ng-show="showEditableYearlySchedule">Submit</button>
+      <button class="btn btn-danger btn-sm w3-right" ng-show="!showEditableYearlySchedule" ng-click="export('schedules')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+    </div><br><br>
+
+    <div class="container-fluid" id="schedules" ng-init="getTimetable(1);">
+      <div class="row">
+        <div class="col-md-1">
+          <div style="padding: 5px;border: 2px solid black;border-radius: 6px;background-color: #0088ee; color: white">
+            <span style="text-align: center;">{{alltt[0]['date']}}</span>
+          </div>
+        </div>
+        <div class="col-md-11">
+          <div style="overflow: auto;">
+            <table style="border: 2px solid #0088ee;border-radius: 6px;">
+              <thead style="background-color: #0088ee; color: white">
+                <tr>
+                  <th align="center" style="padding: 5px;text-align: center;" ng-repeat="batchnames in alltt[0]['timetable']">{{batchnames.batchname}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- {{alltt[0]['timetable']}} -->
+                <tr ng-repeat="hours in alltt[0]['timetable'][0]['hours']" ng-init="rowindex=$index">
+                  <td ng-repeat="row in alltt[0]['timetable'] track by $index" ng-init="position = $index"><!-- {{row['hours'][rowindex]}} -->
+                    <table ng-show="!showEditableYearlySchedule" style="width: 100%">
+                      <tr>
+                        <td align="center" style="background-color: black; color: white;padding: 3px;">
+                          <strong> {{row['hours'][rowindex]['stime']}} to {{row['hours'][rowindex]['etime']}} </strong>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="background-color: #16a7ff;padding: 2px;color: black;">
+                         <strong> {{row['hours'][rowindex]['teacher']}} </strong>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="background-color: #fddc02;padding: 2px;color: black;">
+                          <strong> {{row['hours'][rowindex]['subject']}} </strong>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <table ng-show="showEditableYearlySchedule">
+                      <tr>
+                        <td>
+                        		<div moment-picker="row['hours'][rowindex]['stime']" format="hh:mm a" inline="true">
+        						<input class="form-control" style="color: black;" placeholder="Start time" ng-model="row['hours'][rowindex]['stime']" ng-model-options="{ updateOn: 'blur' }">
+        						</div>
+	        					<div moment-picker="row['hours'][rowindex]['etime']" format="hh:mm a" inline="true">	
+	        						<input class="form-control" style="color: black;" placeholder="End time" ng-model="row['hours'][rowindex]['etime']" ng-model-options="{ updateOn: 'blur' }">
+	                          	</div>
+                          	<!-- <input style="width: 180%;color: black;" type="text" name="time" ng-model="row['hours'][rowindex]['time']" placeholder="00:00am to 01:00pm"> -->
+                        </td>
+                      </tr>
+                      <tr ng-init="xyz=row['hours'][rowindex]['teacherid']">
+                        <td align="center">
+                       
+                          <select style="width: 180px" ng-model="row['hours'][rowindex]['teacherid']" ng-change="assignTeacherid(row['hours'][rowindex]['teacherid'],position,rowindex)" class="form-control">
+        				            <option ng-repeat="staff in staffs track by $index" value="{{staff}}"> {{staff.fname+" "+staff.lname}} </option>
+        				          </select>
+                       </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <select style="width: 180px" ng-model="row['hours'][rowindex]['subject']" class="form-control" >
+                            <option ng-repeat="x in row['hours'][rowindex]['teachersubject']">{{x}}</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </table>                   
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+    </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+    	/*$(function() {
+		    $('input').on('focus',".timepicker", function(){
+		    $(this).datepicker({
+			    timeFormat: 'h:mm p',
+			    interval: 10,
+			    minTime: '7',
+			    maxTime: '9:00pm',
+			    defaultTime: '7',
+			    startTime: '7:00',
+			    dynamic: true,
+			    dropdown: true,
+			    scrollbar: true
+			});
+		    });
+		  }); */
+
+    	/*$(document).ready(function(){
+    		console.log("inside jquery");
+		   $('.timepicker').timepicker({
+			    timeFormat: 'h:mm p',
+			    interval: 10,
+			    minTime: '7',
+			    maxTime: '9:00pm',
+			    defaultTime: '7',
+			    startTime: '7:00',
+			    dynamic: true,
+			    dropdown: true,
+			    scrollbar: true
+			});
+		});*/
+    </script>

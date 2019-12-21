@@ -1,0 +1,157 @@
+<!-- <style type="text/css">
+  table, th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+</style> -->
+<style type="text/css">
+	#lectable td {
+   padding:0; margin:0;
+}
+
+.table{
+    font-size: 12px;
+    border-collapse: collapse;
+  }
+</style>
+
+<div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary btn-xs navbar-brand">
+          ESPL
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="container-fluid" style="margin-top: 65px">
+
+  <!-- <ul class="breadcrumb">
+    <li><a href="#adminpanel">Admin Panel</a></li>
+    <li><a href="#createDailyreport">Daily Report</a></li>
+    <li>Lecture Record</li>
+  </ul> -->
+
+<div style="margin-top: 10px" class="row">
+  <div class="col-md-4">
+    <i style="font-size: 40px" class="fa fa-book" aria-hidden="true"></i> <span style="font-size: 30px"> {{batchnamelecrec}}</span>
+  </div>
+  <div class="col-md-8">
+    <table style="border: 1px solid black;padding: 5px;">
+      <tbody>
+        <tr>
+        	<td style="border: 1px solid black;padding: 5px;" class="w3-red">HOLIDAY</td>
+        	<td style="border: 1px solid black;padding: 5px;" class="w3-yellow">CANCELLED</td>
+        	<td style="border: 1px solid black;padding: 5px;" class="w3-green">EXAM</td>
+       </tr>
+      </tbody>
+    </table>
+  </div>
+</div><hr>
+
+  <div ng-init="lecturerecord()">
+  <table id="lectable" class="table table-bordered">
+    <thead class="w3-cyan w3-text-white w3-center">
+      <tr>
+        <th>Date</th>
+        <th>Day</th>
+        <th style="padding-left: 10px">Lecture Timing</th>
+        <th style="padding-left: 10px">Teacher</th>
+        <th style="padding-left: 10px">Subject</th>
+        <th style="padding-left: 10px">Lecture Timing</th>
+        <th style="padding-left: 10px">Teacher</th>
+        <th style="padding-left: 10px">Subject</th>
+        <th style="padding-left: 10px">Lecture Timing</th>
+        <th style="padding-left: 10px">Teacher</th>
+        <th style="padding-left: 10px">Subject</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="x in lecturerecord track by $index">
+        <td class="w3-center w3-pale-green">{{x[0].date}}</td>
+        <td class="w3-center w3-pale-green">{{x[0].day}}</td>
+        <td ng-repeat="y in x" colspan="3">
+          <table style="width: 100%; height: 100%" class="table-bordered">
+            <tr>
+              <td class="w3-center" style="width: 45.5%;text-transform: lowercase;font-weight:bold;color: black;background-color:{{lecturecolor[$index]}}">{{y.startTime}} To {{y.endTime}}</td>
+              <td class="w3-center" style="width: 28%;font-weight:bold;color: black;background-color:{{lecturecolor[$index]}}">{{y.tname}}</td>
+              <td class="w3-center" style="width: 33%;font-weight:bold;color: black;background-color:{{lecturecolor[$index]}}">{{y.subject}}</td>
+            </tr>
+          </table>
+        </td>
+        <!-- <td ng-repeat="y in lecturerecord[$index]">{{y.startTime}} To {{y.endTime}}</td> -->
+      </tr>
+      <!-- <tr ng-repeat="x in lecturerecord">
+        {{x}}
+        <td>{{x.date}}</td>
+        <td>{{x.day[0]}}</td>
+        <td style="padding:0; margin:0;" ng-repeat="y in x.lectures" colspan="3">
+          <table class="table table-bordered">
+            <tr>
+              <td>{{y.endTime}}</td>
+              <td>{{y.subject}}</td>
+              <td>{{y.topic}}</td></tr>
+          </table>
+        </td>
+        <!-- <div ng-repeat="y in x.lectures">
+          {{y}}
+          <td>{{y.startTime}} TO {{y.endTime}}</td>
+        </div>
+       </tr> -->
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>

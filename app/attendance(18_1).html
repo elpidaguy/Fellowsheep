@@ -1,0 +1,63 @@
+
+
+<div class="form-group col-xs-4" style="border: 3px solid black; padding: 10px;border-radius: 5px;" ng-init="getBatchforBranchLogin();">
+    <label for="select" class="control-label">Select Batch</label>
+    <select class="form-control input-group-lg" ng-model="batch" ng-change="batchforattendance(batch)">
+      <option value="">Select Batch</option>
+      <option ng-repeat="batch in batches" value="{{batch}}">{{batch}}</option>
+    </select>
+  </div>  
+<br>
+<br>
+
+<div class="col-md-12">
+    <table class="table table-bordered">
+      <thead class="w3-cyan">
+        <tr >
+          <th>Month</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat-start="mon in attendance" ng-click="showDetails = !showDetails;showindex=$index;">
+          <td>{{mon.month}}</td>
+          </tr>
+        <tr ng-repeat-end ng-show="showDetails">
+
+          <!-- <td ng-repeat="d in mon.mattendance">{{d.date}}
+            
+          </td> -->
+          <td>
+            <table class="table table-bordered" style="border: 1px solid black;" >
+              <!-- <thead style="background-color: #0079bf">
+                <th>Date</th>
+                <th>Batch</th>
+               	<th>Roll NO</th>
+              </thead> -->
+              <tbody>
+
+                <tr>
+                  <td></td>
+                  <td ng-repeat="stud in studentlist">
+                    {{stud.RollNo}}
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td ng-repeat="stud in studentlist">
+                    {{stud.firstName[0]}}
+                     {{stud.lastName[0]}}
+                  </td>
+                </tr>
+                <tr ng-repeat="d in mon.mattendance"><td >{{d.date}}</td>
+                  
+                  <td ng-repeat="a in d.attendance track by $index">{{a}}</td>
+
+                </tr> 
+
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>

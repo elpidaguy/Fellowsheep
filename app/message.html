@@ -1,0 +1,277 @@
+<style type="text/css">
+	.studentName:hover {color: white; background-color: #5A827F; padding: 5px 11px; border: 2px solid #5a827f;}
+.nav-tabs.nav-justified > li.active > a{
+  background-color: #4582ec !important;
+  color: #ffffff !important;
+}
+}
+</style>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary btn-xs navbar-brand">
+          ESPL
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a ng-click="getCities();"  ng-show="loggedIn" href="#message"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+          <li><a href="#search" ng-show="loggedIn"><i class="fa fa-search fa-lg"  aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu ">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div style="margin-top: 65px" class="panel-body" ng-init="getsmsStudentList();getCities();countP=10;getStaffDetails();loginAuth();">
+
+ <div class="row">
+ 	<div class="col-md-12">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active"><a data-target="#studenttab" data-toggle="tab">Student</a></li>
+          <li><a data-target="#teacherstab" data-toggle="tab">Teachers And Staff</a></li>
+        </ul>
+    </div>
+    </div>
+        <div class="tab-content">
+          <div class="tab-pane fade in active" id="studenttab">
+
+
+<div style="margin-top: 16px" class="row">
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12 col-md-9">
+			<div class="span">
+						<div class="col-sm-3">
+								<h4>City</h4>
+								<select class="form-control" id="select"  ng-model="f.cityid" ng-change="getBranches(f.cityid);unCheckStudents();">
+								<option ng-repeat="cityinfo in result1.cities" ng-value="cityinfo._id" > {{cityinfo.cityname}} </option>
+							</select>
+						</div>
+						<div class="col-sm-3">
+								<h4>By Branch</h4>
+								<select class="form-control cap" ng-model="f.branchname" id="center"  ng-change="getBoard(f.branchname);unCheckStudents();">
+							<option ng-repeat="branch in singleBranchResult" ng-value="branch.branchname">{{branch.branchname}}</option>
+						</select>
+							</div>
+							<div class="col-sm-3">
+								<h4>By Board</h4>
+								<select class="form-control cap" ng-model="f.board" id="board" ng-change="getBatch(f.branchname,f.board);unCheckStudents();">
+							<option ng-repeat="board in boards">{{board}}</option>
+						</select>
+							</div>
+							<div class="col-sm-3">
+								<h4>By Batch</h4>
+								<select class="form-control cap" ng-model="f.Batch"  id="Batch">
+								<option ng-repeat="batch in batches">{{batch}}</option>
+							</select>
+							</div>
+							<br>
+							<br>
+							<br>
+							<br>
+						</div>
+							<br>
+							<div><table class="table table-bordered table-hover table-condensed w3-card w3-white">
+	                <thead class="alert-success">
+	                    <tr>
+	                        <th style="padding: 15px">Roll No.</th>
+	                        <th>Name</th>
+	                        <th>Student Mobile</th>
+	                        <th>Fathers Mobile</th>
+	                        <th>Un/Check All <input type="checkbox" ng-model="checkedAll" ng-change="checkAllStudents();"> </th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <tr dir-paginate="x in studentList|filter:{cityid:f.cityid,BoardName:f.board,Center:f.branchname,Batch:f.Batch} | itemsPerPage:countP">
+	                    	<td>{{x.RollNo}}</td>
+	                    	<td><a class="studentName" style="text-decoration : none" href="#studentProfile" ng-click="saveStudentId(x._id)">{{x.firstName}} {{x.middleName}} {{x.lastName}}</a></td>
+	                    	<td>{{x.studentMobile}}</td>
+	                    	<td>{{x.fatherMobile}}</td>
+	                    	<td><input type="checkbox" ng-model="x.isChecked"></td>
+	                    </tr>
+	                </tbody>
+	            	</table>
+
+	            	<div class="row">
+	            	
+
+	            		<div class="col-md-6">
+	            			<dir-pagination-controls
+				       max-size="5"
+				       direction-links="true"
+				       boundary-links="true" >
+				    	</dir-pagination-controls>
+	            		</div>
+	            		
+
+				    	<div class="col-md-6">
+					    	<select  ng-model="countPerPage" ng-change="countP = countPerPage" style="width: 30%;">
+						    	<option value="" selected disabled>Items Per Page</option>
+		                        <option value="10">10</option>
+		                        <option value="15">15</option>
+		                        <option value="99">All</option>
+	                        </select>
+				    	</div>
+				    	
+
+	            	</div>
+
+	            </div>
+						</div>	
+						
+	<div class="w3-padding col-sm-12 col-md-3 w3-card w3-white boxbor">
+		<div class="w3-center">
+        	 <img src="assets/icons/sms.png" alt="SMS" height="40%" width="40%">  <span style="font-size: 30px"><br>Custom SMS</span><hr>
+      	</div>
+				
+							<div>
+								<h4>Send sms to</h4>
+								<form action="">
+								  <input type="radio" name="send" value="Students" ng-model="smstosend"> Students
+								  <input type="radio" name="send" value="Parents" ng-model="smstosend"> Parents
+								  <input type="radio" name="send" value="both" ng-model="smstosend"> both
+								</form>
+							</div>
+							<div class="form-group">
+								<h4>SMS Message</h4>
+								  <label for="message">Message</label>
+								  <textarea class="form-control" rows="5" id="message" ng-model="sms" placeholder="Say Something To Students or Parents..."></textarea>
+								</div>
+								<button id="SUBMIT" name="SUBMIT" class="btn btn-success" ng-click="smslist=(studentList|filter:{cityid:f.cityid,BoardName:f.board,Center:f.branchname,Batch:f.Batch}); sendcustomsms(smslist)" data-toggle="tooltip" title="Send SMS!" ng-disabled="testChecked();">SEND SMS</button>
+								<a href="#message" target="_self"><button id="RESET" name="RESET" class="btn btn-danger" data-toggle="tooltip" title="Reset!">RESET</button></a>
+
+	</div>
+	</div>
+	</div>
+</div>
+
+</div>
+<div class="tab-pane fade" id="teacherstab" >
+	
+	 <div style="margin-top: 16px" class="col-sm-9 col-md-9">
+        <table class="table table-bordered w3-card w3-white">
+          <thead style="background-color: #4582ec; color: white;">
+            <tr>
+              <th style="padding: 15px">#</th>
+              <th ng-click="myOrderBy='fname';reverse=!reverse">Staff Name<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+            
+              <th ng-click="myOrderBy='mobile';reverse=!reverse">Contact No<span class="glyphicon glyphicon-sort" style="float:right;"></span></th>
+    
+             <th>Un/Check All <input type="checkbox" ng-model="checkedAllstaff" ng-change="checkAllStaff();" > </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td><input class="form-control" ng-model="f.fullname" placeholder="search by name"></td>
+              <td><input class="form-control" ng-model="f.mobile" placeholder="search by mobile"></td>
+              <td></td>
+           
+          
+            </tr>
+            <tr dir-paginate="x in staff |filter:f|orderBy:myOrderBy:reverse | itemsPerPage:countP"  class="rowHover">
+              <td>{{$index+1}}</td>
+              <td> {{x.fullname}}</td>
+                <td>{{x.mobile}}</td>
+                  <td><input type="checkbox" ng-model="x.isChecked"></td>
+          
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="row">
+                  <!-- dir-paginate  itemsPerPage:countP  -->
+
+                  <div class="col-md-6">
+                    <dir-pagination-controls
+               max-size="5"
+               direction-links="true"
+               boundary-links="true" >
+              </dir-pagination-controls>
+                  </div>
+                  
+
+              <div class="col-md-6">
+                <select  ng-model="countPerPage" ng-change="countP = countPerPage" style="width: 30%;">
+                  <option value="" selected disabled>Items Per Page</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="99">All</option>
+                          </select>
+              </div>
+              
+
+                </div>
+        </div>
+
+
+        <div class="w3-margin-top w3-padding col-sm-12 col-md-3 w3-card w3-white boxbor">
+    <div class="w3-center">
+           <img src="assets/icons/sms.png" alt="SMS" height="40%" width="40%">  <span style="font-size: 30px"><br>Custom SMS</span><hr>
+        </div>
+        
+              <div>
+                <!-- <h4>Send sms to</h4> -->
+               <!--  <form action="">
+                  <input type="radio" name="send" value="Students" ng-model="smstosend"> Students
+                  <input type="radio" name="send" value="Parents" ng-model="smstosend"> Parents
+                  <input type="radio" name="send" value="both" ng-model="smstosend"> both
+                </form> -->
+              </div>
+              <div class="form-group">
+                <h4>SMS Message</h4>
+                  <label for="message">Message</label>
+                  <textarea class="form-control" rows="5" id="staffmessage" ng-model="staffmessage" placeholder="Say Something To Staff..."></textarea>
+                </div>
+                <button id="SUBMIT" name="SUBMIT" class="btn btn-success" ng-click="sendsmstostaff(staff)" data-toggle="tooltip" title="Send SMS!" ng-disabled="testChecked();">SEND SMS</button>
+                <a href="#message" target="_self"><button id="RESET" name="RESET" class="btn btn-danger" data-toggle="tooltip" title="Reset!">RESET</button></a>
+
+  </div>
+	</div>
+
+</div>
+</div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>

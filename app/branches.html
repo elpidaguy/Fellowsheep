@@ -1,0 +1,34 @@
+<div ng-init="singleBranchResultfn()">
+<div class="w3-bar w3-teal">
+  <a href="#" class="w3-bar-item w3-button">Branches</a>
+  <a href="#" class="w3-bar-item w3-button w3-hide-small">Dashboard</a>
+ <!--  <a href="#" class="w3-bar-item w3-button w3-hide-small">Reports</a> -->
+  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">&#9776;</a>
+</div>
+<h3>Branches</h3>
+<button onclick="location.href='login.html'" class="w3-button w3-round w3-teal w3-right" style="margin-right: 50px"><i class="fa fa-smile-o" aria-hidden="true"></i>Login</button>
+<br>
+
+<div class="w3-container" style="margin-top: 50px">
+  
+<div class="w3-container w3-panel w3-light-grey w3-padding-16">
+      <h2 class="w3-header w3-text-black"> Cities</h2>
+
+      <div class="w3-row-padding">
+      <div class="w3-col s3" ng-repeat="branchinfo in singleBranchResult">
+      <div class="w3-card-4 w3-hover-opacity w3-animate-opacity w3-round" style="margin-bottom: 50px" >
+        <header class="w3-container">
+          <h4>{{branchinfo.branchname}} , {{branchinfo.state}}</h4>
+        </header>
+          <button type="submit" class="w3-button w3-right w3-round w3-small w3-red" ng-click="">open</button>
+        <footer class="w3-container">
+          <h5>Contact No:+91-7567436764</h5>
+        </footer>
+      </div>
+      </div>
+      </div>
+    </div>
+  
+</div>
+</body>
+</html>

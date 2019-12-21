@@ -1,0 +1,147 @@
+<style type="text/css">
+  .table{
+    font-size: 15px;
+    border-collapse: collapse;
+    width: 50%;
+  }
+
+</style>
+<div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary btn-xs navbar-brand">
+          ESPL
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="container-fluid w3-padding" style="margin-top: 65px">
+  <!-- <ul class="breadcrumb"> -->
+  	<!-- {{onedailyreport}} -->
+  <!-- <li><a href="#">Admin Panel</a></li>
+  <li><a href="#">Syllabus</a></li>
+  <li>View</li>
+  </ul> -->
+
+<div style="margin-top: 10px" class="row">
+	<div class="col-md-4">
+		<div class="w3-black w3-padding">
+			<h1 style="color: white"> {{onedailyreport[0]["batch"]}}</h1>
+		</div>	
+	</div>
+	<div class="col-md-8">
+    <table class="table-bordered" style="font-size: 13px;border-collapse: collapse;height: 15px;width: 15px">
+      <thead class="w3-black">
+        <th style="padding: 5px">JAN</th>
+        <th style="padding: 5px">FEB</th>
+        <th style="padding: 5px">MAR</th>
+        <th style="padding: 5px">APR</th>
+        <th style="padding: 5px">MAY</th>
+        <th style="padding: 5px">JUN</th>
+        <th style="padding: 5px">JUL</th>
+        <th style="padding: 5px">AUG</th>
+        <th style="padding: 5px">SEP</th>
+        <th style="padding: 5px">OCT</th>
+        <th style="padding: 5px">NOV</th>
+        <th style="padding: 5px">DEC</th>
+      </thead>
+
+      <tbody >
+      <!--   <div ng-if="subjectindex>0" ng-init="topiclength=(onedailyreport[0].syllabusdetails.syllabus.subject[subjectindex-1].topic)length+topiclength;"> -->
+        <tr style="height:25px">
+      <td style="background-color: {{reportcolors['01']}};"></td>
+      <td style="background-color: {{reportcolors['02']}};"></td>
+      <td style="background-color: {{reportcolors['03']}};"></td>
+      <td style="background-color: {{reportcolors['04']}};"></td>
+      <td style="background-color: {{reportcolors['05']}};"></td>
+      <td style="background-color: {{reportcolors['06']}};"></td>
+      <td style="background-color: {{reportcolors['07']}};"></td>
+      <td style="background-color: {{reportcolors['08']}};"></td>
+      <td style="background-color: {{reportcolors['09']}};"></td>
+      <td style="background-color: {{reportcolors['10']}};"></td>
+      <td style="background-color: {{reportcolors['11']}};"></td>
+      <td style="background-color: {{reportcolors['12']}};"></td>
+    </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+ 
+	<div style="margin-top: 25px" ng-init="loginAuth();getdailyreport(1);getdailyreportcolor();lenprev=0;">
+		<table class="table table-bordered">
+			<thead class="w3-black">
+				<th>#</th>
+				<th>SUBJECT</th>
+				<th>TOPICS</th>
+				<th>HRS</th>
+				<th>TEACHER</th>
+        <th ng-repeat="q in onedailyreport[0].lecturedetails.lecrecord[0] track by $index">{{$index+1}}</th>
+			</thead>
+
+			<tbody ng-repeat="x in onedailyreport[0].syllabusdetails.syllabus.subject" ng-init="subjectindex=$index;lenprev=lenprev + (onedailyreport[0].syllabusdetails.syllabus.subject[subjectindex-1].topic).length;">
+      <!--   <div ng-if="subjectindex>0" ng-init="topiclength=(onedailyreport[0].syllabusdetails.syllabus.subject[subjectindex-1].topic)length+topiclength;"> -->
+				<tr ng-repeat="y in x.topic" >
+					<td rowspan="{{x.topic.length}}" ng-hide="$index>0">{{subjectindex+1}}</td>
+					<td class="w3-amber" rowspan="{{x.topic.length}}" ng-hide="$index>0">{{x.subject}}</td>
+					<td class="w3-blue-gray">{{y.topicname}}</td>
+					<td class="w3-blue-gray">{{onedailyreport[0].lecturedetails.hours[lenprev+$index]}} </td>
+					<td class="w3-blue-gray">{{onedailyreport[0].lecturedetails.teacherlist[lenprev+$index]}}</td>
+          <td ng-repeat="k in onedailyreport[0].lecturedetails.lecrecord[lenprev+$index] track by $index" ng-init="coloridx=mySplit(k,1)" style="color:white;background-color: {{reportcolors[coloridx]}};">{{mySplit(k,0)}}</td>
+				</tr>
+       <!--  </div> -->
+			</tbody>
+		</table>
+	</div>
+ 
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>

@@ -1,0 +1,279 @@
+<link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+<script type="text/javascript">
+		$(document).on('click', '.a', function(event){
+			if(this.id != "finalButton")
+			{
+				event.preventDefault();
+				$('html, body').animate({
+					scrollTop: $( $.attr(this, 'href') ).offset().top
+				}, 500);
+			}
+		});
+	</script>
+	<style>
+		body
+		{
+			position: relative;
+			opacity: 0.9;
+		}
+		#section1
+		{
+			min-height:800px;background: #0079bf no-repeat center fixed;
+			/*min-height:800px;background: #0079bf no-repeat center fixed;
+			background: linear-gradient(#0079bf, #29cce5);*/
+		}
+		#section2
+		{
+			min-height:800px;background: #315989 no-repeat center fixed;
+		}
+		#section3
+		{
+			min-height:800px;background: #ffab4a no-repeat center fixed;
+		}
+		#section4
+		{
+			min-height:800px;background: #eb5a46 no-repeat center fixed;
+		}
+		#section5
+		{
+			min-height:800px;background: #29cce5 no-repeat center fixed;
+		}
+		.fa
+		{
+			color: white;
+		}
+
+		/*#login
+		{
+			margin : 1%;
+			position:absolute;
+		    top: 0;
+		    right: 0;
+		}*/
+	</style>
+	<div class="w3-bar w3-black w3-padding">
+		<!-- <a data-toggle="modal" href="" data-target="#adminloginmodal" class="w3-btn w3-bar-item w3-right"> Admin Login <i class="fa fa-sign-in"></i></a> -->
+		<a id="login" data-toggle="modal" href="" data-target="#loginModal" class="w3-btn w3-bar-item w3-right"> Login <i class="fa fa-sign-in"></i></a>
+		<a href="#addstaff" class="w3-btn open-login w3-bar-item w3-right">Staff Entry</a>
+	</div>
+
+		<!-- <div class="w3-bar w3-padding w3-black">
+			<span style="font-size: 30px">ESPL</span>
+		  <div class="w3-right">
+		  	<button id="login" data-toggle="modal" data-target="#modal-login" style="background-color: #61bd4f; color: white;" class="btn animated bounce hvr-float-shadow"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button>
+		  </div>
+		</div> -->
+
+		<div id="section1" align="center" class="container-fluid">
+			<!-- <button id="login" style="background-color: #61bd4f; color: white;" class="btn open-login animated bounce hvr-float-shadow"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button> -->
+			<div style="margin: 1%;">
+				<div class="col-md-8 col-md-offset-2 animated fadeInDownBig" >
+					<span style="color: white;font-size: 250px;font-family: 'Poiret One', cursive;">ESPL</span>
+					<p style="color: white; font-size: 25px; font-weight: bold;font-family: 'Poiret One', cursive;" class="intro-text">We are committed to take Education to every home through our teachers by using technology. </p>
+					<div class="w3-hover-opacity" style="margin-top: 100px">
+						<a class="a" ng-click="getCities()" href="#section2" target="_self">
+						<i class="fa fa-angle-double-down fa-4x animated" ></i></a>
+					</div>
+				</div>
+			</div>
+			<!-- <div style="margin-top: 45%">
+				<div align="right">
+					<span style="text-transform: uppercase;font-size: 12px;color: white;">Copyright &copy; <a href="http://weoto.in" target="_blank">weoto.in 2017</a></span>
+				</div>
+			</div> -->
+		</div>
+
+		<div id="section2" align="center" class="container-fluid">
+			 
+			<div style="margin: 5%;">
+				<div class="w3-hover-opacity" style="margin-top: 10px">
+					<a class="a" href="#section1" target="_self">
+						<i class="fa fa-angle-double-up fa-4x animated" aria-hidden="true"></i>
+					</a>
+				</div>
+				<span style="color: white; font-size: 100px;font-family: 'Poiret One', cursive;"> Cities</span>
+				<loading style="position: fixed;top: 50%;left:50%;"></loading>
+				
+				<!-- <div class="row">
+					<div class="col-md-3">
+						<div class="container-fluid">
+							<a class="a" ng-click="getBranches(cityinfo._id)" href="#section3" target="_self">
+								<div class="w3-display-middle w3-padding w3-xlarge">
+							  	<i class="fa fa-map" aria-hidden="true"></i> {{cityinfo.cityname}}
+							  </div>
+							</a>
+						</div>
+					</div>
+				</div> -->
+
+				<div class="w3-row-padding " ng-if="result1.cities.length">
+					<div class="w3-padding-64 w3-col s3" ng-repeat="cityinfo in result1.cities">
+					<a class="a" ng-click="getBranches(cityinfo._id)" href="#section3" target="_self">
+						<div class="w3-display-container w3-text-white">
+						  <img class="w3-hover-shadow" src="assets/images/1.jpg" alt="Lights" style="width:100%">
+						  <!-- <div class="w3-display-topleft w3-padding w3-xlarge"><i class="fa fa-map" aria-hidden="true"></i> {{cityinfo.state}}</div> -->
+						  <div class="w3-display-middle w3-padding w3-xlarge">
+						  	<i class="fa fa-map" aria-hidden="true"></i> 
+						  	{{cityinfo.cityname}}</div>
+						</div>
+					</a>
+						
+					</div>
+				</div>
+
+				<div class="w3-row-padding" ng-if="!result1.cities.length && !loading">
+					<h1><strong> No City Present</strong></h1>
+				</div>
+			</div>
+		</div>
+
+		<div id="section3" align="center" class="container-fluid">
+			 
+			<div style="margin: 5%;">
+				<div class="w3-hover-opacity" style="margin-top: 10px">
+					<a class="a" href="#section2" target="_self">
+						<i class="fa fa-angle-double-up fa-4x animated" aria-hidden="true"></i>
+					</a>
+				</div>
+				<span style="color: white; font-size: 100px;font-family: 'Poiret One', cursive;"> Branches</span>
+				<loading style="position: fixed;top: 50%;left:50%;"></loading>
+				<div class="w3-row-padding" ng-if="singleBranchResult.length">
+					<div class="w3-col s3 w3-padding" ng-repeat="branchinfo in singleBranchResult">
+						<a class="a" ng-click="getCourses(branchinfo._id)" href="#section4" target="_self">
+							<div class="w3-display-container w3-text-white">
+							  <img class="w3-hover-shadow" src="assets/images/branches.jpeg" alt="Lights" style="width:100%">
+							  <!-- <div class="w3-display-topleft w3-padding"><i class="fa fa-building-o" aria-hidden="true"></i> {{branchinfo.cityname}}</div> -->
+							  <div class="w3-display-middle w3-padding w3-xlarge"><i class="fa fa-building-o" aria-hidden="true"></i> 
+							  	{{branchinfo.branchname}}</div>
+							</div>
+						</a>
+						
+					</div>
+				</div>
+
+				<div class="w3-row-padding" ng-if="!singleBranchResult.length && !loading">
+					<br>
+					<h1><strong> No Branch Present</strong></h1>
+				</div>
+			</div>
+		</div>
+
+		<div id="section4" align="center" class="container-fluid">
+			 
+			<div style="margin: 5%;">
+				<div class="w3-hover-opacity" style="margin-top: 10px">
+					<a class="a" href="#section3" target="_self">
+						<i class="fa fa-angle-double-up fa-4x animated" aria-hidden="true"></i>
+					</a>
+				</div>
+				<span style="color: white; font-size: 100px;font-family: 'Poiret One', cursive;"> Courses</span>
+				<loading style="position: fixed;top: 50%;left:50%;"></loading>
+				<div class="w3-row-padding" ng-if="coursesinfo.length">
+					<div class="w3-col s3 w3-padding" ng-repeat="coursname in coursesinfo">
+					<a class="a" ng-click="getBatch(branchname,coursname)" href="#section5" target="_self">
+						<div class="w3-display-container w3-text-white">
+						  <img class="w3-hover-shadow" src="assets/images/branches.jpeg" alt="Lights" style="width:100%">
+						  <!-- <div class="w3-display-topleft w3-padding"><i class="fa fa-building-o" aria-hidden="true"></i> {{branchname}}</div> -->
+						  <div class="w3-display-middle w3-padding w3-xlarge"><i class="fa fa-superpowers" aria-hidden="true"></i> 
+						  	{{coursname}}</div>
+						</div>
+					</a>
+						
+					</div>
+				</div>
+				<div class="w3-row-padding" ng-if="!coursesinfo.length && !loading"
+					<h1><strong> No Course Present</strong></h1>
+				</div>
+			</div>
+		</div>
+
+		<div id="section5" align="center" class="container-fluid">
+			
+			<div style="margin: 5%;">
+				<div class="w3-hover-opacity" style="margin-top: 10px">
+					<a class="a" href="#section4" target="_self">
+						<i class="fa fa-angle-double-up fa-4x animated" aria-hidden="true"></i>
+					</a>
+				</div>
+				<span style="color: white; font-size: 100px;font-family: 'Poiret One', cursive;"> Batches
+				</span>
+				<loading style="position: fixed;top: 50%;left:50%;"></loading>
+				<div class="w3-row-padding" ng-if="batches.length">
+					<div class="w3-col s3 w3-padding" ng-repeat="batch in batches">
+					<a class="a" id="finalButton" ng-click="saveBatchname(batch)" href="#student">
+						<div class="w3-display-container w3-text-white">
+						  <img class="w3-hover-shadow" src="assets/images/branches.jpeg" alt="Lights" style="width:100%">
+						  <!-- <div class="w3-display-topleft w3-padding"><i class="fa fa-building-o" aria-hidden="true"></i> Some Branch</div> -->
+						  <div class="w3-display-middle w3-padding w3-xlarge"><i class="fa fa-shield" aria-hidden="true"></i> 
+						  	{{batch}}</div>
+						</div>
+					</a>						
+					</div>
+				</div>
+				<div class="w3-row-padding" ng-if="!batches.length && !loading ">
+					<h1><strong> No Batch Present</strong></h1>
+				</div>
+			</div>
+		</div>
+	<!-- <div id="modal-login">
+			<form class="w3-container">
+		        <div class="w3-section">
+		          <label><b>Username</b></label>
+		          <input ng-model="username" class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="username" required>
+		          <label><b>Password</b></label>
+		          <input ng-model="password" class="w3-input w3-border" type="password" placeholder="Enter Password" name="psw" required>
+		          <button class="w3-button w3-block w3-blue w3-section w3-padding" type="submit" ng-click="doLogin()">Login</button>
+		        </div>
+      		</form>
+		</div> -->
+
+		<div class="modal fade" id="loginModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="clearOtpData();">&times;</button>
+        <h4 class="modal-title">Login</h4>
+      </div>
+      <div class="modal-body" ng-init="genButton='true';">
+        <form>
+
+        <label for="type">Select User Type:</label>
+      	<select class="form-control" id="type" ng-model="type">
+      		<option>Select User Type</option>
+        	<option>Teacher</option>
+        	<option>Parent</option>
+        	<option>Student</option>
+      	</select>
+
+          <label><b>Mobile Number</b></label><br>
+          <input class="form-control" style="width: 100%" ng-model="mobile" type="text" minlength="10" placeholder="Registered Mobile Number" name="mobile" required><br><br>
+
+          <div ng-show="otpDiv">
+          
+          <select ng-show="type=='Parent' || type=='Student'" class="form-control" id="select" ng-model="student" ng-change="openStudentProfile(student)">
+				<option value="">Select student</option>
+				<option ng-repeat="x in staff | orderBy:'firstName' as students" data-ng-if="students[$index-1]._id != x._id" value="{{x._id}}">{{x.firstName}} {{x.middleName}} {{x.lastName}}</option>
+		   </select>
+
+          <label><b>OTP</b></label><br>
+          <input class="form-control" style="width: 100%" ng-model="otp" type="text" placeholder="Enter OTP Send To Your Mobile Number" name="OTP" required><br><br>
+
+          <div ng-show="errorMsg" class="alert alert-danger">
+            You Entered incorrect OTP !! Try Again 
+            <button class="btn btn-sm btn-default w3-right" ng-show="!reGen" ng-click="regenerateOtp();">Resend OTP</button>
+
+          </div>
+          <button class="btn btn-success" ng-click="verifyOtp();">Verify OTP</button>
+          </div>
+          
+          <div ng-show="genButton">
+          <button class="btn btn-primary" ng-click="testRegistered()">Generate OTP</button>
+          </div>
+          
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>

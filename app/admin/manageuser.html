@@ -1,0 +1,417 @@
+<div ng-init="getUsertypes();getusers();">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary w3-text-white w3-hover-red btn-xs navbar-brand">ESPL <i class="fa fa-bars" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+              <li ng-show="loggedIn"><a href="#attendance">View Attendance</a></li>
+              <li ng-show="loggedIn"><a href="#studentattendance">Manual Attendance</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#staffList">Staff List</a></li>
+              <li><a href="#staffAttendance">Staff Attendance</a></li>
+            </ul>
+          </li>
+          <li><a href="#viewDiscounts">Discounts</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+          <li ng-show="loggedIn"><a href="#search"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
+          <li class="active"><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+          <!-- <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Login</a></li> -->
+          <li>
+            <div class="dropdown" ng-show="loggedIn">
+              <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user fa-lg" aria-hidden="true"></i> {{loginData.staffname}}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#changepwd"><i class="fa fa-cog fa-lg" aria-hidden="true"></i> Settings</a></li>
+                  <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i> Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+  </nav>
+	</div>
+	<br>
+	<br>
+	<div style="margin-top:68px">
+		<div class="container-fluid" ng-init="loginAuth();getusers();countP=10">
+
+			<div id="section1" ng-show="loggedIn">
+				<div ng-show="loggedIn" class="row">
+					<div class="col-sm-10 col-md-10" >
+						<div  ng-if="users.length">
+							<table class="table table-hover table-condensed table-bordered w3-card w3-white">
+								<thead class="alert-success">
+									<tr>
+										<th style="padding: 10px" ng-click="myOrderBy='firstName';reverse=!reverse">Staff Name<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+										<th ng-click="myOrderBy='mobile'; reverse=!reverse">Mobile<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+										<!-- <th ng-click="myOrderBy='Email' ;reverse=!reverse">username<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th> -->
+										<th ng-click="myOrderBy='city' ;reverse=!reverse">City<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+										<th ng-click="myOrderBy='branch' ;reverse=!reverse">Branch<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+										<th ng-click="myOrderBy='branch' ;reverse=!reverse">User Type<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+										<th><i class="fa fa-cog fa-spin fa-2x" aria-hidden="true"></i></th>
+										<th>    </th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><input class="form-control" ng-model="f.staffname" placeholder="search by name"></td>
+										<td><input class="form-control" ng-model="f.mobile" placeholder="search by mobile no"></td>
+										<!-- <td><input ng-model="f.username" placeholder="search by username"></td> -->
+										<td><input class="form-control" ng-model="f.cityname" placeholder="search by city"></td>
+										<td><input class="form-control" ng-model="f.branchname" placeholder="search by branch"></td>
+										<td><input class="form-control" ng-model="f.usertypename" placeholder="search by user type"></td>
+										<td></td>
+
+
+									</tr> 
+
+									<tr dir-paginate="x in users |filter:{staffname: f.staffname, mobile: f.mobile,username:f.username,cityname:f.cityname,branchname:f.branchname,usertypename:f.usertypename}|orderBy:myOrderBy:reverse | itemsPerPage:countP">
+										<td>{{x.staffname}}</td>
+										<td>{{x.mobile}}</td>
+										<!-- <td>{{x.username}}</td> -->
+										<td>{{x.cityname}}</td>
+										<td>{{x.branchname}}</td>
+										<td>{{x.usertypename}}</td>
+										<td ng-if="x.statusActive=='1'"><button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Click to deactivate" ng-click="deactivate(x._id)"><i class="fa fa-check-circle" aria-hidden="true"></i></button></td>
+										<td ng-if="x.statusActive=='0'"><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Click to activate" ng-click="activate(x._id)"><i class="fa fa-ban" aria-hidden="true"></i></button></td>
+										<td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" ng-click="saveUserid(x._id)"><i class="fa fa-trash" aria-hidden="true"></i></button></td> 
+									</tr>
+								</tbody>
+							</table>
+
+							<div class="row">
+	            		<!-- dir-paginate  itemsPerPage:countP  -->
+
+	            		<div class="col-md-6">
+	            			<dir-pagination-controls
+				       max-size="5"
+				       direction-links="true"
+				       boundary-links="true" >
+				    	</dir-pagination-controls>
+	            		</div>
+	            		
+
+				    	<div class="col-md-6">
+					    	<select  ng-model="countPerPage" ng-change="countP = countPerPage" style="width: 30%;">
+						    	<option value="" selected disabled>Items Per Page</option>
+		                        <option value="10">10</option>
+		                        <option value="15">15</option>
+		                        <option value="99">All</option>
+	                        </select>
+				    	</div>
+				    	
+
+	            	</div>
+
+						</div>
+
+
+						<div ng-if="!users.length && !loading">
+							<h1 class="w3-center"><strong>No user Present</strong></h1>
+						</div>
+						<loading class="w3-center"></loading>
+
+
+					</div>
+
+					<div class="col-sm-2 col-md-2">
+						<a href="" class="btn btn-danger"  title="Add new user" data-toggle="modal" data-target="#myModalHorizontal" ng-click="getStaffNames();getUsertypes();getCities();">Add New User</a>
+
+						<br>
+						<br>
+
+
+
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModalHorizontal" tabindex="-1" role="dialog" 
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="reloadAddUserPage();">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					Access To New User 
+				</h4>
+			</div>
+
+			<!-- Modal Body -->
+			<div class="modal-body">
+
+				<form  name="adduser" ng-submit="insertUser()" class="form-horizontal" role="form"  required>
+					<div class="form-group">
+						<label  class="col-sm-2 control-label"
+						for="fullname">User Full Name</label>
+						<div class="col-sm-10">
+							<select  ng-model="staffname" class="form-control" ng-change="generate(staffname)" required>
+								<option ng-repeat="name in staffnames  track by $index" >{{name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label  class="col-sm-2 control-label"
+						for="username">User Name</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" ng-value="username" ng-model="username"
+							id="username" placeholder="User Name" readonly="true" required >
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label"
+						for="inputPassword3" >Password</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" ng-value="password" ng-model="password"
+							id="inputPassword3" placeholder="Password" readonly="true" required >
+						</div>
+					</div>
+					<div class="form-group">
+						<label  class="col-sm-2 control-label"
+						for="utype">User Type</label>
+						<div class="col-sm-10">
+							<select  ng-model="usertype" class="form-control" ng-change="checkuser(usertype);" required>
+								<option style="text-transform: capitalize;" ng-repeat="usertypename in usertypes" value="{{usertypename.typeid}}" > {{usertypename.typename}} </option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label  class="col-sm-2 control-label"
+						for="city">City</label>
+						<div class="col-sm-10">
+							<select ng-model="cityid" ng-change="getBranches(cityid)"  class="form-control" required>
+								<!--  <option value="">Select City</option> -->
+								<option ng-repeat="city in result1.cities" value="{{city._id}}"> {{city.cityname}} </option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group" ng-show="!super">
+						<label  class="col-sm-2 control-label"
+						for="branch">Branch</label>
+						<div class="col-sm-10">
+							<select ng-model="branchid" class="form-control" required>
+								<option ng-repeat="branch in singleBranchResult" value="{{branch._id}}"> {{branch.branchname}} </option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label  class="col-sm-2 control-label"
+						for="uemail">User Email</label>
+						<div class="col-sm-10">       
+							<input type="email" class="form-control" name="userEmail" ng-model="email" id="uemail" placeholder="User Email" required >
+							<div ng-messages="adduser.userEmail.$error">
+								<div ng-message="email">Your email address is invalid</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group">
+						<label  class="col-sm-2 control-label"
+						for="usermobile">User Mobile</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="userPhoneNumber" ng-model="mobile" ng-minlength="10" ng-maxlength="10" required/>
+							<div ng-messages="adduser.userPhoneNumber.$error">
+								<div ng-message="minlength" style="color: red">Must be a valid 10 digit phone number</div>
+								<div ng-message="maxlength" style="color: red">Mobile number must not exceed 10 digit</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-10">
+
+							<input type="submit"  class="btn btn-primary" id="submit" value="Submit">
+							<button type="button" ng-click="reloadAddUserPage();" class="btn btn-default"> Close </button> </div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!-- <div class="container">
+<h2>Modal Example</h2>
+Trigger the modal with a button 
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+-->
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title alert alert-info w3-center">Delete User</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to delete this user?</h3>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" ng-click="deleteuser();" data-dismiss="modal" ><i class="fa fa-check-square-o" aria-hidden="true">YES</i> </button>
+				<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"> NO </i></button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>
+
+
+<!-- 
+<div class="modal fade" id="myModalHorizontal" tabindex="-1" role="dialog" 
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" 
+data-dismiss="modal">
+<span aria-hidden="true">&times;</span>
+<span class="sr-only">Close</span>
+</button>
+<h4 class="modal-title" id="myModalLabel">
+Access To New User 
+</h4>
+</div>
+
+<div class="modal-body">
+
+<form class="form-horizontal" role="form">
+<div class="form-group">
+<label  class="col-sm-2 col-md-6 control-label"
+for="fullname">User Full Name</label>
+<div class="col-sm-10">
+<select  ng-model="staffname" class="form-control" ng-change="generate(staffname)">
+<option ng-repeat="name in staffnames" value="{{name}}"> {{name}} </option>
+</select>
+</div>
+</div>
+
+<div class="form-group">
+<label  class="col-sm-2 control-label"
+for="username">User Name</label>
+<div class="col-sm-10">
+<input type="text" class="form-control" ng-value="username" ng-model="username"
+id="username" placeholder="User Name" readonly="true" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label"
+for="inputPassword3" >Password</label>
+<div class="col-sm-10">
+<input type="text" class="form-control" ng-value="password" ng-model="password"
+id="inputPassword3" placeholder="Password" readonly="true" />
+</div>
+</div>
+<div class="form-group">
+<label  class="col-sm-2 col-md-6 control-label"
+for="utype">User Type</label>
+<div class="col-sm-10">
+<select  ng-model="usertype" class="form-control" ng-change="checkuser(usertype);">
+<option style="text-transform: capitalize;" ng-repeat="usertypename in usertypes" value="{{usertypename.typeid}}"> {{usertypename.typename}} </option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label  class="col-sm-2 control-label"
+for="city">City</label>
+<div class="col-sm-10">
+<select ng-model="cityid" ng-change="getBranches(cityid);"  class="form-control">
+<option value="">Select City</option> 
+<option ng-repeat="city in result1.cities" value="{{city._id}}"> {{city.cityname}} </option>
+</select>
+</div>
+</div>
+<div class="form-group" ng-show="!super">
+<label  class="col-sm-2 control-label"
+for="branch">Branch</label>
+<div class="col-sm-10">
+<select ng-model="branchid" class="form-control">
+<option ng-repeat="branch in singleBranchResult" value="{{branch._id}}"> {{branch.branchname}} </option>
+</select>
+</div>
+</div>
+
+<div class="form-group">
+<label  class="col-sm-2 control-label"
+for="uemail">User Email</label>
+<div class="col-sm-10">
+<input type="text" class="form-control" ng-model="email" id="uemail" placeholder="User Email"/ required>
+</div>
+</div>
+<div class="form-group">
+<label  class="col-sm-2 control-label"
+for="usermobile">User Mobile</label>
+<div class="col-sm-10">
+<input type="text" class="form-control" ng-model="mobile"
+id="usermobile" placeholder="Mobile" required="true"/>
+</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-default"
+data-dismiss="modal">
+Close
+</button>
+<button type="submit" ng-click="insertUser();" class="btn btn-primary">
+Save changes
+</button>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+</div> -->
+<!-- 
+<script type="text/javascript">
+$('#myModalHorizontal').on('hidden.bs.modal', function (e) {
+$($route).reload();
+$(this)
+.find("input,textarea,select")
+.val('')
+.end();
+})
+</script> -->

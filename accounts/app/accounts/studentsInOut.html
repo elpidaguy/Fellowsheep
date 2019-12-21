@@ -1,0 +1,579 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<style type="text/css">
+.jumbotron {
+  color: white;
+  /*text-align: center;*/
+  /*text-shadow: 2px 2px 8px black;*/
+  min-height: 250px;
+  text-indent: 5em;
+}
+</style>
+
+
+<div ng-init="checkLogin();getallstudentData();">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary w3-text-white w3-hover-red btn-xs navbar-brand">ESPL <i class="fa fa-bars" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#accountadminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li class="active">
+            <a href="#studentsInOut"><i class="fa fa-user fa-lg" aria-hidden="true"></i> Students</a>
+          </li>
+          <li>
+            <a href="#papersinout"><i class="fa fa-file fa-lg" aria-hidden="true"></i> Exam Paper</a>
+          </li>
+          <li>
+            <a href="#accountsalary"><i class="fa fa-money fa-lg" aria-hidden="true"></i> Salary</a>
+          </li>
+          <li>
+            <a href="#accountPassBook"><i class="fa fa-university fa-lg" aria-hidden="true"></i> Passbook</a>
+          </li>
+          <li>
+            <a href="#chequerecords"><i class="fa fa-briefcase fa-lg" aria-hidden="true"></i> Cheque Records</a>
+          </li>
+          <li >
+            <a href="#accounterrors"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i> Account Error</a>
+          </li>
+           <li >
+            <a href="#feedbackadmin"><i class="fa fa-commenting fa-lg" aria-hidden="true"></i> Parent's FeedBack</a>
+          </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <div class="dropdown" ng-show="accounts">
+              <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user fa-lg" aria-hidden="true"></i> {{loginData.staffname}}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#changepwd"><i class="fa fa-cog fa-lg" aria-hidden="true"></i> Settings</a></li>
+                  <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i> Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+  </nav>
+  <div class="container-fluid" style="margin-top:70px;">
+    
+    <div >
+    </div>
+
+
+<div class="w3-row-padding" style="margin-top: 20px">
+
+
+    <div class="w3-col m2">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Total Records</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #c842f4" class="fa fa-pencil-square-o  w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{TotalRecord}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+
+
+    <div class="w3-col m2">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">Amount IN</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #5cb85c" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{totalamount}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+    <div class="w3-col m2">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Pending(IN)</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #428bca" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{pending_in}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+    
+
+
+    <div class="w3-col m2">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Paid(IN)</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #5bc0de" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{paid_in}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+
+    <div class="w3-col m2">
+        <div class="panel panel-warning">
+          <div class="panel-heading">
+            <h3 class="panel-title">Amount Out</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #e8ea45" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{totalout}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+    <div class="w3-col m2">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Out(Pending)</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #d9534f" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{out_pending}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+
+
+
+
+</div>
+
+ <div style="margin-top:20px">
+
+<div class="row">
+    
+
+ <center>
+<button type="button" class="btn btn-success" data-toggle="modal"  ng-click="showin()"><i class="fa fa-sign-in" aria-hidden="true"></i>  VIEW IN RECORDS</button>
+<button type="button" class="btn btn-warning" data-toggle="modal"  ng-click="gettotalouttranscations()"><i class="fa fa-sign-out " aria-hidden="true"></i>  VIEW OUT RECORDS</button>
+<button type="button" class="btn btn-info" data-toggle="modal"  ng-click="modeloutcall()"><i class="fa fa-plus-circle" aria-hidden="true"></i>  ADD OUT RECORDS</button>
+
+ </center>
+
+ 
+</div>
+
+
+
+
+     
+</div>
+      <div style="margin-top: 10px" class="col-sm-10 col-md-10">
+
+<table style="margin-top:30px" st-set-filter="customFilter" st-table="displayedCollection" st-safe-src="currentrecords"  class="table table-condensed table-bordered table-striped w3-card w3-white" > 
+      <thead  >
+      <tr style="color: white;background-color: #1e59fc">
+        <th ng-repeat="head in headers" st-sort="{{head}}">
+          {{head|titlecase}} 
+        </th>
+       
+
+      </tr>
+
+      <tr>
+        <th ng-repeat="head in headers">
+       <input st-search="{{head}}"  class="input-sm form-control" type="text" value="" ng-value=""/>
+        </th>   
+        
+      </tr>
+
+    <!--  <tr>
+        <th ng-repeat="h1 in headers" style="color:#000" class="searchfields">
+              <st-select-distinct collection="currentrecords" predicate="{{h1}}"></st-select-distinct>
+        </th>
+        <th> </th>
+      </tr>-->
+        
+
+
+
+      </thead>
+      <tbody>
+        <tr ng-repeat="rec in displayedCollection">
+       <td ng-repeat="head in headers"> {{rec[head]}}</td> 
+
+ 
+
+      
+       
+      
+
+      </tr>
+      </tbody>
+      <tfoot>
+        
+        <tr>
+        <td colspan="{{headers.length}}" class="text-center">
+          <div st-pagination="" st-items-by-page="itemsByPage"></div>
+        </td>
+      </tr>
+      </tfoot>
+
+      </table>
+
+</div>
+
+          <div style="margin-top: 40px">
+
+        <div class="col-sm-2 col-md-2 w3-card w3-white boxbor w3-padding">
+          <div class="w3-center">
+            <!-- <i style="font-size: 40px" class="fa fa-user" aria-hidden="true"></i> --> <img src="assets/icons/money.png" alt="staff list" height="20%" width="30%"> <span style="font-size: 20px"><br>Money In/Out</span><hr>
+          </div>
+          <div align="center">
+            <h2>Filters</h2>
+          <a href="#studentsInOut" target="_self"><button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-center" data-toggle="tooltip" title="Clear Filters" >Clear All Filters</button></a>
+          </div>
+          <div class="col-lg-10 col-md-10">
+
+
+            <h4>By City</h4>
+            <select class="form-control cap"  id="citys" ng-change="filters()" ng-model="filters_selected_city" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="cit in city" ng-value="citys"> {{cit}} </option>
+            </select>
+             
+            <h4>By Branch</h4>
+            <select class="form-control cap"  id="Branch" ng-change="filters()" ng-model="filters_selected_Branch" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="cen in center" ng-value="Branch"> {{cen}} </option>
+            </select>
+
+            <div ng-show="filterhideshow">
+            <h4>By Batch</h4>
+            <select class="form-control cap"  id="Batch" ng-change="filters()" ng-model="filters_selected_Batch" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="bat in batch" ng-value="batches"> {{bat}} </option>
+            </select>
+          </div>
+
+          <div ng-show="filterhideshow">
+             <h4>By Product</h4>
+             <select class="form-control cap"  id="product" ng-change="filters()" ng-model="filters_selected_product" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="pro in product" ng-value="produts"> {{pro}} </option>
+            </select>
+          </div>
+            <h4>By Mode</h4>
+             <select class="form-control cap"  id="mode" ng-change="filters()" ng-model="filters_selected_mode" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="mo in mode" ng-value="modes"> {{mo}} </option>
+            </select>
+
+            
+<!--  <select class="form-control" id="select" ng-model="f.gender"> 
+<option value="">Select Gender</option>
+<option ng-repeat="y in staff" style="background-color: black;color: white">{{y.gender}}</option>
+
+</select> -->
+</div>
+
+
+</div>
+
+
+      </div>
+
+
+
+    </div>
+
+  
+</div>
+
+  <!--  <table class="table table-condensed table-bordered " > 
+      <thead  style="color: white;background-color: #1e59fc">
+        <tr>
+        <th ng-repeat="head in headers">{{head}} </th>
+      </tr>
+      </thead>
+      <tr ng-repeat="rec in records">
+        <td ng-repeat="head in headers"> {{rec[head]}}</td>       
+      </tr>
+
+
+    </table> -->
+
+
+  </div>
+</div>
+
+<!--model for all payment for staff having all ccount no-->
+<div class="modal fade" id="modellogin" tabindex="-1" role="dialog" aria-labelledby="modelloginLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modelloginLabel">Edit Record({{editstaffname}})</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+        <!-- Half of the modal-body div-->
+        <div class="col-xs-6">
+            <h5>ASSIGN DATE</h5>
+
+        <datepicker date-format="dd-MM-yyyy">
+        <input type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="editdateofassign">
+                </datepicker>
+         
+        </div>
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-6">
+            <h5>SUBJECT</h5>
+            <div class="radio">
+            <input type="text" class="form-control" placeholder="Subject" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="editSubject">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Half of the modal-body div-->
+        <div class="col-xs-6">
+            <h5>SUBMISSION DATE</h5>
+
+                <datepicker date-format="dd-MM-yyyy">
+                   <input  type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="editdateofsub">
+                </datepicker>
+         
+        </div>
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-6">
+            <h5>QUANTITY</h5>
+            <div class="radio">
+            <input type="text" class="form-control" placeholder="Subject" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="editquantity">
+            </div>
+        </div>
+    </div>
+
+
+
+<div class="row">
+        <!-- Half of the modal-body div-->
+        <div class="col-xs-6">
+            <h5>RATE</h5>
+ <input type="text" class="form-control" placeholder="Subject" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-change="amountmulti()" ng-model="editrate">
+           
+        </div>
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-6">
+            <h5>TOTAL AMOUNT</h5>
+            <div class="radio">
+      <input type="text" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="edittitalamt">
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="editupdate()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--modal for out transcations-->
+<div class="modal fade" id="modalouttranscation" tabindex="-1" role="dialog" aria-labelledby="modalouttranscationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalouttranscationLabel"><center> <p class="bg-primary">ESPL OUT ENTRY</p></center></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+        <!-- Half of the modal-body div-->
+       
+        <div class="col-xs-4">
+            <h5>SELECT ESPL CITY</h5>
+
+            <select class="form-control cap"  id="board" ng-model="selected_esplcity" ng-change="showhideval()">
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="cit in city" ng-value="citys"> {{cit}} </option>
+            </select>
+        </div>
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-4">
+            <h5>SELECT ESPL BRANCH</h5>
+
+            <select class="form-control cap"  id="board" ng-model="selected_esplbranch" ng-change="showhideval()">
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+             <option ng-repeat="cen in center" ng-value="Branch"> {{cen}} </option>
+              </select>
+        </div>
+
+        <div class="col-xs-4">
+            <h5>PAYMENT MODE</h5>
+
+            <select class="form-control cap"  id="board" ng-model="selected_paymentoption" ng-change="showhideval()">
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-value="branch.branchname">Cheque</option>
+               <option ng-value="branch.branchname">Cash</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-4">
+           <h5>TOTAL AMOUNT</h5>
+            <div class="radio">
+      <input type="number" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="selected_totalamount">
+            </div>
+        </div>
+
+
+        <!-- Half of the modal-body div-->
+        <div class="col-xs-4">
+            <h5>DATE</h5>
+
+                <datepicker date-format="dd-MM-yyyy">
+                   <input  type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="seleced_date">
+                </datepicker>
+         
+        </div>
+
+         <!-- Other half of the modal-body div-->
+        <div class="col-xs-4" ng-show="chqvar">
+            <h5>ACCOUNT HOLDER NAME</h5>
+            <div class="radio">
+            <input type="text" class="form-control" placeholder="Holder Name" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="selected_holdername">
+            </div>
+        </div>
+        
+    </div>
+
+
+<div class="row" ng-show="chqvar">
+        <!-- Half of the modal-body div-->
+        <div class="col-xs-4">
+            <h5>NAME OF BANK</h5>
+ <input type="text" class="form-control" placeholder="Bank Name" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-change="amountmulti()" ng-model="selected_bankname">
+           
+        </div>
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-4">
+            <h5>BRANCH NAME</h5>
+            <div class="radio">
+      <input type="text" class="form-control" placeholder="Branch Name" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="selected_branchname">
+            </div>
+        </div>
+
+        <!-- Half of the modal-body div-->
+        <div class="col-xs-4">
+            <h5>CHEQUE NO</h5>
+ <input type="number" class="form-control" placeholder="Cheque No" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="selected_chequeno">
+           
+        </div>
+        
+    </div>
+
+
+<div class="row" ng-show="chqvar">
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-4">
+            <h5>CHEQUE DATE</h5>
+
+             <datepicker date-format="dd-MM-yyyy">
+                   <input  type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="seleced_chqdate">
+                </datepicker>
+
+            </div>
+
+            <!-- Half of the modal-body div-->
+        <div class="col-xs-4">
+            <h5>CHEQUE STATUS</h5>
+
+        <select class="form-control cap"  id="board" ng-model="selected_chqstatus" ng-change="showhideval()">
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-value="branch.branchname">Pending</option>
+               <option ng-value="branch.branchname">Paid</option>
+            </select>
+           
+        </div>
+        
+        </div>
+     
+
+<div class="row">
+
+        <div class="col-xs-12">
+            <h5>OUT DESCRIPTION</h5>
+            <div class="radio">
+            <input type="text" class="form-control" placeholder="Holder Name" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="selected_outdesscription">
+            </div>
+        </div>
+        
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+        <button type="button" class="btn btn-primary" ng-click="addoutrecord()">ADD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+      $('#sidebarCollapse').on('click', function () {
+       $('#sidebar').toggleClass('active');
+       $('#main').toggleClass('active');
+     });
+    });
+  </script>

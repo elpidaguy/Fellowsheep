@@ -1,0 +1,724 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<style type="text/css">
+.jumbotron {
+  color: white;
+  /*text-align: center;*/
+  /*text-shadow: 2px 2px 8px black;*/
+  min-height: 250px;
+  text-indent: 5em;
+}
+</style>
+<div ng-init="getStudentInfo();editstudentflagstatus=true;">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown active">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li><a href="#enquiry">Enquiry</a></li>
+            </ul>
+          </li>
+          <!-- <li >
+            <a href="#feesReport">Reports </a>
+          </li> -->
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#staffList">Staff Profile</a></li>
+              <li class="divider"></li>
+              <li><a href="#staffAttendance">Staff Attendance</a></li>
+            </ul>
+          </li> 
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Schedule <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#createSchedule" target="_self">Yearly Schedule</a></li>
+            </ul>
+          </li>              
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#feeSetting">Fee Structure</a></li>
+              <li class="divider"></li>
+              <li><a href="#addstaff">Add New Staff</a></li>
+              <li class="divider"></li>
+              <li><a href="#newcitysettings">Add New city and branch</a></li>
+            </ul>
+          </li> -->
+          <li><a class="open-login" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+          <li><a href="" target="_self" ng-click="logout('/')" ng-show="loggedIn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid" style="margin-top:70px">
+    <div class="jumbotron row" style="background:url('assets/images/profile.png');background-attachment: fixed; background-position:bottom; background-repeat:no-repeat;">
+      <div align="left" class="col-md-3">
+        <img src="assets/images/student.png" style="height: 200px;width: 200px;">
+      </div>
+      <div class="col-md-9" align="left">
+        <h3 style="font-size: 30px; font-family: 'Montserrat', sans-serif;">{{studentInfo[0].firstName+" "+ studentInfo[0].lastName}}</h3>
+        <br>
+        <br>
+        <i class="fa fa-phone"></i> &emsp; {{studentInfo[0].studentMobile}}   
+        <i class="fa fa fa-bullseye"></i>&emsp; {{studentInfo[0].optionallang}}
+        <i class="fa fa-id-badge"></i> &emsp;{{batchName}}
+        <i class="fa fa-envelope-o"></i>&emsp; {{studentInfo[0].Email}}
+        <i class="fa fa-university"></i>&emsp;{{studentInfo[0].schoolName}}
+      <!--   <br/> <br/>
+        <i class="fa fa-map-marker"></i>&emsp; {{studentInfo[0].address}}      -->  
+
+      </div>
+<!-- <div class="col-md-12">
+<h4 style="text-indent: 5em";>
+<br>
+<br>
+<i class="fa fa-phone"></i> &emsp; {{studentInfo[0].studentMobile}}          
+<i class="fa fa-map-marker"></i>&emsp; {{studentInfo[0].address}}
+<i class="fa fa-id-badge"></i> &emsp;{{batchName}}
+<i class="fa fa-envelope-o"></i>&emsp; {{studentInfo[0].Email}}
+<i class="fa fa-university"></i>&emsp;{{studentInfo[0].schoolName}}
+</h4>
+</div> -->
+
+</div>
+</div>
+
+<div class="container"><h1>Student Information</div>
+  <div id="exTab1" class="container"> 
+    <ul  class="nav nav-pills nav-justified">
+      <li class="active">
+        <a href="#1a" target="_self" data-toggle="tab">Admission</a>
+      </li>
+      <!-- <li><a href="#6a" target="_self"  ng-click=getenqiryperson(studentInfo[0].enquiredBy); data-toggle="tab">Enquiry</a>
+      </li> -->
+      <li><a href="#2a" target="_self" data-toggle="tab">Information</a>
+      </li>
+      <li><a href="#3a" target="_self" data-toggle="tab">Attendance</a>
+      </li>
+      <li><a href="#4a" target="_self" data-toggle="tab">Academics</a>
+      </li>
+    </ul>
+
+    <br>
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="1a">
+            <div class="container col-md-8">
+                <div class="col-md-4 col-sm-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Total Fees</h3>
+                        </div>
+                        <div class="panel-body">
+                            <i class="fa fa-inr" aria-hidden="true"></i>  {{studentInfo[0].total}}  
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Received Fees</h3>
+                        </div>
+                        <div class="panel-body">
+                            <i class="fa fa-inr" aria-hidden="true"></i>  {{paid}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Balanced Fees</h3>
+                        </div>
+                        <div class="panel-body">
+                            <i class="fa fa-inr" aria-hidden="true"></i> {{pending}} 
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="w3-center">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-cogs" aria-hidden="true"></i>  Reconfigure installments</button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Configure installments :  {{studentInfo[0].payment_Mode}}</h4>
+                            </div>
+
+
+                            <div class="modal-body col-md-12">
+                                
+                                    <!-- Cheque Details Start -->
+                                <div class="cheque" ng-show="studentInfo[0].payment_Mode=='cheque'">
+
+                                    <div class="well well-sm col-md-12" align="center">
+                                        <div class="well well-sm col-md-12 w3-gray" align="center">Cheque Details</div>
+
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Account Holder Name</label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAccountHolderName" ng-value="studentInfo[0].ChequeAccountHolderName">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Name Of Bank</label>
+                                                <input readonly="true" type="text" class="form-control input-sm cap" ng-model="studentInfo[0].ChequeNameOfBank" ng-value="studentInfo[0].ChequeNameOfBank">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Branch Name</label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeBranchName" ng-value="studentInfo[0].ChequeBranchName">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="well-sm">Paid</div>
+                         			<!-- paid starts -->
+
+                                    <div class="well well-sm col-lg-12" ng-repeat="n in [1,2,3,4,5] | limitTo : studentInfo[0].NoOfInstallment" ng-if="studentInfo[0].ChequeStatus[$index]=='Paid'">
+                                        <div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Cheque Number</label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeNumber[$index]" ng-value="studentInfo[0].ChequeNumber[$index]">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Cheque Date</label>
+                                                    <input readonly="true" class="w3-input w3-border from" ng-model="studentInfo[0].ChequeDate[$index]" type="text" ng-value="studentInfo[0].ChequeDate[$index]" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Cheque Amount</label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAmount[$index]" ng-value="studentInfo[0].ChequeAmount[$index]">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Status</label>
+                                                <select readonly="true" class="form-control" id="select" ng-model="studentInfo[0].ChequeStatus[$index]" ng-value="studentInfo[0].ChequeStatus[$index]">
+                                                   <option disabled selected value> -- select an option -- </option>
+                                                    <option>Paid</option>
+                                                    <option>Pending</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- paid ends -->
+                                    <!-- pending start -->
+                                    <div class="well-sm">Pending</div>
+
+                                    <div class="well well-sm col-lg-12" ng-repeat="n in [1,2,3,4,5] | limitTo : studentInfo[0].NoOfInstallment" ng-if="studentInfo[0].ChequeStatus[$index]=='Pending'">
+                                        <div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Cheque Number</label>
+                                                <input type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeNumber[$index]" ng-value="studentInfo[0].ChequeNumber[$index]">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Cheque Date</label>
+                                                    <input class="w3-input w3-border from" ng-model="studentInfo[0].ChequeDate[$index]" type="text" ng-value="studentInfo[0].ChequeDate[$index]" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Cheque Amount</label>
+                                                <input type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAmount[$index]" ng-value="studentInfo[0].ChequeAmount[$index]">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3">
+                                            <div class="col-lg-10">
+                                                <label> Status</label>
+                                                <select class="form-control" id="select" ng-model="studentInfo[0].ChequeStatus[$index]" ng-value="studentInfo[0].ChequeStatus[$index]">
+                                                    <option>Paid</option>
+                                                    <option>Pending</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <!-- pending ends-->
+
+                                </div>
+
+                                <!-- Cheque Ends -->
+
+
+                                <!-- DD details Start -->
+
+                                <div class="dd" ng-show="studentInfo[0].payment_Mode=='dd'">              
+
+                                    <div class="well well-sm col-md-12" align="center">
+                                        <div class="col-lg-12 text-center w3-gray">Installment : 1</div>
+
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Name Of Bank</label>
+                                                <input readonly="true" type="text" class="form-control input-sm cap" ng-model="studentInfo[0].ddNameOfBank" ng-value="studentInfo[0].ddNameOfBank">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Branch Name</label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ddBranchName" ng-value="studentInfo[0].ddBranchName">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> DD Number </label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ddNumber" ng-value="studentInfo[0].ddNumber">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> DD Date</label>
+                                                <datepicker  date-format="dd/MM/yyyy">
+                                                    <input readonly="true" class="w3-input w3-border from" ng-model="studentInfo[0].ddDate" type="text" ng-value="studentInfo[0].ddDate" >
+                                                </datepicker>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> DD Amount</label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ddAmount" ng-value="studentInfo[0].ddAmount">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Status</label>
+                                                <select readonly="true" class="form-control" id="select" ng-model="studentInfo[0].ddStatus" ng-value="studentInfo[0].ddStatus">
+                                                    <option>Paid</option>
+                                                    <option>Pending</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="chequeHeader" ng-show="studentInfo[0].NoOfInstallment > 1">
+                                        <div class="well well-sm col-md-12" align="center">
+                                            <div class="well well-sm col-md-12 w3-gray" align="center">Cheque Details</div>
+
+                                            <div class="form-group col-md-4 col-sm-4">
+                                                <div class="col-lg-10">
+                                                    <label> Account Holder Name </label>
+                                                    <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAccountHolderName" ng-value="studentInfo[0].ChequeAccountHolderName">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-4">
+                                                <div class="col-lg-10">
+                                                    <label> Name Of Bank</label>
+                                                    <input readonly="true" type="text" class="form-control input-sm cap" ng-model="studentInfo[0].ChequeNameOfBank" ng-value="studentInfo[0].ChequeNameOfBank">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-4">
+                                                <div class="col-lg-10">
+                                                    <label> Branch Name</label>
+                                                    <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeBranchName" ng-value="studentInfo[0].ChequeBranchName">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- paid starts -->
+                                    <div class="well well-sm col-lg-12" ng-repeat="ddn in [2,3,4,5,6] | limitTo : studentInfo[0].NoOfInstallment" ng-if="$index > 0 && studentInfo[0].ChequeStatus[$index] == 'Paid'">
+                                    	<div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Number </label>
+                                    			<input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeNumber[$index]" ng-value="studentInfo[0].ChequeNumber[$index]">
+                                    		</div>
+                                    	</div>
+
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Date</label>
+                                    				<input readonly="true" class="w3-input w3-border" ng-model="studentInfo[0].ChequeDate[$index]" type="text" ng-value="studentInfo[0].ChequeDate[$index]" >
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Amount</label>
+                                    			<input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAmount[$index]" ng-value="studentInfo[0].ChequeAmount[$index]">
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Status</label>
+                                    			<select readonly="true" class="form-control" id="select" ng-model="studentInfo[0].ChequeStatus[$index]" ng-value="studentInfo[0].ChequeStatus[$index]">
+                                    				<option>Paid</option>
+                                    				<option>Pending</option>
+                                    			</select>
+                                    		</div>
+                                    	</div>
+                                    </div>
+                                     <!-- paid ends -->
+
+                                     <!-- pending starts -->
+
+                                    <div class="well-sm">Pending</div>
+
+ 									<div class="well well-sm col-lg-12" ng-repeat="ddn in [2,3,4,5,6] | limitTo : studentInfo[0].NoOfInstallment" ng-if="$index > 0 && studentInfo[0].ChequeStatus[$index] == 'Pending'">
+                                    	<div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Number </label>
+                                    			<input type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeNumber[$index]" ng-value="studentInfo[0].ChequeNumber[$index]">
+                                    		</div>
+                                    	</div>
+
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Date</label>
+                                    			<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+                                    				<input class="w3-input w3-border from" ng-model="studentInfo[0].ChequeDate[$index]" type="text" ng-value="studentInfo[0].ChequeDate[$index]" >
+                                    			</datepicker>
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Amount</label>
+                                    			<input type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAmount[$index]" ng-value="studentInfo[0].ChequeAmount[$index]">
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Status</label>
+                                    			<select class="form-control" id="select" ng-model="studentInfo[0].ChequeStatus[$index]" ng-value="studentInfo[0].ChequeStatus[$index]">
+                                    				<option>Paid</option>
+                                    				<option>Pending</option>
+                                    			</select>
+                                    		</div>
+                                    	</div>
+                                    </div>
+
+                                     <!-- pending ends -->
+
+                                </div>
+
+                                <!-- DD details End -->
+
+
+                                <!-- cash details start -->
+                                <div class="cash" ng-show="studentInfo[0].payment_Mode=='cash'">              
+
+                                    <div class="well well-sm col-md-12" align="center">
+                                        <div class="col-lg-12 text-center w3-gray">Installment : 1</div>
+
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Date</label>
+                                                <datepicker readonly="true"  date-format="dd/MM/yyyy">
+                                                    <input class="w3-input w3-border from" ng-model="studentInfo[0].ddDate" type="text" ng-value="studentInfo[0].ddDate" >
+                                                </datepicker>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4" >
+                                            <div class="col-lg-10" >
+                                                <label> Amount</label>
+                                                <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ddAmount" ng-value="studentInfo[0].ddAmount">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-4">
+                                            <div class="col-lg-10">
+                                                <label> Status</label>
+                                                <select readonly="true" class="form-control" id="select" ng-model="studentInfo[0].ddStatus" ng-value="studentInfo[0].ddStatus">
+                                                    <option>Paid</option>
+                                                    <option>Pending</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="chequeHeader" ng-show="studentInfo[0].NoOfInstallment > 1">
+                                        <div class="well well-sm col-md-12" align="center">
+                                            <div class="well well-sm col-md-12 w3-gray" align="center">Cheque Details</div>
+                                            <div class="form-group col-md-4 col-sm-4">
+                                                <div class="col-lg-10">
+                                                    <label> Account Holder Name </label>
+                                                    <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAccountHolderName" ng-value="studentInfo[0].ChequeAccountHolderName">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-4">
+                                                <div class="col-lg-10">
+                                                    <label> Name Of Bank</label>
+                                                    <input readonly="true" type="text" class="form-control input-sm cap" ng-model="studentInfo[0].ChequeNameOfBank" ng-value="studentInfo[0].ChequeNameOfBank">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-4">
+                                                <div class="col-lg-10">
+                                                    <label> Branch Name</label>
+                                                    <input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeBranchName" ng-value="studentInfo[0].ChequeBranchName">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- paid start -->
+                                    <div class="well well-sm col-lg-12" ng-repeat="cn in [2,3,4,5,6] | limitTo : studentInfo[0].NoOfInstallment" ng-if="$index > 0 && studentInfo[0].ChequeStatus[$index] == 'Paid'">
+                                    	<div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Number </label>
+                                    			<input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeNumber[$index]" ng-value="studentInfo[0].ChequeNumber[$index]">
+                                    		</div>
+                                    	</div>
+
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Date</label>
+                                    				<input readonly="true" class="w3-input w3-border from" ng-model="studentInfo[0].ChequeDate[$index]" type="text" ng-value="studentInfo[0].ChequeDate[$index]" >
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Amount</label>
+                                    			<input readonly="true" type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAmount[$index]" ng-value="studentInfo[0].ChequeAmount[$index]">
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Status</label>
+                                    			<select readonly="true" class="form-control" id="select" ng-model="studentInfo[0].ChequeStatus[$index]" ng-value="studentInfo[0].ChequeStatus[$index]">
+                                    				<option>Paid</option>
+                                    				<option>Pending</option>
+                                    			</select>
+                                    		</div>
+                                    	</div>
+                                    </div>
+
+                                    <!-- paid ends -->
+                                    <div class="well-sm">Pending</div>
+                                    <!-- pending starts -->
+                                    <div class="well well-sm col-lg-12" ng-repeat="cn in [2,3,4,5,6] | limitTo : studentInfo[0].NoOfInstallment" ng-if="$index > 0 && studentInfo[0].ChequeStatus[$index] == 'Pending'">
+                                    	<div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Number </label>
+                                    			<input type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeNumber[$index]" ng-value="studentInfo[0].ChequeNumber[$index]">
+                                    		</div>
+                                    	</div>
+
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Date</label>
+                                    			<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+                                    				<input class="w3-input w3-border from" ng-model="studentInfo[0].ChequeDate[$index]" type="text" ng-value="studentInfo[0].ChequeDate[$index]" >
+                                    			</datepicker>
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Cheque Amount</label>
+                                    			<input type="text" class="form-control input-sm" ng-model="studentInfo[0].ChequeAmount[$index]" ng-value="studentInfo[0].ChequeAmount[$index]">
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group col-md-3 col-sm-3">
+                                    		<div class="col-lg-10">
+                                    			<label> Status</label>
+                                    			<select class="form-control" id="select" ng-model="studentInfo[0].ChequeStatus[$index]" ng-value="studentInfo[0].ChequeStatus[$index]">
+                                    				<option>Paid</option>
+                                    				<option>Pending</option>
+                                    			</select>
+                                    		</div>
+                                    	</div>
+                                    </div>
+
+                                    <!-- pending ends -->
+
+                                </div>
+                                <!-- cash details end -->
+ 
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" ng-click="saveEditedFees();" data-dismiss="modal">Save</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="container col-md-4">
+                <ul class="list-group">
+                    <li class="list-group-item"> Class | Board :  {{studentInfo[0].BoardName}}   </li>
+                    <li class="list-group-item"> Admission Date :{{studentInfo[0].admissiondate}} </li>
+                    <li class="list-group-item"> Fees     :{{studentInfo[0].fees}} </li>
+                    <li class="list-group-item">Discount  :{{studentInfo[0].discount}} </li>
+                    <li class="list-group-item">Total fees :{{studentInfo[0].total}} </li>
+                </ul> 
+
+            </div>
+
+
+        </div>
+
+
+
+
+      <!-- <div class="tab-pane" id="6a">
+        <div class="container col-md-4">
+          <ul class="list-group">
+            <li class="list-group-item"> Enquired On :  {{studentInfo[0].enqDate}} </li>
+            <li class="list-group-item"> Enquired By :  {{enquiryperson}}  </li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="tab-pane" id="5a">
+        <h3>This is academics tab</h3>
+      </div> -->
+
+      <div class="tab-pane" id="3a">
+        <h3>Coming Soon</h3>
+      </div>
+
+      <div class="tab-pane" id="4a">
+        <h3>Coming Soon</h3>
+      </div>
+
+      <div class="tab-pane" id="2a">
+        <div ng-show="showeditables=='true' && editstudentflagstatus"><button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-right" ng-click="editStudentProfileStatus()"><i class="fa fa-pencil" aria-hidden="true"></i></button></div>
+         <div ng-show="!editstudentflagstatus"><button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-right" ng-click="submitStudentProfile()">SUBMIT</button></div>
+        <div>                 
+          <div class="container col-md-6">
+            <br>
+            <br>
+            <table class="table table-striped table-bordered">
+              <tbody>
+                <tr> <td width="33%"><strong>DOB :</strong></td>
+                  <td><span ng-show="editstudentflagstatus">{{studentInfo[0].dob}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="dob" ng-model="studentInfo[0].dob"></td>
+                </tr>
+
+                <tr> <td width="33%"><strong>Center :</strong></td><td> {{studentInfo[0].Center}}</td> </tr>
+
+                <tr> <td width="33%"><strong>School Name : </strong></td>
+                <td><span ng-show="editstudentflagstatus">{{studentInfo[0].schoolName}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="schoolname" ng-model="studentInfo[0].schoolName"></td> </tr>
+
+                <tr> <td width="33%"><strong>Student Mobile : </strong></td>
+                <td><span ng-show="editstudentflagstatus">{{studentInfo[0].studentMobile}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="schoolname" ng-model="studentInfo[0].studentMobile"></td> </tr>
+
+                <tr> <td width="33%"><strong>Fathers Name :</strong></td><td>
+                  <span ng-show="editstudentflagstatus">{{studentInfo[0].fatherName}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="fathername" ng-model="studentInfo[0].fatherName"></td></tr>
+
+                <tr> <td width="33%"><strong>Fathers Email:</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].fatherMail}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="fatherMail" ng-model="studentInfo[0].fatherMail"></td> </tr>
+
+                <tr> <td width="33%"><strong>Fathers Mobile:</strong></td><td>
+                  <span ng-show="editstudentflagstatus">{{studentInfo[0].fatherMobile}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="fathermobile" ng-model="studentInfo[0].fatherMobile"></td> </tr>
+
+                <tr> <td width="33%"><strong>Fathers Occupation :</strong></td><td> <span ng-show="editstudentflagstatus">{{studentInfo[0].fatherOcc}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="fatheroc" ng-model="studentInfo[0].fatherOcc"></td> </tr>
+
+                <tr> <td width="33%"><strong>Father Ofc Address :</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].fatherOfficeAddress}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="fatheroffadd" ng-model="studentInfo[0].fatherOfficeAddress"></td> </tr>
+
+
+
+                <tr> <td width="33%"><strong>City :</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].city}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="studcity" ng-model="studentInfo[0].city"></td> </tr>
+
+              </tbody>
+            </table>           
+          </div>
+
+          <br>
+          <br>
+          <div class="container col-md-6">
+            <table class="table table-striped table-bordered">
+              <tbody>
+                <tr> <td width="33%"><strong>Gender :</strong></td><td>{{studentInfo[0].gender}}</td> </tr>
+
+                <tr> <td width="33%"><strong>Batch :</strong></td><td> {{studentInfo[0].Batch}}</td> </tr>
+
+                <tr> <td width="33%"><strong>School Timing : </strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].schoolTiming}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="schooltym" ng-model="studentInfo[0].schoolTiming"></td> </tr>
+
+                <tr> <td width="33%"><strong>Mothers Name :</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].motherName}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="mothername" ng-model="studentInfo[0].motherName"></td> </tr>
+
+                <tr> <td width="33%"><strong>Mothers Email:</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].motherMail}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="mommail" ng-model="studentInfo[0].motherMail"></td> </tr>
+
+                <tr> <td width="33%"><strong>Mothers Mobile:</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].motherMobile}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="mommo" ng-model="studentInfo[0].motherMobile"></td> </tr>
+
+                <tr> <td width="33%"><strong>Mothers Occupation :</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].motherOcc}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="motherocc" ng-model="studentInfo[0].motherOcc"></td> </tr>
+
+                <tr> <td width="33%"><strong>Mother Ofc Address :</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].motherOfficeAddress}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="motheroffadd" ng-model="studentInfo[0].motherOfficeAddress"></td> </tr>
+
+                <tr> <td width="33%"><strong>Pin Code:</strong></td><td><span ng-show="editstudentflagstatus">{{studentInfo[0].pincode}}</span><input ng-show="!editstudentflagstatus" style="width: 100%" type="text" name="pincode" ng-model="studentInfo[0].pincode"></td> </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+
+            <!--  <div ng-show="editstudent">                 
+          <div class="container col-md-6">
+            <br>
+            <br>
+            <table class="table table-striped table-bordered">
+              <tbody>
+                <tr> <td width="33%"><strong>DOB :</strong></td>
+                  <td><span ng-show="!editstudentflagstatus">{{studentInfo[0].dob}}</span><input ng-show="editstudentflagstatus" style="width: 100%" type="text" name="dob" ng-model="studentInfo[0].dob"></td>
+                </tr>
+                <tr> <td width="33%"><strong>Center :</strong></td><td> {{studentInfo[0].Center}}</td> </tr>
+                <tr> <td width="33%"><strong>School Name : </strong></td><td>{{studentInfo[0].schoolName}}</td> </tr>
+                <tr> <td width="33%"><strong>Fathers Name :</strong></td><td>{{studentInfo[0].fatherName}}</td> </tr>
+                <tr> <td width="33%"><strong>Fathers Email:</strong></td><td>{{studentInfo[0].fatherMail}}</td> </tr>
+                <tr> <td width="33%"><strong>Fathers Mobile:</strong></td><td>{{studentInfo[0].fatherMobile}}</td> </tr>
+                <tr> <td width="33%"><strong>Fathers Occupation :</strong></td><td>{{studentInfo[0].fatherOcc}}</td> </tr>
+                <tr> <td width="33%"><strong>Father Ofc Address :</strong></td><td>{{studentInfo[0].fatherOfficeAddress}}</td> </tr>
+                <tr> <td width="33%"><strong>City :</strong></td><td>{{studentInfo[0].city}}</td> </tr>
+              </tbody>
+            </table>           
+          </div>
+
+          <br>
+          <br>
+          <div class="container col-md-6">
+            <table class="table table-striped table-bordered">
+              <tbody>
+                <tr> <td width="33%"><strong>Gender :</strong></td><td>{{studentInfo[0].gender}}</td> </tr>
+                <tr> <td width="33%"><strong>Batch :</strong></td><td> {{studentInfo[0].Batch}}</td> </tr>
+                <tr> <td width="33%"><strong>School Timing : </strong></td><td>{{studentInfo[0].schoolTiming}}</td> </tr>
+                <tr> <td width="33%"><strong>Mothers Name :</strong></td><td>{{studentInfo[0].motherName}}</td> </tr>
+                <tr> <td width="33%"><strong>Mothers Email:</strong></td><td>{{studentInfo[0].motherMail}}</td> </tr>
+                <tr> <td width="33%"><strong>Mothers Mobile:</strong></td><td>{{studentInfo[0].motherMobile}}</td> </tr>
+                <tr> <td width="33%"><strong>Mothers Occupation :</strong></td><td>{{studentInfo[0].motherOcc}}</td> </tr>
+                <tr> <td width="33%"><strong>Mother Ofc Address :</strong></td><td>{{studentInfo[0].motherOfficeAddress}}</td> </tr>
+                <tr> <td width="33%"><strong>Pin Code:</strong></td><td>{{studentInfo[0].pincode}}</td> </tr>
+              </tbody>
+            </table>
+          </div>
+        </div> -->
+
+
+      </div>
+    </div>
+  </div>

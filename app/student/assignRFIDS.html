@@ -1,0 +1,299 @@
+<style type="text/css">
+	.studentName:hover {color: white; background-color: #5A827F; padding: 5px 11px; border: 2px solid #5a827f;}
+</style>
+<!-- <script type="text/javascript">
+	$(document).on('click', '.open-login', function(event) {
+		event.preventDefault();
+		$('#modal-login').iziModal('open');
+	});
+	$('#modal-login').iziModal({title: 'Login',subtitle: 'Login for more details',headerColor: '#f44274',top: 70,appendTo: '.body',closeButton: true,transitionIn:'flipInX', icon:'fa fa-sign-in',iconColor: '#fff',});
+</script> -->
+<div ng-init="getUsertypes()">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer" aria-hidden="true"></i> </a>
+          </li>
+          <li>
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+                <li ng-show="loggedIn"><a href="#studentattendance">Attendance   </a></li>
+            </ul>
+          </li>
+         
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff Profile</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+            </ul>
+        </li> 
+        <li>
+            <a href="#feeStructure"><i class="fa fa-money" aria-hidden="true"></i> fees</a>
+          </li>
+           <li class="dropdown active">
+            <a href="#assignrfids" ><i class="fa fa-money" aria-hidden="true"></i> Assign RFIDS</a>
+          </li>
+          
+        <!-- <li ng-show="loggedIn" class="dropdown">
+          <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Schedule <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#createSchedule" target="_self">Yearly Schedule</a></li>
+          </ul>
+        </li> -->              
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- <li ng-show="loggedIn" class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#feeSetting">Fee Structure</a></li>
+              <li class="divider"></li>
+              <li><a href="#addstaff">Add New Staff</a></li>
+              <li class="divider"></li>
+              <li><a href="#newcitysettings">Add New city and branch</a></li>
+            </ul>
+          </li> -->
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+          <!-- <li><a class="open-login" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li> -->
+          <!-- <li><a href="" target="_self" ng-click="logout('/')" ng-show="loggedIn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li> -->
+          <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div>
+<div class="container-fluid" style="margin-top:75px">
+	<div ng-init="getStudentsforrfids();reverse=true;f={};count=0;">
+			<!-- <a data-toggle="tooltip" title="Add New Student" class="kc_fab_main_btn" href="#enquiryForm"><i style="padding: 10px;" class="fa fa-plus fa-3x" aria-hidden="true"></i></a> -->
+
+			<!-- <div class="alert alert-info">
+		      <strong>Students - {{batchname}} {{loginData.staffname}}</strong>
+		    </div> -->
+	
+		    <!-- <div style="padding: 15px" class="w3-indigo w3-text-white col-md-12 w3-margin-bottom">
+		    	<div align="left">
+		    		<span style="font-size: 18px">Students - {{batchname}}</span>
+		    	</div>
+		    </div> -->
+		    <!-- <span style="font-size: 35px; margin-left: 45%"><i class="fa fa-university" aria-hidden="true"></i> {{batchname}}</span> -->
+			<!-- <div class="container" style="margin-top: 25px">
+				<button class="w3-button w3-round-large w3-blue w3-right"><i class="fa fa-plus" aria-hidden="true"></i> Add New Student </button>
+			</div> -->
+			<!-- <div class="checkbox">
+				<label>
+					<input type="checkbox" class="check" id="checkAll" ng-click="checkAll()" ng-model="selectAll"> Check All
+				</label>
+			</div> -->
+			<div id="section1" ng-show="loggedIn">
+				<div ng-show="loggedIn" class="row">
+				<div class="col-sm-9 col-md-9" >
+					<div  ng-if="studentList.length">
+					<table class="table table-hover table-condensed">
+	                <thead class="alert-success">
+	                    <tr>
+	                    	
+	                        <th >Roll No.</span></th>
+	                        <th ng-click="myOrderBy='firstName';reverse=!reverse">Name<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+	                        <th ng-click="myOrderBy='studentMobile'; reverse=!reverse">Mobile <span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+	                        <th ng-click="myOrderBy='Email' ;reverse=!reverse">Email <span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+	                        <th><i class="fa fa-cog fa-spin fa-2x"></i></th>
+	                   		
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                	<!-- <tr><td>demo</td></tr> -->
+	                	 <tr>
+	                    	
+                        <td></td>
+                        <td><input ng-model="f.firstName" placeholder="search by name"></td>
+                        <td><input ng-model="f.studentMobile" placeholder="search by mobile no"></td>
+                        <td><input ng-model="f.Email" placeholder="search by email"></td> 
+                        
+	                        
+	                    </tr> 
+	                    
+	                    <tr ng-repeat="x in studentList |filter:{firstName: f.firstName, studentMobile: f.studentMobile,Email:f.Email,schoolName:schoolname,gender:selectgender,optionallang:Optionallang}|orderBy:myOrderBy:reverse">
+	                    	<td>{{$index+1}}</td>
+	                    	<!-- gender -->
+	                        <td>{{x.firstName}} {{x.middleName}} {{x.lastName}}</td>
+	                    	<td>{{x.studentMobile}}</td>
+	                        <td style="text-transform: lowercase;">{{x.Email | lowercase}}</td>
+	                        <td><a style="text-decoration : none" class="btn btn-success btn-sm" data-toggle="tooltip" title="View Student Profile" href="#studentProfile" ng-click="saveStudentId(x._id)"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+	                    </tr>
+	                </tbody>
+	            	</table>
+				</div>
+				<div ng-if="!studentList.length && !loading">
+	                <h1 class="w3-center"><strong>No student Present</strong></h1>
+	            </div>
+	            <loading class="w3-center"></loading>
+
+	            
+	            </div>
+
+				<div style="border: 3px solid green; padding: 10px;border-radius: 5px;" class="col-sm-3 col-md-3">
+					<div class="w3-center">
+		            	<i style="font-size: 40px" class="fa fa-user" aria-hidden="true"></i> <span style="font-size: 30px"><br>{{batchname}}</span><hr>
+		          	</div>
+				
+					<br>
+					<br>
+
+					<a href="#student" target="_self"><button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-left" data-toggle="tooltip" title="Clear Filters" >Clear All Filters</button></a>
+					<a data-toggle="modal" data-target="#assignRFID" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Assign RFIDS</a>
+					<br>
+					
+					<h3>Filter</h3>
+					<div class="form-group">
+						<!-- <label for="select" class="col-lg-2 control-label"></label> -->
+						<div class="col-lg-10 col-md-10">
+							
+							<h4>By School</h4>
+							
+							<select class="form-control" id="select"  ng-model="schoolname" > 				
+								<option value="">Select School</option>
+								<option  ng-repeat="x in studentList | orderBy:'schoolName' as Schools" data-ng-if="Schools[$index-1].schoolName != x.schoolName">{{x.schoolName}}</option>
+							</select>							
+						</div>
+						<br>
+
+						<div class="col-lg-10 col-md-10">
+							
+							<h4>By Gender</h4>
+							
+							<select class="form-control" id="select"  ng-model="selectgender" > 
+								<option value="">Select Gender</option>
+								<option ng-repeat="x in studentList | orderBy:'gender' as sortedSchools" data-ng-if="sortedSchools[$index-1].gender != x.gender">{{x.gender}}</option>
+								
+							</select>
+							
+						</div>
+
+						<div class="col-lg-10 col-md-10">
+							
+							<h4>By Optional Language</h4>
+							
+							<select class="form-control" id="Optionall"  ng-model="Optionallang" > 
+								<option value="">Select Optional Langauge</option>
+								<option ng-repeat="x in studentList | orderBy:'optionallang' as lang" data-ng-if="lang[$index-1].optionallang != x.optionallang">{{x.optionallang}}</option>
+								
+							</select>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+			<div style="margin-left: 15%" id="section2" ng-show="!loggedIn">
+				<div class="row">
+				  <div style="margin-right: 16px; text-align: justify; text-transform: capitalize;" ng-repeat="x in studentList" class="col-sm-3 col-md-3 w3-padding w3-container w3-border"><strong> {{x.RollNo}}. {{x.firstName}} {{x.middleName}} {{x.lastName}}</strong></div>
+				</div>
+				<!-- <div style="margin-left: 30%" class="w3-row-padding">
+						<ul class="w3-ul w3-large w3-card" style="width:50%">
+						    <li ng-repeat="x in studentList">{{$index+1}}. {{x.firstName}} {{x.middleName}} {{x.lastName}}</li>
+						</ul>
+			    </div> -->
+			</div>
+			
+	</div>
+
+			<!-- Modal -->
+  <div class="modal fade" id="loginModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Login</h4>
+        </div>
+        <div class="modal-body">
+        	<form ng-submit="doLogin()">
+		          <label><b>Username</b></label><br>
+		          <input class="form-control" style="width: 100%" ng-model="username" type="text" placeholder="Username" name="username" required><br>
+		          <label><b>Password</b></label><br>
+		          <input class="form-control" style="width: 100%" ng-model="password" type="password" placeholder="Password" name="psw" required><br>
+		          <label><b>User Type</b></label><br>
+		          <select ng-model="usertype" class="form-control">
+		          	  <option value="">Select User Type</option>
+		          	<option style="text-transform: capitalize;" ng-repeat="usertypename in usertypes" value="{{usertypename.typeid}}"> {{usertypename.typename}} </option>
+                  </select>
+
+<!-- 
+ 	<select ng-model="usertype" required="required"
+  ng-options="option.usertypename as option.name for usertypename in usertypes" >
+    <option style="display:none" value="">select a type</option>
+</select>  -->
+
+
+                  <br><br>
+		          <button class="btn btn-primary" type="submit" >Login</button>
+      		</form>
+        </div>
+      
+      </div>
+      
+    </div>
+  </div>
+
+
+
+   <div class="modal fade" id="assignRFID" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Assign RFID</h4>
+        </div>
+        <div class="modal-body">
+        	<form ng-submit="assignRFID()">
+		          <label><b>Student</b></label><br>
+		          <input class="form-control" style="width: 100%" ng-model="username" type="text" placeholder="Username" name="username" required><br>
+		          <label><b>RFID</b></label><br>
+		          <input class="form-control" style="width: 100%" ng-model="password" type="password" placeholder="Password" name="psw" required><br>
+		          <select ng-model="usertype" class="form-control">
+		          	  <option value="">Select User Type</option>
+		          	<option style="text-transform: capitalize;" ng-repeat="usertypename in usertypes" value="{{usertypename.typeid}}"> {{usertypename.typename}} </option>
+                  </select>
+
+<!-- 
+ 	<select ng-model="usertype" required="required"
+  ng-options="option.usertypename as option.name for usertypename in usertypes" >
+    <option style="display:none" value="">select a type</option>
+</select>  -->
+
+
+                  <br><br>
+		          <button class="btn btn-primary" type="submit" >Login</button>
+      		</form>
+        </div>
+      
+      </div>
+      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<loading style="position: fixed;top: 50%;left:48%;"></loading>
+<div class="panel panel-success " style="margin-right: 20%;margin-left: 20%;">
+  <div class="panel-heading">
+    <h2 class="panel-title text-center">Assign RFID Staff</h2>
+  </div>
+  <div class="panel-body" ng-init="getAllStaffRfid();">
+    <div class="form-group col-md-4 col-sm-4">
+      <label for="staff"> Staff</label>
+      <select class="form-control cap" ng-model="staff_id">
+        <div ng-if="staffList.length"> 
+          <option ng-repeat="staff in staffList" value="{{staff._id}}">{{staff.fullname}}</option>
+        </div>
+      </select>
+    </div>
+
+    <div class="form-group col-md-4 col-sm-4">
+      <label for="rfid"> RFID</label>
+      <input type="text" class="form-control" ng-model="rfid" placeholder="RFID TAG" required />
+    </div>
+  </div>
+  <div class="panel-footer">
+  	<div align="right"><button class="btn btn-success" ng-click="assignStaffRfid();">Assign</button></div>
+  </div>
+</div>

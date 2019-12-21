@@ -1,0 +1,234 @@
+<!-- <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <html>
+    <head>
+      <title> ESP </title>
+       <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+        <script src="../assets/js/angular.min.js"></script>
+        <script src="app.js"></script>
+        <script src="../assets/js/jquery-3.1.1.min.js"></script>
+        <script src="../assets/js/bootstrap.min.js"></script>
+         <link rel="icon" type="image/png" href="img/logo.png" >
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+          <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+          <script src="../assets/js/bootstrap-datepicker.js"></script>
+          <link href="../assets/css/datepicker.css" rel="stylesheet">
+            <script src="../assets/js/ui-bootstrap.js"></script>
+<link rel="stylesheet" media="screen" href="css/style.css"></link> 
+            <link href="../assets/css/toastr.css" rel="stylesheet"/>
+            <script src="../assets/js/toastr.js"></script>
+            <script src="../assets/js/waitingfor.js"></script>
+            <style type="text/css"></style> 
+          </head> -->
+          <body >
+            <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#">ESPL</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+                    <li >
+                      <a href="#" ng-click="showeditcities();getCities(); ">Cities </a>
+                    </li>
+                    <li >
+                      <a href="#" ng-click="showeditcityadmins();getCityAdmins(); ">City Admins </a>
+                    </li>
+
+
+                    <li >
+                      <a href="#" ng-click="showeditbranches(); ">Branches </a>
+                    </li>
+                    <li >
+                      <a href="#" ng-click="showeditbranchadmins(); ">Branch Admins </a>
+                    </li>
+                  </ul>
+                  <!-- 
+      <ul class="nav navbar-nav navbar-right"><li><a href="#">Link</a></li></ul> -->
+                </div>
+              </div>
+            </nav>
+            <section ng-show="managecities" >
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                  <div class="form-group" style="display: block;">
+                    <label class="control-label control-label-left col-sm-3" for="field1">City Name</label>
+                    <div class="controls col-sm-9">
+                      <input id="field1" ng-model="cityname" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1">
+                        <span id="errId1" class="error"></span>
+                      </div>
+                    </div>
+                    <div class="form-group" >
+                      <label class="control-label control-label-left col-sm-3" for="field2">District</label>
+                      <div class="controls col-sm-9">
+                        <input id="field2" type="text" ng-model="district" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId2">
+                          <span id="errId2" class="error"></span>
+                        </div>
+                      </div>
+                      <div class="form-group" style="display: block;">
+                        <label class="control-label control-label-left col-sm-3" for="field3">State</label>
+                        <div class="controls col-sm-9">
+                          <input id="field3" type="text" ng-model="state" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3">
+                            <span id="errId3" class="error"></span>
+                          </div>
+                        </div>
+                        <div class="form-group group-inline">
+                          <button id="button5" type="button" class="btn btn-success btn-xs" ng-click="addCity()" style="text-align: center;">Add City</button>
+                        </div>
+                      </div>
+                      <div class="col-md-1"></div>
+                      <div class="col-md-5">
+                        <table  class="table table-condensed">
+                          <thead>
+                            <th> City</th>
+                            <th>District</th>
+                            <th>State</th>
+                          </thead>
+                          <tr ng-repeat="city in cities">
+                            <td> {{city.cityname|titlecase}}  </td>
+                            <td> {{city.district|titlecase}}  </td>
+                            <td> {{city.state|titlecase}}  </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="col-md-1"></div>
+                    </div>
+                  </section>
+                  <section ng-show="managecityadmins" >
+                    <div class="row">
+                                          <div class="col-md-1"></div>
+
+                      <div class="col-md-5">
+                        <div class="form-group" style="display: block;">
+                          <label class="control-label control-label-left col-sm-3" for="field1">Email</label>
+                          <div class="controls col-sm-9">
+                            <input id="field1" ng-model="cityadminemail" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1">
+                              <span id="errId1" class="error"></span>
+                            </div>
+                          </div>
+                          <div class="form-group" >
+                            <label class="control-label control-label-left col-sm-3" for="field2">Mobile</label>
+                            <div class="controls col-sm-9">
+                              <input id="field2" type="text" ng-model="cityadminmobile" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId2">
+                                <span id="errId2" class="error"></span>
+                              </div>
+                            </div>
+                            <div class="form-group" style="display: block;">
+                              <label class="control-label control-label-left col-sm-3" for="field3">User Name</label>
+                              <div class="controls col-sm-9">
+                                <input id="field3" type="text" ng-model="cityadminusername" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3">
+                                  <span id="errId3" class="error"></span>
+                                </div>
+                              </div>
+                              <div class="form-group" style="display: block;">
+                                <label class="control-label control-label-left col-sm-3" for="field3">City</label>
+                                <div class="controls col-sm-9">
+                                  <select ng-model="cityid"  class="form-control">
+                                    <option value="">Select City</option>
+                                    <option ng-repeat="city in cities" value="{{city._id}}"> {{city.cityname}} </option>
+                                  </select>
+                                </div>
+                                <!--  <input id="field3" type="text" ng-model="cityadmincityid" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3"><span id="errId3" class="error"></span></div>
+ -->
+                              </div>
+                              <div class="form-group group-inline">
+                                <button id="button5" type="button" class="btn btn-success btn-xs" ng-click="addCityAdmin()" style="text-align: center;">Add City Admin</button>
+                              </div>
+                            </div>
+                          
+                          <div class="col-md-5">
+                            <table  class="table table-condensed">
+                              <thead>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>City</th>
+                              </thead>
+                              <tr ng-repeat="admin in cityadmins">
+                                <td> {{admin.username|titlecase}}  </td>
+                                <td> {{admin.email|titlecase}}  </td>
+                                <td> {{admin.mobile|titlecase}}  </td>
+                                <td> {{admin.cityname|titlecase}}, {{admin.district|titlecase}}, {{admin.state|titlecase}}  </td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="col-md-1"></div>
+                        </div>
+                      </section>
+
+
+
+
+
+
+                        <section ng-show="managebranches"  >
+                    <div class="row">
+                    <div class="col-md-1"></div>
+
+                      <div class="col-md-5">
+                        <div class="form-group" style="display: block;">
+                          <label class="control-label control-label-left col-sm-3" for="field1">Branch Name</label>
+                          <div class="controls col-sm-9">
+                            <input id="field1" ng-model="branchname" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1">
+                              <span id="errId1" class="error"></span>
+                            </div>
+                          </div>
+                          <div class="form-group" >
+                            <label class="control-label control-label-left col-sm-3" for="field2">Address</label>
+                            <div class="controls col-sm-9">
+                              <input id="field2" type="text" ng-model="branchaddress" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId2">
+                                <span id="errId2" class="error"></span>
+                              </div>
+                            </div>
+                            <div class="form-group" style="display: block;">
+                              <label class="control-label control-label-left col-sm-3" for="field3">Contact</label>
+                              <div class="controls col-sm-9">
+                                <input id="field3" type="text" ng-model="branchcontact" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3">
+                                  <span id="errId3" class="error"></span>
+                                </div>
+                              </div>
+                              <div class="form-group" style="display: block;">
+                                <label class="control-label control-label-left col-sm-3" for="field3">City</label>
+                                <div class="controls col-sm-9">
+                                  <select ng-model="cityid"  class="form-control">
+                                    <option value="">Select City</option>
+                                    <option ng-repeat="city in cities" value="{{city._id}}"> {{city.cityname}} </option>
+                                  </select>
+                                </div>
+                                <!--  <input id="field3" type="text" ng-model="cityadmincityid" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3"><span id="errId3" class="error"></span></div>
+ -->
+                              </div>
+                              <div class="form-group group-inline">
+                                <button id="button5" type="button" class="btn btn-success btn-xs" ng-click="addBranch()" style="text-align: center;">Add Branch</button>
+                              </div>
+                            </div>
+                          
+                          <div class="col-md-5">
+                            <table  class="table table-condensed">
+                              <thead>
+                                <th>Name</th>
+                                <th>City</th>
+                                <th>Address</th>
+                                <th>Contact</th>
+                              </thead>
+                              <tr ng-repeat="branch in branches">
+                                <td> {{branch.branchname|titlecase}}  </td>
+                                <td> {{branch.cityname|titlecase}}  </td>
+                                <td> {{branch.address|titlecase}}  </td>
+                                <td> {{branch.contact|titlecase}}</td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="col-md-1"></div>
+                        </div>
+                      </section>
+                    </body>
+                  </html>

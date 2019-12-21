@@ -1,0 +1,391 @@
+
+<style>
+/*input[type="radio"] {
+    stafflist.daysavailable=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    visibility: hidden;
+}*/
+.segmented-control {
+    padding: 10px;
+    margin: 10px;
+}
+
+input[type="radio"]:checked + label {
+    background-color: #027AFB;
+    color: white;
+}
+
+.segmented-control label {
+    border-top: 1px solid #027AFB;
+    border-bottom: 1px solid #027AFB;
+    padding: 10px 30px;
+    margin: -4px;
+    margin-left: -14px;
+    color: #027AFB;
+}
+
+.sc-label:first-of-type {
+    border-left: 1px solid #027AFB;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: 1px solid #027AFB;
+}
+
+.sc-label:last-of-type {
+    border-right: 1px solid #027AFB;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-left: 1px solid #027AFB;
+}
+
+.segmented-control input[type="radio"] {
+    visibility: hidden;
+}
+</style>
+
+</head>
+<body>
+    <!-- <h1 class="text-center">MAHESH TUTORIALS</h1> -->
+    <div class="panel panel-primary" style="margin:20px;" ng-init="getCities();">
+        <div class="row panel-heading">
+            <div align="right" class="col-md-5">
+                <img src="assets/images/mtlogo.png" style="height: 15%;width: 15%;">
+            </div>
+            <div class="col-md-7">
+                <span style="text-transform: capitalize; font-size: 35px;" class="panel-title text-center">EMPLOYEE FORM</span>
+            </div>
+        </div>
+        <div style="background-color: #fff" class="panel-body">
+            <form ng-submit="insertStaff()" name="addStaffForm" class="staffForm" required>
+                <div class="col-md-12 col-sm-12">
+
+                    <div id="fnamediv" class="form-group col-md-4 col-sm-4">
+                        <label for="fname"> First Name* </label>
+                        <input type="text" ng-model="stafflist.fname" class="form-control input-sm" id="fname" placeholder="First Name" ng-value="stafflist.fname" required >
+</div>
+<div id="mnamediv" class="form-group col-md-4 col-sm-4">
+    <label for="mname">Middle Name* </label>
+    <input type="text" ng-model="stafflist.mname" class="form-control input-sm" id="mname" placeholder="Middle Name" ng-value="stafflist.mname" required >
+</div>
+<div id="lnamediv" class="form-group col-md-4 col-sm-4">
+    <label for="lname">Surname* </label>
+    <input type="text" ng-model="stafflist.lname" class="form-control input-sm" id="lname" placeholder="Surname(if any)" ng-value="stafflist.lname" required >
+</div>
+</div>
+<div class="form-group col-md-6 col-sm-6">
+     <label for="gender" class="control-label">Gender* </label>
+    <div class="radio">
+        <label>
+            <input type="radio" ng-model="stafflist.gender" name="gender" id="male" value="male">
+            Male
+        </label>
+    </div>
+    <div class="radio">
+        <label>
+            <input type="radio" ng-model="stafflist.gender" name="gender" id="female" value="female" >
+            Female
+        </label>
+    </div>
+</div>
+
+<div id="dobdiv" class="form-group col-md-6 col-sm-6">
+    <label for="dob" class="control-label">Date of Birth* </label>
+    <datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+        <input class="form-control input-sm" placeholder="(DD/MM/YYYY)" ng-model="stafflist.dob" type="text" id="dob" ng-value="stafflist.dob" required >
+    </datepicker>
+</div>
+
+<div id="emaildiv" class="form-group col-md-6 col-sm-6">
+    <label class="col-lg-3 control-label">Email Address:</label>
+    <input class="form-control input-sm" type="email" name="userEmail" ng-model="stafflist.email" ng-value="stafflist.email" required />
+    <div ng-messages="addStaffForm.userEmail.$error">
+        <div ng-message="email" style="color: red">Your email address is invalid</div>
+    </div>
+</div>
+<div id="staffMobilediv" class="form-group col-md-6 col-sm-6">
+<label class="col-lg-3 control-label">Mobile Number:</label>
+<input class="form-control input-sm" type="number" name="userPhoneNumber" ng-value="stafflist.mobile"  ng-model="stafflist.mobile" ng-minlength="10" ng-maxlength="10" required/>
+<div ng-messages="addStaffForm.userPhoneNumber.$error">
+    <div ng-message="minlength" style="color: red">Must be a valid 10 digit phone number</div>
+    <div ng-message="maxlength" style="color: red">Mobile number must not exceed 10 digit</div>
+</div>
+</div>
+<div id="addressdiv" class="form-group col-md-6 col-sm-6">
+    <label for="address" class="col-lg-2 control-label">Address*</label>
+    <textarea id="address" ng-model="stafflist.address" class="form-control input-sm" rows="3" ng-value="stafflist.address" required ></textarea>
+</div>
+<div id="citydiv" class="form-group col-md-6 col-sm-6">
+    <label for="city" class="col-lg-2 control-label">City*</label>
+    <input type="text" ng-model="stafflist.staffcity" class="form-control input-sm" id="city" placeholder="" ng-value="stafflist.city" required >
+</div>
+<div id="pincodediv" class="form-group col-md-6 col-sm-6">
+    <label for="pincode" class="col-lg-2 control-label">Pincode*</label>
+    <input type="number" name="pincode" ng-minlength="6" ng-maxlength="6"  ng-model="stafflist.pincode" class="form-control input-sm" id="pincode" placeholder="" ng-value="stafflist.pincode" required>
+    <div ng-messages="addStaffForm.pincode.$error">
+        <div ng-message="minlength" style="color: red">Must be a valid 6 digit pincode</div>
+        <div ng-message="maxlength" style="color: red">pincode must not exceed 6 digit</div>
+    </div>
+</div>
+<div id="aadhardiv" class="form-group col-md-6 col-sm-6">
+    <label for="aadhar" class="col-lg-6 control-label">Aadhar Number*</label>
+    <input type="number" ng-model="stafflist.aadhar" name="aadhar" class="form-control input-sm" id="aadhar" placeholder="" ng-value="stafflist.aadhar" ng-minlength="12" ng-maxlength="12" required>
+    <div ng-messages="addStaffForm.aadhar.$error">
+        <div ng-message="minlength" style="color: red">Aadhar number must be 12 digit</div>
+        <div ng-message="maxlength" style="color: red">Aadhar number must not exceed 12 digit</div>
+    </div>
+</div>
+<div id="pandiv" class="form-group col-md-6 col-sm-6">
+    <label for="pan" class="col-lg-6 control-label">Pan*</label>
+    <input type="text" ng-model="stafflist.pan" style="text-transform:uppercase" class="form-control input-sm" id="pan" placeholder="" ng-value="stafflist.pan" required>
+</div>
+<div id="bgdiv" class="form-group col-md-6 col-sm-6">
+    <label for="blood">Blood Group</label>
+    <input type="text" ng-model="stafflist.bg" class="form-control input-sm" id="bg" placeholder="" ng-value="stafflist.bg" required>
+</div>
+<div id="bankdiv" class="form-group col-md-6 col-sm-6">
+    <label for="bank">Bank Account Number</label>
+    <input type="number" ng-model="stafflist.bank" class="form-control input-sm" id="bank" placeholder="" ng-value="stafflist.bank" required>
+</div>
+<div id="banknamediv" class="form-group col-md-6 col-sm-6">
+    <label for="bankName">Bank Name </label>
+    <input type="text" ng-model="stafflist.bankname" class="form-control input-sm" id="bankName" placeholder="" ng-value="stafflist.bankname" required>
+</div>
+<div id="banknamediv" class="form-group col-md-6 col-sm-6">
+    <label for="branch">Bank Branch</label>
+    <input type="text" ng-model="stafflist.bankbranch" class="form-control input-sm" id="branch" placeholder="" ng-value="stafflist.branch" required>
+</div>
+<div id="accountnamediv" class="form-group col-md-6 col-sm-6">
+    <label for="accountname">Account Holder Name</label>
+    <input type="text" ng-model="stafflist.accountname" class="form-control input-sm" id="accountname" placeholder="Account Holder Name" ng-value="stafflist.accountname" required >
+</div> 
+<div id="ifscdiv" class="form-group col-md-6 col-sm-6">
+    <label for="ifsc">IFSC Code</label>
+    <input type="text" ng-model="stafflist.ifsc" class="form-control input-sm" id="ifsc" placeholder="" ng-value="stafflist.ifsc" required>
+</div>
+
+<div class="form-group col-md-6 col-sm-6" >
+  <label  class="col-lg-6 control-label"   for="city">Select City for Mahesh Tutorials</label>
+  <select ng-model="stafflist.cityid" class="form-control" required>
+     <option value="">Select City</option> 
+    <option ng-repeat="city in result1.cities" value="{{city._id}}"> {{city.cityname}} </option>
+  </select>
+</div>
+
+<div id="designation" class="form-group col-md-6 col-sm-6">
+    <label class="col-lg-6 control-label" for="dtype"> Designation</label>
+    <select class="form-control" ng-model="stafflist.designation" required>
+        <option>Director</option>
+        <option>Science Head</option>
+        <option>Accounts Head</option>
+        <option>SSC Head</option>
+        <option>CBSE Head</option>
+        <option>ICSE Head</option>
+        <option>Center Head</option>
+        <option>Center Co-Ordinator</option>
+        <option>Business Developer</option>
+        <option>Marketing Executive</option>
+        <option>Branch Admin</option>
+        <option>Accounts Admin</option>
+        <option>Telecaller</option>
+        <option>Office Assistant</option>
+        <option>Employed Teacher</option>
+        <option>Assistant Teacher</option>
+        <option>Supervisor Teacher</option>
+    </select>
+</div>
+
+<div id="joindatediv" class="form-group col-md-6 col-sm-6">
+    <label for="joindate" class="col-lg-6 control-label">Joining Date* </label>
+    <datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+        <input class="form-control input-sm" ng-model="stafflist.joindate" type="text" id="joindate" ng-value="joindate"  required>
+    </datepicker>
+</div>
+
+<div id="stafftype" class="form-group col-md-6 col-sm-6">
+    <label class="col-lg-6 control-label" for="stype"> Staff Type</label>
+    <select ng-model="stafflist.stafftype" class="form-control" required>
+        <option value="Employee">Employee</option>
+        <option value="Teacher">Teacher</option>
+        <option value="Supervisor">Supervisor</option>
+    </select>
+</div>
+
+<div ng-show="stafflist.stafftype=='Teacher' || stafflist.stafftype=='Supervisor'" id="subdiv" class="form-group col-md-6 col-sm-6">
+    <label for="subject" class="col-lg-6 control-label">Subject</label>
+    <!-- <input type="text" ng-model="stafflist.subject" class="form-control input-sm" id="subject" placeholder="" ng-value="stafflist.subject"> -->
+    <select id="subject" class="form-control input-sm" ng-model="stafflist.subject" multiple>
+        <option>Algebra</option>
+        <option>Geometry</option>
+        <option>Physics</option>
+        <option>Chemistry</option>
+        <option>Biology</option>
+        <option>History</option>
+        <option>Geography</option>
+        <option>Marathi</option>
+        <option>Hindi</option>
+        <option>Sanskrit</option>
+        <option>French</option>
+        <option>English</option>
+        <option>Computer</option>
+        <option>Maths</option>
+    </select>
+</div>
+<!-- <div id="salarydiv" class="form-group col-md-12 col-sm-12">
+    <div class="dropdown" required>
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Salary Type
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li> <a href="" target="_self" data-toggle="modal" data-target="#myModalsalary">Salary</a></li>
+                <li> <a href="" target="_self" data-toggle="modal" data-target="#myModalcontract">Contract-based</a></li>
+            </ul>
+        </div>
+    </div> -->
+
+    <!-- <div id="availablediv" class="form-group col-md-4 col-sm-4">
+      <label for="select">No of days available</label>
+       <multiselect class="form-control" multiple="true"
+        ng-model="selecteddays"
+        options="c for c in days"
+        change="selected()" ></multiselect>
+        <div>
+            {{selecteddays}}
+        </div>
+    </div> -->
+
+<div class="form-group col-md-12 col-sm-12">
+    <label for="select">No of days available</label>
+       <multiselect multiple="true"
+        ng-model="stafflist.daysavailable"
+        options="c for c in days"
+        change="selected()" ></multiselect>
+</div>
+
+
+
+<!--       <select multiple class="form-control" id="select" ng-model="stafflist.daysavailable" data-style="btn-primary" ng-change="selectallfun();" required>
+        <option>Select All</option>
+        <option>Sunday</option> <multiselect class="input-xlarge" multiple="true"
+        ng-model="selecteddays"
+        options="c for c in days"
+        change="selected()" ></multiselect>
+        <div class="well well-small">
+            {{selecteddays}}
+        </div>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+    </select> -->
+   
+    
+<div class="form-group col-md-4 col-sm-4">
+    <label class="control-label" for="startTime">Start Time </label>
+    <div class="input-group" moment-picker="startTime" format="hh:mm a" inline="true">
+        <input class="form-control" placeholder="Select Start time" ng-model="startTime" ng-model-options="{ updateOn: 'blur' }" ng-value="stafflist.startTime" required>
+        <span class="input-group-addon">
+            <i class="fa fa-clock-o"></i>
+        </span>
+    </div>   
+</div>
+
+<div class="form-group col-md-4 col-sm-4">
+    <label class="control-label" for="endTime">End Time </label>
+    <div class="input-group" moment-picker="endTime" format="hh:mm a">
+        <input class="form-control" placeholder="Select End time" ng-model="endTime" ng-model-options="{ updateOn: 'blur' }" ng-value="stafflist.endTime" required>
+        <span class="input-group-addon">
+            <i class="fa fa-clock-o"></i>
+        </span>
+    </div>
+</div>
+
+<div align="center" class="form-group col-md-12 col-sm-12">
+    <input type="submit" class="btn btn-primary" id="submit" value="Submit" />
+</div>
+</div>
+</form>
+
+<!-- <div class="modal fade" id="myModalsalary" tabindex="-1" role="dialog" 
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" 
+            data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            Monthly Salary
+        </h4>
+    </div>
+
+    <div class="modal-body">
+
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label  class="col-sm-2 control-label"
+                for="salary">Per Month salary</label>
+                <div class="col-sm-10">
+                    <input type="salary" ng-model="stafflist.permonthsal" class="form-control" 
+                    id="salary" ng-value="stafflist.permonthsal" required/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+        data-dismiss="modal">
+        Save changes
+    </button>
+</div>
+</div>
+</div>
+</div>
+ -->
+<!-- <div class="modal fade" id="myModalcontract" tabindex="-1" role="dialog" 
+aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" 
+            data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            Contract Based Salary
+        </h4>
+    </div>
+    <div class="modal-body">
+
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label  class="col-sm-2 control-label"
+                for="salary">Per Hour Rate</label>
+                <div class="col-sm-10">
+                    <input type="salary" ng-model="stafflist.perhoursal" class="form-control" 
+                    id="salary" ng-value="stafflist.perhoursal" required/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+        data-dismiss="modal">
+        Close
+    </button>
+    <button type="button" class="btn btn-primary">
+        Save changes
+    </button>
+</div>
+</div>
+</div>
+</div> -->
+
+</div>
+
+</div>
+

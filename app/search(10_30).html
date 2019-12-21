@@ -1,0 +1,170 @@
+<style type="text/css">
+	.studentName:hover {color: white; background-color: #5A827F; padding: 5px 11px; border: 2px solid #5a827f;}
+</style>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+            </ul>
+          </li>
+          <!-- <li ng-show="loggedIn">
+            <a href="#feesReport">Reports </a>
+          </li> -->
+          <li ng-show="loggedIn active">
+            <a ng-click="getCities();" href="#message"><i class="fa fa-envelope" aria-hidden="true"></i> Messages </a>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff Profile</a></li>
+            <li class="divider"></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>              
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#adminpanel" ng-show="loggedIn"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+            <!-- <li><span class="w3-button w3-xlarge w3-white w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></span></li> -->
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+          <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+          <!-- <li><a href="" target="_self" ng-click="logout('/')" ng-show="loggedIn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li> -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div style="margin-top: 50px" class="panel-body" ng-init="getsmsStudentList();getCities();">
+<div class="row">
+	<h2 align="center"><i class="fa fa-user-o" aria-hidden="true"></i> STUDENTS</h2>
+<!-- <ul class="nav nav-pills">
+  <li class="active"><a href="#">Students</a></li>
+  <li><a href="#">Faculties</a></li> 
+  <li><a href="#">SMS History</a></li>  
+</ul> -->
+<div class="container">
+	<div class="row">
+		<div class="col-sm-8 col-md-8">
+						<div class="col-sm-3">
+								<h4>City</h4>
+								<select class="form-control" id="select"  ng-model="f.cityid" ng-change="getBranches(f.cityid);">
+								<option ng-repeat="cityinfo in result1.cities" ng-value="cityinfo._id" > {{cityinfo.cityname}} </option>
+							</select>
+						</div>
+						<div class="col-sm-3">
+								<h4>By Branch</h4>
+								<select class="form-control cap" ng-model="f.branchname" id="center"  ng-change="getBoard(f.branchname);">
+							<option ng-repeat="branch in singleBranchResult" ng-value="branch.branchname">{{branch.branchname}}</option>
+						</select>
+							</div>
+							<div class="col-sm-3">
+								<h4>By Board</h4>
+								<select class="form-control cap" ng-model="f.board" id="board" ng-change="getBatch(f.branchname,f.board);">
+							<option ng-repeat="board in boards">{{board}}</option>
+						</select>
+							</div>
+							<div class="col-sm-3">
+								<h4>By Batch</h4>
+								<select class="form-control cap" ng-model="f.Batch"  id="Batch">
+								<option ng-repeat="batch in batches">{{batch}}</option>
+							</select>
+							</div>
+							<br>
+							<br>
+							<br>
+							<br>
+							<div><table class="table table-hover table-condensed">
+	                <thead class="alert-success">
+	                    <tr>
+	                        <th>Roll No.</th>
+	                        <th>Name</th>
+	                        <th>Mobile</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                	<tr>
+	                		<td></td>
+                        <td><input ng-model="f.firstName" placeholder="search by name"></td>
+                        <td><input ng-model="f.studentMobile" placeholder="search by mobile no"></td>
+	                	</tr>
+	                    <tr ng-repeat="x in studentList|filter:{cityid:f.cityid,BoardName:f.board,Center:f.branchname,Batch:f.Batch,firstName: f.firstName, studentMobile: f.studentMobile,schoolName:schoolname,gender:selectgender,optionallang:Optionallang}">
+	                    	<td>{{$index+1}}</td>
+	                    	<td><a class="studentName" style="text-decoration : none" href="#studentProfile" ng-click="saveStudentId(x._id)">{{x.firstName}} {{x.middleName}} {{x.lastName}}</a></td>
+	                    	<td>{{x.studentMobile}}</td>
+	                    </tr>
+	                </tbody>
+	            	</table></div>
+						</div>	
+						
+	<div class="container col-sm-4 col-md-4" style="border: 3px solid green; padding: 10px;border-radius: 5px;">
+		<h2 align="center">Filters</h2>
+		<div class="form-group">
+						<!-- <label for="select" class="col-lg-2 control-label"></label> -->
+						<div class="col-lg-10 col-md-10">
+							
+							<h4>By School</h4>
+							
+							<select class="form-control" id="select"  ng-model="schoolname" > 				
+								<option value="">Select School</option>
+								<option  ng-repeat="x in studentList | orderBy:'schoolName' as Schools" data-ng-if="Schools[$index-1].schoolName != x.schoolName">{{x.schoolName}}</option>
+							</select>							
+						</div>
+						<br>
+
+						<div class="col-lg-10 col-md-10">
+							
+							<h4>By Gender</h4>
+							
+							<select class="form-control" id="select"  ng-model="selectgender" > 
+								<option value="">Select Gender</option>
+								<option ng-repeat="x in studentList | orderBy:'gender' as sortedSchools" data-ng-if="sortedSchools[$index-1].gender != x.gender">{{x.gender}}</option>
+								
+							</select>
+							
+						</div>
+
+						<div class="col-lg-10 col-md-10">
+							
+							<h4>By Optional Language</h4>
+							
+							<select class="form-control" id="Optionall"  ng-model="Optionallang" > 
+								<option value="">Select Optional Langauge</option>
+								<option ng-repeat="x in studentList | orderBy:'optionallang' as lang" data-ng-if="lang[$index-1].optionallang != x.optionallang">{{x.optionallang}}</option>
+								
+							</select>
+							
+						</div>
+					</div>
+							
+	</div>
+	</div>
+	</div>
+
+				
+</div>
+</div>

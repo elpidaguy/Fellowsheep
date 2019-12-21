@@ -1,0 +1,54 @@
+<div class="panel panel-success " style="margin-right: 20%;margin-left: 20%;">
+  <div class="panel-heading">
+    <h2 class="panel-title text-center">Assign rfid</h2>
+  </div>
+  <div class="panel-body" ng-init="getAllBatchesRfid();">
+    <div class="form-group col-md-4 col-sm-4">
+      <label for="batch"> Batch</label>
+      <select class="form-control cap" ng-model="batchName">
+        <div ng-if="batches.length"> 
+          <option ng-repeat="batch in batches">{{batch.batchname}}</option>
+        </div>
+      </select>
+    </div>
+
+    <div class="col-sm-4 col-md-4">
+      <label for="boardDiv"> Start Roll No </label>
+      <input type="text" ng-model="startRoll" class="form-control input-sm" placeholder="Roll No" required >
+    </div>
+
+    <div class="col-sm-4 col-md-4">
+      <label for="boardDiv"> End Roll No </label>
+      <input type="text" ng-model="endRoll" class="form-control input-sm" placeholder="Roll No" required >
+    </div>
+  </div>
+
+  <div class="panel-footer">
+  	<div align="right"><button class="btn btn-success" ng-click="createRfidList();">Next</button></div>
+    
+  </div>
+</div>
+
+
+<div ng-show="cardList.length">
+	
+
+<table class="table table-responsive table-striped table-bordered table-hover" >
+  <thead class="w3-blue">
+    <tr>
+      <th>Batch</th>
+      <th>RollNo</th>
+      <th>Card ID:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="card in cardList">
+      <td>{{card.batchname}}</td>
+      <td> {{card.RollNo}}</td>
+      <td><input class="input-xs" type="text" ng-model="card.cardId"></td>
+    </tr>
+  </tbody>
+</table>  
+    <button class="btn btn-success" ng-click="insertRfidList();">Create List</button>
+
+</div>

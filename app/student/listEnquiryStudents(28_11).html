@@ -1,0 +1,167 @@
+<style type="text/css">
+  .table{
+    font-size: 10px;
+  }
+</style>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container-fluid" ng-init="loginAuth();getEnquiryStudentList();getSchools();reverse=true;f={};count=0;" style="margin-top: 75px;">
+
+    <ul class="breadcrumb">
+      <li><a href="#">Student</a></li>
+      <li>Enquiry</li>
+    </ul>
+
+<div class="row">
+  <div class="col-sm-12 col-md-9">
+  <div ng-if="enquiryList.length">
+  <table class="table table-responsive table-condensed table-hover table-bordered">
+    <thead class="alert-success">
+                      <tr>
+                        <th>#</th>
+                          <th ng-click="myOrderBy='fullname';reverse=!reverse">Student Name<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+                          <th ng-click="myOrderBy='studentMobile'; reverse=!reverse">Student Mobile <span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+                          <th ng-click="myOrderBy='fatherMobile';reverse=!reverse">Parents Mobile<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+                          <th ng-click="myOrderBy='schoolName'; reverse=!reverse">School Name <span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+                          <th ng-click="myOrderBy='std'; reverse=!reverse">Standard <span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+                          <th ng-click="myOrderBy='enqDate' ;reverse=!reverse">Enquiry Date <span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+                          <th><i class="fa fa-cog fa-spin"></i></th>
+                        
+                      </tr>
+                  </thead>
+
+    <!-- <thead class="alert-success">
+      <tr>
+          <th>#</th>
+        <th>Center</th>
+        <th>Student Name</th>
+        <th>Student Mobile</th>
+        <th>Parents Mobile</th>
+        <th>School Name</th>
+        <th>Enquiry Date</th>
+          <th>  <i class="fa fa-cog fa-spin fa-fw"></i>  </th>
+      </tr>
+    </thead> -->
+    <tbody>
+       <tr>                        
+            <td></td>
+            <td><input style="width: 100%;" ng-model="f.fullname" placeholder="search by name"></td>
+            <td><input style="width: 100%;" ng-model="f.studentMobile" placeholder="search by mobile no"></td>
+            <td><input style="width: 100%;" ng-model="f.fatherMobile" placeholder="search by parent mobile no"></td>
+            <td><input style="width: 100%;" ng-model="f.schoolName" placeholder="search by school Name"></td>
+            <td><input style="width: 100%;" ng-model="f.std" placeholder="search by standard"></td>
+            <td><input style="width: 100%;" ng-model="f.enqDate" placeholder="search by Enquiry Date"></td>
+            <td></td>              
+        </tr> 
+      <tr ng-repeat="x in enquiryList|filter:{fullname: f.fullname, studentMobile: f.studentMobile,fatherMobile:f.fatherMobile,schoolName:f.schoolName,enqDate:f.enqDate,std:f.std,schoolName:schoolname,std:standard,cityid:city}|orderBy:myOrderBy:reverse">
+          <td>{{$index+1}}</td>
+        <td>{{x.fullname}}</td>
+        <td>{{x.studentMobile}}</td>
+        <td>{{x.fatherMobile}}</td>
+        <td>{{x.schoolName}}</td>
+        <td>{{x.std}}</td>
+        <td>{{x.enqDate}}</td>
+        <td align="center">  
+              <a class="btn btn-primary btn-xs" data-toggle="tooltip" title="click to admit student" ng-click="admit(x._id)"><i class="fa fa-plus"></i></a>
+              <!-- <a ng-show="showeditables=='true'" data-toggle="tooltip" title="click to delete enquiry" class="btn btn-danger btn-xs" ng-click=""><i class="fa fa-minus"></i></a> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div ng-if="!enquiryList.length && !loading">
+    <h1 class="w3-center"><strong>No student Enquiry Present</strong></h1>
+              </div>
+              <loading class="w3-center"></loading>
+
+</div>
+    <div style="border: 3px solid green; padding: 10px;border-radius: 5px;" class="col-sm-3 col-md-3">
+      <div class="w3-center">
+        <i style="font-size: 40px" class="fa fa-user" aria-hidden="true"></i> <span style="font-size: 30px"><br>Student Enquiries</span><hr>
+      </div>
+      <h3>Filter</h3>
+          <div class="form-group">
+            <!-- <label for="select" class="col-lg-2 control-label"></label> -->
+            <div class="col-lg-10 col-md-10">
+              
+              <h4>By School</h4>
+              
+              <select class="form-control" id="select"  ng-model="schoolname" >         
+                <option value="">Select School</option>
+                <option  ng-repeat="x in enquiryList | orderBy:'schoolName' as Schools" data-ng-if="Schools[$index-1].schoolName != x.schoolName">{{x.schoolName}}</option>
+              </select>             
+            </div>
+
+            <div class="col-lg-10 col-md-10">
+              
+              <h4>By Standard</h4>
+              
+              <select class="form-control" id="select"  ng-model="standard" >         
+                <option value="">Select Standard</option>
+                <option  ng-repeat="x in enquiryList | orderBy:'std' as Standard" data-ng-if="Standard[$index-1].std != x.std">{{x.std}}</option>
+              </select>             
+            </div>
+
+            <div class="col-lg-10 col-md-10">
+              
+              <h4>By City</h4>
+              
+              <select class="form-control" id="select"  ng-model="city" >         
+                <option value="">Select City</option>
+                <option  ng-repeat="x in enquiryList | orderBy:'cityid' as City" data-ng-if="City[$index-1].cityid != x.cityid">{{x.cityid}}</option>
+              </select>             
+            </div>
+            </div>
+    </div>
+</div>

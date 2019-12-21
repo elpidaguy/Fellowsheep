@@ -1,0 +1,118 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+         <ul class="nav navbar-nav">
+          <!-- <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer" aria-hidden="true"></i> </a>
+          </li> -->
+          <li class="dropdown " ng-show="loggedIn">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li "><a href="#enquiry">Enquiry</a></li>
+            </ul>
+          </li>
+          <!-- <li ng-show="loggedIn">
+            <a href="#feesReport">Reports </a>
+          </li> -->
+          <li ng-show="loggedIn" class="dropdown active">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff Profile</a></li>
+            <li class="divider"></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+            </ul>
+        </li> 
+        <li ng-show="loggedIn" class="dropdown">
+          <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Schedule <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#createSchedule" target="_self">Yearly Schedule</a></li>
+          </ul>
+        </li>              
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a class="open-login" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+          <li><a href="" target="_self" ng-click="logout('/')" ng-show="loggedIn"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div style="margin-top: 58px">
+
+    <div class="alert alert-info">
+      <strong>Fee Structure</strong>
+    </div>
+
+<div  id="discountTable">
+	<div class="w3-left" style="margin-left: 2%;">
+  <a class="btn btn-danger btn-sm" ng-click="exportDiscount('discountTable');"><i class="fa fa-file-pdf-o"></i></a>
+</div>
+<div class="panel panel-primary" style="margin:20px;" ng-init="feesCalculate()">
+        <div class="panel-heading" style="background-color: rgb(26,114,150)">
+            <h2 class="panel-title text-center">{{data.fee_structure[0].std}}th  {{data.fee_structure[0].board}}  fee Structure </h2>
+        </div>
+        <h5 class="alert alert-danger col-md-2" align="left">Year 2017-2019 </h5>
+        <div class="panel-body">
+            <table class="table table-striped table-hover">
+                <tbody>
+
+                    <tr class="active">
+                        <td width="50%">Course Fees</td>
+                        <td>{{data.fee_structure[0].fees}}</td>
+                    </tr>
+                    <tr>
+                        <td width="50%">GST @{{data.fee_structure[0].tax}}% </td>
+                        <td>{{data.fee_structure[0].tax/100*data.fee_structure[0].fees}}</td>
+                    </tr>
+                    <tr class="active">
+                        <td width="50%"><b>Total fees</b> </td> 
+                        <td><b>{{ (fee[0].fees )*1+  (fee[0].tax/100*fee[0].fees )*1}}</td>
+
+                  </tr>
+                </tbody>
+            </table> 
+        </div>
+    </div>
+
+
+
+    <div class="panel panel-success" style="margin:20px;">
+        <div class="panel-heading">
+            <h6 class="panel-title text-center">If Fees are paid in full at the time of admission , you are entitled to get a discount as per table below</h6>
+        </div>
+        <div class="panel-body">
+            <table class="table table-responsive table-striped table-bordered table-hover">
+                <thead style="background-color: rgb(26,114,150)">
+                    <tr>
+                        <th>Month Of Admission</th>
+                        <th>Fees</th>
+                        <th>Discount</th>
+                        <th>Net Fees</th>
+                        <th>GST  @{{data.fee_structure[0].tax}}%</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in data.date">
+                        <td>{{x[0]}}</td>
+                        <td> {{data.fee_structure[0].fees}}</td>
+                        <td>{{x[1]}} %</td>
+                        <td>{{x[2]}}</td>
+                        <td>{{x[3]}}</td>
+                        <td>{{x[4]}}</td>
+                    </tr>
+                   
+                </tbody>
+            </table> 
+        </div>
+    </div>
+</div>

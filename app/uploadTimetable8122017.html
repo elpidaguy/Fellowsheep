@@ -1,0 +1,126 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ESPL</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#adminDashboard"><i class="fa fa-tachometer fa-2x" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#student">Admitted</a></li>
+              <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+              <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+            </ul>
+          </li>
+          <li ng-show="loggedIn" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>
+        <li><a href="#viewDiscounts">Discounts</a></li>
+        <li class="active" ng-show="loggedIn"><a href="#uploadTest">Test</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#search"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a></li>
+          <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></li>
+          <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+         <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div ng-init="loginAuth();" style="margin-top: 75px" >
+
+  <ul class="breadcrumb">
+  <li>Test</li>
+  <li>Upload Test</li>
+  </ul>
+  	
+  <div>
+	    <div class="container-fluid">
+	    	<div class="row">
+	    		<!-- {{count}} -->
+	    		<div class="col-md-9" ng-init="getcoursesbycity();getquestionpapers();">
+		    		<table class="table table-responsive table-striped table-condensed table-hover table-bordered">
+					    <thead style="background-color: #0079bf; color: white">
+					      <tr>
+					        <th>#</th>
+					        <th>Courses</th>
+					        <th>Standard</th>
+                  <th>Subject</th>
+                  <th>Test Name</th>
+					        <th><i class="fa fa-cog fa-spin fa-fw"></i></th>
+					      </tr>
+					    </thead>
+					    <tbody>
+		                    <tr ng-repeat="x in qplist">
+		                    	<td>{{$index+1}}</td>
+		                    	<td>{{x.course}}</td>
+                          <td>{{x.standard}}</td>
+                          <td>{{x.subjectName}}</td>
+		                    	<td>{{x.testName}}</td>
+		                    	<td align="center">
+						              <a class="btn btn-danger btn-sm" ng-href={{x.pdfurl}} target="_blank"><i class="fa fa-download" aria-hidden="true"></i> Download</a>
+						              </td>
+		                    </tr>
+		                </tbody>
+					</table>
+				</div>
+
+        <div style="border: 3px solid green; padding: 10px;border-radius: 5px;" class="col-md-3">
+          <div align="center">
+            <!-- <i style="margin-left: 10%;font-size: 40px" class="fa fa-calendar-plus-o" aria-hidden="true"></i> --><img src="assets/icons/exam.png" alt="Exam" width="30%" height="30%"> <span style="font-size: 30px"><br>Upload Question Paper</span><hr>
+          </div>
+            <form>
+              <div class="form-group">
+              <label for="course">Courses: </label><br>
+              <select class="form-control" id="course" ng-model="coursesfortest" ng-change="getstd(coursesfortest)">
+                <option ng-repeat="b in allcourses" ng-value="{{b}}">{{b}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="standard">Standard: </label>
+              <select class="form-control" id="course" ng-model="standardfortest">
+                <option ng-repeat="b in std" ng-value="{{b}}">{{b}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="Subject">Subject: </label>
+                <input class="form-control" type="text" name="subject" id="subject" ng-model="subjectfortest" placeholder="Type Subject of Test">
+            </div>
+            <div class="form-group">
+              <label for="testName">Test Name: </label>
+                <input type="text" class="form-control" name="testName" id="testName" ng-model="testnamefortest" placeholder="Type Name of Test">
+            </div>
+            <div class="form-group">
+              <label for="fup" class="btn btn-info btn-file btn-sm">Select File</label>
+              <input type="file" file-model="dataFile" class="btn btn-info btn-xs" id="fup" style="display: none;">
+            </div>
+            <button style="width: 100%" type="submit" class="btn btn-success" ng-click="uploadTest()"> Create</button>
+          </form>
+          </div>
+	    	</div>
+	    </div>   

@@ -1,0 +1,180 @@
+<style type="text/css">
+.staffName:hover {color: white; background-color: #5A827F; padding: 0; border: 2px solid #5a827f;}
+.rowHover:hover{color: white;background-color: #66b3ff;}
+
+table{
+  font-size: 11px;
+}
+</style>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#/">ESPL</a> -->
+      <button type="button" id="sidebarCollapse" class="btn btn-primary w3-text-white w3-hover-red btn-xs navbar-brand">
+          ESPL
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="#adminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> </a>
+        </li>
+        <li class="dropdown">
+          <a href="#" target="_self" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Students <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#student">Admitted</a></li>
+            <li ng-show="loggedIn"><a href="#enquiry">Enquiry</a></li>
+            <li ng-show="loggedIn"><a href="#feesReport">Fee Reports</a></li>
+          </ul>
+        </li>
+        <li ng-show="loggedIn" class="active dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Staff <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#staffList">Staff List</a></li>
+            <li><a href="#staffAttendance">Staff Attendance</a></li>
+          </ul>
+        </li>       
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-show="loggedIn"><a ng-click="getCities();" href="#message"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+        <li><a href="#search"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
+        <li><a href="#adminpanel" ng-show="loggedIn && showeditables=='true'"><i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+        <li><a data-toggle="modal" data-target="#loginModal" href="#" target="_self" ng-show="!loggedIn"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+        <li>
+          <div class="dropdown" ng-show="loggedIn">
+            <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> {{loginData.staffname}}
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#changepwd"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+                <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div style="margin-top: 65px">
+    <div ng-init="getStaffDetails();loginAuth();getCities();countP=10;" class="container-fluid">
+
+<!--       <ul class="breadcrumb">
+        <li><a href="#">Staff</a></li>
+        <li>List Staff</li>
+      </ul> -->
+
+      <div style="margin-top: 10px" class="col-sm-9 col-md-9">
+        <table class="table table-bordered w3-card w3-white">
+          <thead style="background-color: #4582ec; color: white;">
+            <tr>
+              <th style="padding: 10px" ng-click="myOrderBy='fname';reverse=!reverse">Staff Name<span class="glyphicon glyphicon-sort"   style="float:right;"></span></th>
+              <!--  <th>Staff Name</th> -->
+              <th ng-click="myOrderBy='mobile';reverse=!reverse">Contact No<span class="glyphicon glyphicon-sort" style="float:right;"></span></th>
+              <th ng-click="myOrderBy='bank';reverse=!reverse">A/c No.<span class="glyphicon glyphicon-sort" style="float:right;"></span></th>
+              <th ng-click="myOrderBy='subject';reverse=!reverse">Subject Teaching<span class="glyphicon glyphicon-sort" style="float:right;"></span></th>
+              <th ng-show="loggedIn"><i class="fa fa-cog fa-spin fa-fw"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="form-control" ng-model="f.fullname" placeholder="search by name"></td>
+              <td><input class="form-control" ng-model="f.mobile" placeholder="search by mobile"></td>
+              <td><input class="form-control" ng-model="f.bank" placeholder="search by bank account no"></td>
+              <td><input class="form-control" ng-model="f.subject" placeholder="search by subject"></td>
+              <td ng-show="loggedIn"></td>
+            </tr>
+            <tr dir-paginate="x in staff |filter:f|orderBy:myOrderBy:reverse | itemsPerPage:countP" ng-dblclick="saveStaffId(x._id);" class="rowHover">
+              <td><!-- <a class="staffName" style="text-decoration : none" href="#staffProfile" ng-click="saveStaffId(x._id)">{{x.fname}} {{x.mname}} {{x.lname}} --> {{x.fullname}}</td>
+                <td>{{x.mobile}}</td>
+                <td>{{x.bank}}</td>
+                <td><span ng-repeat="g in x.subject"> {{g}} | </span></td>
+                <td ng-show="loggedIn"><button class="btn btn-danger btn-xs" ng-click="deleteStaff(x._id);"><i class="fa fa-trash" aria-hidden="true"></i>Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="row">
+                  <!-- dir-paginate  itemsPerPage:countP  -->
+
+                  <div class="col-md-6">
+                    <dir-pagination-controls
+               max-size="5"
+               direction-links="true"
+               boundary-links="true" >
+              </dir-pagination-controls>
+                  </div>
+                  
+
+              <div class="col-md-6">
+                <select  ng-model="countPerPage" ng-change="countP = countPerPage" style="width: 30%;">
+                  <option value="" selected disabled>Items Per Page</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="99">All</option>
+                          </select>
+              </div>
+              
+
+                </div>
+        </div>
+        <div class="w3-padding-32 col-sm-12 col-md-3 boxbor w3-card w3-white">
+          <div class="w3-center">
+            <!-- <i style="font-size: 40px" class="fa fa-user" aria-hidden="true"></i> --> <img src="assets/icons/team.png" alt="staff list" height="40%" width="40%"> <span style="font-size: 30px"><br>Staff List</span><hr>
+          </div>
+          <div align="center">
+            <h2>Filters</h2>
+          <a href="#staffList" target="_self"><button style="margin-left: 5px;" class="btn btn-primary btn-sm w3-center" data-toggle="tooltip" title="Clear Filters" >Clear All Filters</button></a>
+          </div>
+          <div class="col-lg-10 col-md-10">
+
+
+            <h4>By Gender</h4>
+            <select class="form-control" id="selectgender"  ng-model="f.gender" >         
+              <option value="">Select Gender</option>
+              <option  ng-repeat="x in staff| orderBy:'gender' as Schools" data-ng-if="Schools[$index-1].gender != x.gender">{{x.gender}}</option>
+            </select>  
+            <h4>By city</h4>
+            <select class="form-control" id="selectcity"  ng-model="f.cityid" >
+              <option value="">Select City</option>
+              <option ng-repeat="cityinfo in result1.cities" ng-value="cityinfo._id"> {{cityinfo.cityname}} </option>
+            </select>
+
+            <h4>By Designation</h4>
+            <select class="form-control" id="designation"  ng-model="f.designation" >         
+              <option value="">Select Designation</option>
+              <option  ng-repeat="x in staff| orderBy:'designation' as des" data-ng-if="des[$index-1].designation != x.designation">{{x.designation}}</option>
+            </select>  
+
+            <h4>By Subject</h4>
+            <select class="form-control" id="subject"  ng-model="f.subject" >         
+              <option value="">Select Subject</option>
+              <option  ng-repeat="x in staff| orderBy:'subject' as sub" data-ng-if="sub[$index-1].subject[0] != x.subject[0]">{{x.subject[0]}}</option>
+            </select>  
+<!--  <select class="form-control" id="select" ng-model="f.gender"> 
+<option value="">Select Gender</option>
+<option ng-repeat="y in staff" style="background-color: black;color: white">{{y.gender}}</option>
+
+</select> -->
+</div>
+
+
+</div>
+</div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#sidebarCollapse').on('click', function () {
+             $('#sidebar').toggleClass('active');
+             $('#main').toggleClass('active');
+         });
+});
+</script>

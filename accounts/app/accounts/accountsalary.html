@@ -1,0 +1,659 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<style type="text/css">
+.jumbotron {
+  color: white;
+  /*text-align: center;*/
+  /*text-shadow: 2px 2px 8px black;*/
+  min-height: 250px;
+  text-indent: 5em;
+}
+</style>
+
+
+<div ng-init="checkLogin();getstaffname();getfilerdatasal();">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary w3-text-white w3-hover-red btn-xs navbar-brand">ESPL <i class="fa fa-bars" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="#accountadminDashboard"><i class="fa fa-tachometer fa-lg" aria-hidden="true"></i> Dashboard</a>
+          </li>
+          <li>
+            <a href="#studentsInOut"><i class="fa fa-user fa-lg" aria-hidden="true"></i> Students</a>
+          </li>
+          <li>
+            <a href="#papersinout"><i class="fa fa-file fa-lg" aria-hidden="true"></i> Exam Paper</a>
+          </li>
+          <li class="active">
+            <a href="#accountsalary"><i class="fa fa-money fa-lg" aria-hidden="true"></i> Salary</a>
+          </li>
+          <li>
+            <a href="#accountPassBook"><i class="fa fa-university fa-lg" aria-hidden="true"></i> Passbook</a>
+          </li>
+          <li >
+            <a href="#chequerecords"><i class="fa fa-briefcase fa-lg" aria-hidden="true"></i> Cheque Records</a>
+          </li>
+          <li >
+            <a href="#accounterrors"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i> Account Error</a>
+          </li>
+           <li >
+            <a href="#feedbackadmin"><i class="fa fa-commenting fa-lg" aria-hidden="true"></i> Parent's FeedBack</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <div class="dropdown" ng-show="accounts">
+              <button style="display: block; margin-top: 15px;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user fa-lg" aria-hidden="true"></i> {{loginData.staffname}}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#changepwd"><i class="fa fa-cog fa-lg" aria-hidden="true"></i> Settings</a></li>
+                  <li><a href="" target="_self" ng-click="logout('/')"><i class="fa fa-sign-out fa-lg" aria-hidden="true"></i> Logout</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+  </nav>  
+  <div class="container-fluid" style="margin-top:70px;">
+    
+ 
+
+
+<div class="w3-row-padding" style="margin-top: 20px">
+
+
+ <div class="w3-col m2">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Total Records</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #c842f4" class="fa fa-pencil-square-o  w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{TotalRecord}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+
+   
+ <div class="w3-col m2">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">Total Salary</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #5cb85c" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{totalsal}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+<div class="w3-col m2">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Director</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #428bca" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{director}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+<div class="w3-col m2">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Teaching(Fix)</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #5bc0de" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{fixsalary}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+<div class="w3-col m2">
+        <div class="panel panel-warning">
+          <div class="panel-heading">
+            <h3 class="panel-title">Teaching(Contract)</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #e8ea45" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{contract}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+<div class="w3-col m2">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Employee Salary</h3>
+          </div>
+          <div class="panel-body">
+            <div class="w3-left"><i style="color: #d9534f" class="fa fa-inr w3-xxxlarge"></i></div>
+            <div class="w3-right">
+              <h1>{{employee}}</h1>
+            </div>
+            <div class="w3-clear"></div>
+          </div>
+        </div>
+        </div>
+
+    
+
+</div>
+
+ <div style="margin-top:10px">
+
+ <div style="margin-top: 10px" id="leavetable" class="panel panel-success">
+      <div class="panel-heading" align="center">
+        <h3 class="panel-title">ESPL SALARY FILTERS</h3>
+      </div>
+      <div class="panel-body">
+
+<div class="row">
+
+          <div class="col-xs-2">
+            <h4>By Month</h4>
+           <datepicker date-format="MM-yyyy">
+        <input type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-change="filterssal()" ng-model="salarydatefilter">
+          </datepicker>
+        </div>
+
+        <div class="col-xs-2">
+            <h4>By Duration</h4>
+            <select class="form-control cap"  id="Month" ng-change="filterssal()" ng-model="filters_selected_monthtype" >
+            <option disabled selected value> -- select an option -- </option>
+            <option  selected value></option>
+            <option ng-value="Duration">Single Month</option>
+            <option ng-value="Duration">All Month</option>
+          </select>
+        </div>
+
+
+
+         <div class="col-xs-2">
+           <h4>By City</h4>
+            <select class="form-control cap"  id="citys" ng-change="filterssal()" ng-model="filters_selected_city" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="cit in city" ng-value="citys"> {{cit}} </option>
+              </select>
+        </div>
+         <div class="col-xs-2">
+            <h4>By Branch</h4>
+            <select class="form-control cap"  id="Branch" ng-change="openfiltermodal()" ng-model="filters_selected_Branch" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="cen in center" ng-value="Branch"> {{cen}} </option>
+            </select>
+          </div>
+           
+            <div class="col-xs-2">
+            <h4>By Batch</h4>
+            <select class="form-control cap"  id="Batch" ng-change="filterssal()" ng-model="filters_selected_Batch" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="bat in batch" ng-value="batches"> {{bat}} </option>
+            </select>
+            </div>
+            <div class="col-xs-2">
+            <h4>By Course</h4>
+             <select class="form-control cap"  id="coursename" ng-change="filterssal()" ng-model="filters_selected_coursename" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-repeat="pro in coursename" ng-value="pro"> {{pro}} </option>
+            </select>
+                </div>  
+
+                 <div class="col-xs-2">
+            <h4>By StaffType</h4>
+             <select class="form-control cap"  id="product" ng-change="filterssal()" ng-model="filters_selected_stafftype" >
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-value="type">Director</option>
+               <option ng-value="type">Teaching(Fix)</option>
+               <option ng-value="type">Teaching(Contract)</option>
+               <option ng-value="type">Employee Salary</option>
+            </select>
+                </div>  
+
+                <div class="col-xs-2">
+                  <h4>Filters Option</h4>
+          <a href="#accountsalary" target="_self"><button class="btn btn-primary btn-sm " data-toggle="tooltip" title="Clear Filters" >Clear All Filters</button></a>
+                </div>
+
+          </div>
+
+
+      </div>
+  </div>    
+
+ <div style="margin-top:10px">
+
+ <div style="margin-top: 30px" id="leavetable" class="panel panel-primary">
+      <div class="panel-heading" align="center">
+        <h3 class="panel-title">ESPL SALARY</h3>
+      </div>
+      <div class="panel-body">
+
+
+
+<div class="row">
+    <div class="col-xs-2">
+            <h5>SALARY DATE</h5>
+
+           <datepicker date-format="MM-yyyy">
+        <input type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2"  ng-model="salarydate">
+          </datepicker>
+            
+        </div>
+
+   <div class="col-xs-5">
+            <h5>SALARY OPTION</h5>
+            <div class="row">
+          
+            <button type="button" class="btn btn-success" data-toggle="modal"  ng-click="viewsalary()">VIEW SALARY</button>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal"  ng-click="getsalaryandsaveindb()">SAVE SALARY</button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal"  ng-click="salarycsv()">EXPORT(CSV)</button>
+
+            <button type="button" class="btn btn-danger" data-toggle="modal"  ng-click="shoadvancemodal()">ADVANCE</button>
+            
+            
+</div>         
+        </div>
+
+      <div class="col-xs-1">
+            <h5>PF(C)</h5>
+          <button type="button" class="btn btn-primary" data-toggle="modal"><i class="fa fa-inr" aria-hidden="true"></i>{{CMP_PF}}</button>
+  <!--<h2><span class="label label-primary  ng-model='CMP_PF' " >{{CMP_PF}}</span></h2>-->
+        </div>
+
+        <div class="col-xs-1">
+            <h5>PF(E)</h5>
+          <button type="button" class="btn btn-success" data-toggle="modal"><i class="fa fa-inr" aria-hidden="true"></i>{{EMP_PF}}</button>
+       <!-- <h2><span class="label label-success  ng-model='EMP_PF' " >{{EMP_PF}}</span></h2>-->
+
+        </div>
+
+         <div class="col-xs-1">
+            <h5>Total PF</h5>
+  <button type="button" class="btn btn-danger" data-toggle="modal"><i class="fa fa-inr" aria-hidden="true"></i>{{Total_PF}}</button>
+    <!-- <h2><span class="label label-success  ng-model='EMP_PF' " >{{Total_PF}}</span></h2>-->
+
+        </div>
+
+
+
+      <div class="col-xs-1">
+            <h5>TDS</h5>
+          <button type="button" class="btn btn-info" data-toggle="modal"><i class="fa fa-inr" aria-hidden="true"></i>{{total_tds}}</button>
+        <!--  <h2><span class="label label-warning  ng-model='total_tds' " >{{total_tds}}</span></h2>-->
+
+        </div>
+ 
+ 
+
+ 
+</div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+ 
+</div>
+
+<div class="container-fluid">
+        
+<table style="margin-top:15px" st-set-filter="customFilter" st-table="displayedCollection" st-safe-src="currentrecords"  class="table table-condensed table-bordered table-striped w3-card w3-white" > 
+      <thead  >
+      <tr style="color: white;background-color: #1e59fc">
+        <th ng-repeat="head in headers" st-sort="{{head}}">
+          {{head|titlecase}} 
+        </th>
+        <th>OPTION</th>
+     
+      </tr>
+
+      <tr>
+        <th ng-repeat="head in headers">
+       <input st-search="{{head}}"  class="input-sm form-control" type="text" value="" ng-value=""/>
+        </th>  
+
+      </tr>
+
+        
+
+
+
+      </thead>
+      <tbody>
+        <tr ng-repeat="rec in displayedCollection">
+       <td ng-repeat="head in headers"> {{rec[head]}}</td> 
+       <td><button type="button" ng-click="showmodelstaff(rec)" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></button></td>
+      </tr>
+      </tbody>
+      <tfoot>
+        
+        <tr>
+        <td colspan="{{headers.length}}" class="text-center">
+          <div st-pagination="" st-items-by-page="itemsByPage"></div>
+        </td>
+      </tr>
+      </tfoot>
+
+      </table>
+
+ 
+
+    
+ 
+</div>
+
+
+      </div>
+
+
+
+    </div>
+
+  
+ 
+ 
+
+<!--modal for out transcations-->
+<div class="modal fade" id="modalouttranscation" tabindex="-1" role="dialog" aria-labelledby="modalouttranscationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalouttranscationLabel"><center> <p class="bg-primary">{{modalname}}</p></center></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+        <!-- Half of the modal-body div-->
+       
+        <div class="col-xs-3">
+            <h5>SALARY</h5>
+
+       <input type="number" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="modalsalary" ng-change="calnetpay()">
+
+        </div>
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-3">
+            <h5>TDS</h5>
+<input type="number" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="modaltds">
+
+        </div>
+
+        <div class="col-xs-3">
+            <h5>NETPAY</h5>
+
+          <input type="number" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="modalnetpay">
+        </div>
+
+          <div class="col-xs-3">
+            <h5>ADVANCE</h5>
+
+          <input type="number" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="modaladvaance" ng-change="showadvbtn()">
+        </div>
+
+
+    </div>
+
+    <table style="margin-top:30px" st-set-filter="customFilter" st-table="lecdatacolleciton" st-safe-src="lecdata"  class="table table-condensed table-bordered table-striped" > 
+      <thead  >
+      <tr style="color: white;background-color: #1e59fc">
+        <th ng-repeat="head in lecheaders" st-sort="{{head}}">
+          {{head|titlecase}} 
+        </th>
+        
+      </tr>
+ 
+      </thead>
+      <tbody>
+        <tr ng-repeat="rec in lecdatacolleciton">
+          <td ng-repeat="head in lecheaders"><input class="form-control input-sm" type="text" ng-model='rec[head]'></td> 
+          <!--<td><button type="button" ng-click='updaterow(rec)' class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-ok"></button></td>-->
+      </tr>
+      </tbody>
+
+      <tfoot>
+        
+        <tr>
+        <td colspan="{{lecheaders.length}}" class="text-center">
+          <div st-pagination="" st-items-by-page="itemsByPage"></div>
+        </td>
+      </tr>
+      </tfoot>
+
+      </table>
+
+
+   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+        <button type="button" class="btn btn-primary" ng-click="updatemodal()">UPDATE</button>
+        <button type="button" class="btn btn-primary" ng-show="upadvance" ng-click="updaeadvancemodal()">UPDATE ADVANCE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--advance-->
+<div class="modal fade" id="modaladvance" tabindex="-1" role="dialog" aria-labelledby="modaladvanceLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modaladvanceLabel"><center> <p class="bg-primary">ADVANCE PAYMENT</p></center></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+        <!-- Half of the modal-body div-->
+       
+        <div class="col-xs-4">
+            <h5>ADVANCE PAYMENT OPTION</h5>
+
+         <select class="form-control cap"  id="board" ng-model="selected_paymentoption" ng-change="showhideval()">
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+               <option ng-value="branch.branchname">PAY ADVANCE</option>
+               <option ng-value="branch.branchname">ADVANCE RECORDS</option>
+            </select>
+
+        </div>
+         
+    </div>
+
+
+
+
+     <div class="row" ng-show="addvar">
+        
+       
+         
+        <!-- Other half of the modal-body div-->
+        <div class="col-xs-3">
+            <h5>SATFF NAME</h5>
+          <select class="form-control cap"  id="board" ng-model="selected_faculty">
+               <option disabled selected value> -- select an option -- </option>
+               <option  selected value></option>
+              <option ng-repeat="(key,value) in stafflist" ng-value="staffname"> {{key}} </option>
+              </select>
+             
+        </div>
+
+        <div class="col-xs-3">
+            <h5>ADVANCE AMOUNT</h5>
+
+          <input type="number" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="advanceno">
+        </div>
+
+
+        <div class="col-xs-3">
+            <h5>DEDUCTION AMOUNT</h5>
+
+          <input type="number" class="form-control" placeholder="amount" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="deduction">
+        </div>
+
+
+        <div class="col-xs-3">
+            <h5>ASSIGN DATE</h5>
+
+        <datepicker date-format="dd-MM-yyyy">
+        <input type="text" class="form-control" placeholder="Date" aria-label="Recipient's username" aria-describedby="basic-addon2" ng-model="advanceassign">
+                </datepicker>
+         
+        </div>
+
+
+    </div>
+
+<div ng-show="advancevar">
+    <table style="margin-top:30px" st-set-filter="customFilter" st-table="advancecolleciton" st-safe-src="lecdata"  class="table table-condensed table-bordered table-striped" > 
+      <thead>
+      <tr style="color: white;background-color: #1e59fc">
+        <th ng-repeat="head in advanceheaders" st-sort="{{head}}">
+          {{head|titlecase}} 
+        </th>
+        <th>OPERATION</th>
+        
+      </tr>
+
+
+ 
+      </thead>
+      <tbody>
+        <tr ng-repeat="rec in advancecolleciton">
+          <td ng-repeat="head in advanceheaders"><input class="form-control input-sm" type="text" ng-model='rec[head]'></td> 
+          <!--<button type="button" ng-click='updateadvance(rec)' class="btn btn-primary"><span class="glyphicon glyphicon-edit"></button>-->
+            <td><button type="button" ng-click='deleteadvance(rec)' class="btn btn-danger"><span class="glyphicon glyphicon-remove"></button></td>
+      </tr>
+      </tbody>
+
+      <tfoot>
+        
+        <tr>
+        <td colspan="{{advanceheaders.length}}" class="text-center">
+          <div st-pagination="" st-items-by-page="itemsByPage"></div>
+        </td>
+      </tr>
+      </tfoot>
+
+      </table>
+    </div>
+
+   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+        <button ng-show="addvar" type="button" class="btn btn-primary" ng-click="addadvance()">UPDATE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--filter select staff model-->
+<div class="modal fade" id="modalfilterstaff" tabindex="-1" role="dialog" aria-labelledby="modalfilterstaffLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalfilterstaffLabel"><center> <p class="bg-primary">STAFF SELECTION</p></center></h4>
+        
+      </div>
+      <div class="modal-body">
+      
+      <div class="col-xs-6">
+      <div id="leavetable" class="panel panel-success">
+      <div class="panel-heading" align="center">
+        <h3 class="panel-title">INCLUDE STAFF/DIRECTORS</h3>
+      </div>
+      <div class="panel-body">
+         <div ng-repeat="staff in staffnameinfilter">
+            <label for="chkStaff_{{staff.name}}">
+          <input id="chkStaff_{{staff.name}}" type="checkbox" ng-model="staff.Selected" />
+                {{staff.name}}
+            </label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+      <div class="col-xs-6">
+		<div id="leavetable" class="panel panel-success">
+      <div class="panel-heading" align="center">
+        <h3 class="panel-title">INCLUDE CENTERS</h3>
+      </div>
+      <div class="panel-body">
+
+          <div ng-repeat="cen in modified_center">
+            <label for="chkCenter_{{cen.name}}">
+          <input id="chkCenter_{{cen.name}}" type="checkbox" ng-model="cen.Selected" />
+                {{cen.name}}
+            </label>
+          </div>
+      </div>
+  </div>
+     </div>
+
+   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+        <button type="button" class="btn btn-primary" ng-click="filterssal()">CALCULATE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+      $('#sidebarCollapse').on('click', function () {
+       $('#sidebar').toggleClass('active');
+       $('#main').toggleClass('active');
+     });
+    });
+  </script>

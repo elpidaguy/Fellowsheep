@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admission Form</title>
+    <script src="../../assets/js/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <script src="../../assets/js/angular.min.js"></script>
+    <script src="batches.js"></script>
+    <script src="../../assets/js/bootstrap.min.js"></script>
+    <link href="../../assets/css/toastr.css" rel="stylesheet"/>
+    <script src="../../assets/js/toastr.js"></script>
+    <link rel="stylesheet" href="../../assets/css/iziToast.min.css">
+    <script src="../../assets/js/iziToast.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../../assets/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="../../assets/js/waitingfor.js"></script>
+</head>
+<body ng-app="riddler" ng-controller="riddlerController" ng-init="getBatches()">
+<section ng-show="true" >
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label class="control-label control-label-left col-sm-3" for="field1">City Name</label>
+        <div class="controls col-sm-9">
+          <input id="field1" ng-model="cityname" type="text" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId1">
+          <span id="errId1" class="error"></span>
+        </div>
+      </div><br>
+      <div class="form-group">
+        <label class="control-label control-label-left col-sm-3" for="field2">Branch Name</label>
+        <div class="controls col-sm-9">
+          <input id="field2" type="text" ng-model="branchName" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId2">
+          <span id="errId2" class="error"></span>
+        </div>
+      </div><br>
+      <div class="form-group">
+        <label class="control-label control-label-left col-sm-3" for="field3">Course</label>
+        <div class="controls col-sm-9">
+          <input id="field3" type="text" ng-model="course" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3">
+          <span id="errId3" class="error"></span>
+        </div>
+      </div><br>
+      <div class="form-group">
+        <label class="control-label control-label-left col-sm-3" for="field3">Standard</label>
+        <div class="controls col-sm-9">
+          <input id="field3" type="text" ng-model="standard" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3">
+          <span id="errId3" class="error"></span>
+        </div>
+      </div><br>
+      <div class="form-group">
+        <label class="control-label control-label-left col-sm-3" for="field3">Timing</label>
+        <div class="controls col-sm-9">
+          <input id="field3" type="text" ng-model="timing" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3">
+          <span id="errId3" class="error"></span>
+        </div>
+      </div><br>
+      <div class="form-group">
+        <label class="control-label control-label-left col-sm-3" for="field3">Batch Name</label>
+        <div class="controls group-inline col-sm-9">
+          <div ng-repeat="input in inputsList">
+          <a class="btn btn-xs btn-danger" ng-click="removeBatchInput($index)">x</a><input id="field3" type="text" ng-model="input.value" class="form-control k-textbox" data-role="text" data-parsley-errors-container="#errId3">
+        </div> 
+        <button class="btn btn-xs btn-danger" ng-click="appendBatchInput()">+</button>
+          <span id="errId3" class="error"></span>
+        </div>
+      </div><br>
+        <!-- <h3>{{inputsList|json}}</h3> -->
+      <div class="form-group group-inline">
+        <button id="button5" type="button" class="btn btn-success btn-xs" ng-click="addBatch()" style="text-align: center;">Add Batch</button>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+      <table  class="table table-condensed">
+        <thead class="alert-info">
+        <th>#</th>
+          <th> City</th>
+          <th>Branch Name</th>
+          <th>Course</th>
+          <th>Standard</th>
+          <th>Time</th>
+          <th>Batch Name</th>
+        </thead>
+        <tr ng-repeat="batch in batches|orderBy:'city'">
+          <td>{{$index+1}}</td>
+          <td> {{batch.city}}  </td>
+          <td> {{batch.branchName}}  </td>
+          <td> {{batch.course}}  </td>
+          <td> {{batch.standard}} th </td>
+          <td> {{batch.time}}  </td>
+          <td> {{batch.batchName}}  </td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</section>
+</body>

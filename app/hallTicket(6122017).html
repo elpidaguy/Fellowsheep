@@ -1,0 +1,243 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script> 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+
+<style type="text/css">
+  
+  .card{
+    font: normal 25px Verdana, Arial, sans-serif;
+  color: #000 !important;
+  }
+td{
+  height: 35px;
+  text-align:center;
+  border: 1px solid black;
+}
+
+table{
+  border:1px solid black;
+  color: black;
+  background: white;
+  width: 100%;
+}
+</style>
+
+<loading style="position: fixed;top: 50%;left:50%;"></loading>
+<div class="panel panel-success " style="margin-right: 20%;margin-left: 20%;">
+  <div class="panel-heading">
+    <h2 class="panel-title text-center">Generate | Hall-Ticket</h2>
+  </div>
+  <div class="panel-body" ng-init="getCitiesHT();">
+
+
+    <div class="form-group col-md-4 col-sm-4">
+      <label for="center"> City</label>
+      <select class="form-control cap" ng-model="cityid" id="cityid"  ng-change="getBranchesHT(cityid);">
+        <div ng-if="cities.length"> 
+          <option ng-repeat="city in cities" ng-value="city._id">{{city.cityname}}</option>
+        </div>
+      </select>
+    </div>
+
+    <div class="form-group col-md-4 col-sm-4">
+      <label for="center"> Center</label>
+      <select class="form-control cap" ng-model="branchid" id="branchid"  ng-change="getBatchesHT(branchid);">
+        <div ng-if="branches.length"> 
+          <option ng-repeat="branch in branches" ng-value="branch._id">{{branch.branchname}}</option>
+        </div>
+      </select>
+    </div>
+
+    <div class="form-group col-md-4 col-sm-4">
+      <label for="center"> Batch</label>
+      <select class="form-control cap" ng-model="batchname" id="batchname" ng-change="getStudentsHT(batchname);">
+        <div ng-if="batches.length"> 
+          <option ng-repeat="batch in batches">{{batch.batchname}}</option>
+        </div>
+      </select>
+    </div>
+
+  </div>
+</div>
+
+
+<div id="form" class="container" ng-show="viewForm">
+
+  <div class="panel panel-info">
+    <div class="panel-heading" style="background-color: #3a4a63">
+      <h2 class="panel-title text-center">Hall-Ticket Data</h2>
+    </div>
+    <div class="panel-body">
+      <form ng-submit="generateHT()" name="" class="" required>
+        <div class="col-md-12 col-sm-12">
+
+          <div id="diviboard" class="form-group col-md-2 col-sm-2">
+            <label for="diviboard">Division Board</label>
+            <input type="text" ng-model="diviboard" class="form-control input-sm" id="diviboard" placeholder="Division Board" ng-value="diviboard" required >
+          </div>
+          <div id="dist_school" class="form-group col-md-2 col-sm-2">
+            <label for="dist_school">District And School </label>
+            <input type="text" ng-model="dist_school" class="form-control input-sm" id="dist_school" placeholder="District And School" ng-value="dist_school" required >
+          </div>
+          <div id="centerno" class="form-group col-md-2 col-sm-2">
+            <label for="centerno">Center Number </label>
+            <input type="text" ng-model="centerno" class="form-control input-sm" id="centerno" placeholder="Center Number" ng-value="centerno" required >
+          </div>
+          <div id="centername" class="form-group col-md-2 col-sm-2">
+            <label for="centername">Center Name </label>
+            <input type="text" ng-model="centername" class="form-control input-sm" id="centername" placeholder="Center Name" ng-value="centername" required >
+          </div>
+          <div id="medium" class="form-group col-md-2 col-sm-2">
+            <label for="medium">Medium </label>
+            <input type="text" ng-model="medium" class="form-control input-sm" id="medium" placeholder="Medium" ng-value="medium" required >
+          </div>
+        </div>
+
+
+        <div align="center" class="form-group col-md-12 col-sm-12">
+          <input type="submit" class="btn btn-primary" id="submit" value="Generate" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn w3-red" ng-click="exportHallTickets('block0');">Print</button>
+<button type="button" class="btn w3-red" ng-click="jsPDFTest2();">JSPDF</button>
+
+<div ng-repeat="student in studentList track by $index" ng-if="$index % 3 == 0" id="block{{$index}}" ng-show="generatedHT">
+  <div class="card border-dark"  ng-repeat="i in [$index, $index + 1, $index + 2]" ng-if="studentList[i] != null" style="margin-bottom: 100px;margin-top:100px !important;padding:30px">
+
+    <div>
+      <div class="col-md-12">
+      <div class="col-md-2">
+        <h5>MTLOGO</h5> 
+      </div>
+      <div class="col-md-10">
+        <h3>EDUPOINT SERVICES PVT. LTD. , NASHIK</h3>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <h3 class="text-center">ADMISSION CARD S.S.C. EXAM OF 2017-18</h3>
+    </div>
+
+    <div class="col-md-12">
+      <table>
+        <tr>
+          <td>DIVI. BOARD</td>
+          <td>D.O.B.</td>
+          <td>DIST. & SCHOOL</td>
+          <td>CENTER NO</td>
+          <td>SPL.CAT.</td>
+          <td>M/F</td>
+          <td>MEDIUM</td>
+          <td>SEAT NO.</td>
+        </tr>
+        <tr>
+          <td>{{diviboard}}</td>
+          <td>{{studentList[i].dob}}</td>
+          <td>{{dist_school}}</td>
+          <td>{{centerno}}</td>
+          <td>{{}}</td>
+          <td>{{studentList[i].gender}}</td>
+          <td>{{medium}}</td>
+          <td>000{{i+1}}</td>
+          </tr>
+        </table>
+      </div>
+
+        <div class="col-md-12">
+          <div class="col-md-10">
+
+            <div class="col-md-12" style="padding: 10px">
+              <div>Name : {{studentList[i].firstName}} {{studentList[i].middleName}} {{studentList[i].lastName}}<br>
+                Mothers Name : {{studentList[i].motherName}}<br>
+                Seat No. (words) : <br>
+                Centre Name : {{centername}} <br>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <table>
+                <tr>
+                  <td rowspan="2">SUBJECT NAME (Abbrev.)</td>
+                  <td>I Lang</td>
+                  <td>II Lang</td>
+                  <td>III Lang</td>
+                  <td rowspan="2">MATHS</td>
+                  <td rowspan="2">SCIENCE</td>
+                  <td rowspan="2">SOC. SCI.</td>
+                </tr>
+                <tr>
+                  <td>ENG</td>
+                  <td>H/S/F</td>
+                  <td>MAR</td>
+                </tr>
+
+                <tr>
+                  <td>Language Of Answer</td>
+                  <td>ENG</td>
+                  <td>ENG</td>
+                  <td>ENG</td>
+                  <td>ENG</td>
+                  <td>ENG</td>
+                  <td>ENG</td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="col-md-2">
+            <table style="margin-top:30px">
+              <tr height="200px;">
+                <td></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      
+        <div class="col-md-12">
+          <div class="col-md-10" style="padding:10px">
+            <div style="font-size: 15px !important">Note : Candidate must preserve and produce this card at each session of examination without which admission to the examination will be dissallowed. <br>
+            SPL CAT: Value 1 to 6 means the special category code as in the original.</div>
+          </div>
+
+          <div class="col-md-2">
+            <table style="margin-top:30px">
+              <tr height="40px;">
+                <td style="color: grey;opacity: 0.5;font-size: 15px !important"> Sign Of Head Of Centre & Stamp</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      
+    </div>
+    
+    </div>
+</div>
+
+
+<!--
+<div class="row" ng-repeat="student in studentList track by $index" ng-if="$index % 3 == 0" id="block{{$index}}">
+  <div class="col-xs-3 letter-box" ng-repeat="i in [$index, $index + 1, $index + 2]" ng-if="studentList[i] != null">
+    <div>Student {{i + 1}} is: <b> {{studentList[i]._id}}</b></div>
+  </div>
+</div>
+
+<button type="button" class="btn w3-red" ng-click="exportBlock('block6');">block</button>
+
+ <div class="row" ng-repeat="letter in alphabet track by $index" ng-if="$index % 3 == 0">
+  <div class="col-xs-3 letter-box" 
+       ng-repeat="i in [$index, $index + 1, $index + 2]" 
+       ng-if="alphabet[i] != null">
+    <div>Letter {{i + 1}} is: <b> {{alphabet[i]}}</b></div>
+  </div>
+</div> -->
+
+
+

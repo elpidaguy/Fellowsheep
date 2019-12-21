@@ -1,0 +1,827 @@
+<style>
+span{
+	color: red;
+}
+	.segmented-control {
+		padding: 10px;
+		margin: 10px;
+	}
+
+	input[type="radio"]:checked + label {
+		background-color: #027AFB;
+		color: white;
+	}
+
+	.segmented-control label {
+		border-top: 1px solid #027AFB;
+		border-bottom: 1px solid #027AFB;
+		padding: 10px 30px;
+		margin: -4px;
+		margin-left: -14px;
+		color: #027AFB;
+	}
+
+	.sc-label:first-of-type {
+		border-left: 1px solid #027AFB;
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 10px;
+		border-right: 1px solid #027AFB;
+	}
+	.cap{text-transform: capitalize;}
+
+	.sc-label:last-of-type {
+		border-right: 1px solid #027AFB;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-left: 1px solid #027AFB;
+	}
+
+	.segmented-control input[type="radio"] {
+		visibility: hidden;
+	}
+</style>
+
+<h1 class="text-center">MAHESH TUTORIALS</h1>
+
+<div>
+<!--  <ul id="progressbar">
+<li class="active">Account Setup</li>
+<li>Social Profiles</li>
+<li>Personal Details</li>
+</ul> -->
+<!-- <form ng-submit="addnewstudent()" ng-init="displayadmission();cityid='59803742b5f1e7d11cccc592';getterms();geteditdata();getBranches(cityid);n=0;ddn=0;cn=0;"> -->
+<form name="admitform" ng-submit="displayall();loginAuth();afterdisplay();" ng-init="displayadmission();getterms();geteditdata();getBranches();n=0;ddn=0;cn=0;">
+	<section ng-show="admission">
+		<div class="panel panel-info" style="margin:20px;"  id="admissionform">
+			<div class="panel-heading" style="background-color: rgb(2,122,251)">
+				<h2 class="panel-title text-center">ADMISSION FORM</h2>
+			</div>
+			<div class="panel-body">
+
+				<div class="col-md-12 col-sm-12">
+					<div class="form-group col-md-5 col-sm-4">
+						<label for="center"> Center</label>
+						<select class="form-control cap" ng-model="studentList.Center" id="center"  ng-change="getBoard(studentList.Center);">
+						<div ng-if="branch.length"> 
+							<!-- <option ng-value="">Select Center</option> -->
+							<option ng-repeat="branch in singleBranchResult">{{branch.branchname}}</option>
+						</div>
+						</select>
+					</div>
+
+					<div align="center" class="col-sm-3 col-md-3">
+						<label for="boardDiv"> Board </label>
+						<select class="form-control cap" ng-model="studentList.BoardName" id="board" ng-change="getBatch(studentList.Center,studentList.BoardName);">
+							<div ng-if="board.length"> 
+							<!-- <option ng-value="">Select Board</option> -->
+							<option ng-repeat="board in boards">{{board}}</option>
+						</div>
+						</select>
+<!--  <span>
+<div id="boardDiv" class="segmented-control" style="display: inline;" ng-repeat="board in boards">
+<input type="radio" id="sc-foo" ng-model="studentList.BoardName" value="board"><label for="sc-foo" class="sc-label" >{{board}}</label>
+<input type="radio" id="sc-bar" ng-model="studentList.BoardName" value="cbse"><label for="sc-bar" class="sc-label">CBSE </label>
+<input type="radio" id="sc-baz" ng-model="studentList.BoardName" value="icse"><label for="sc-baz" class="sc-label">ICSE </label>
+</div>
+</span> -->
+</div>
+<div class="form-group col-md-3 col-sm-3">
+	<label for="center"> Batch</label>
+	<select class="form-control cap" ng-model="studentList.Batch" id="Batch" ng-change="getfeedata();">
+		<div ng-if="batch.length"> 
+		<!-- <option ng-value="">Select Batch</option> -->
+		<option ng-repeat="batch in batches">{{batch}}</option>
+	</div>
+	</select>
+</div>
+
+<h5 class="alert alert-danger col-md-12" align="center">Student's Details </h5>
+<div id="fnamediv" class="form-group col-md-4 col-sm-4">
+
+	<label for="fname"> First Name* </label>
+	<input type="text" ng-model="studentList.firstName"   class="form-control input-sm cap" id="fname" ng-value="studentList.firstName" ng-blur="validateName(studentList.firstName)">
+</div>
+<div id="mnamediv" class="form-group col-md-4 col-sm-4">
+	<label for="mname">Middle Name* </label>
+	<input type="text" ng-model="studentList.middleName" class="form-control input-sm cap" id="mname" placeholder="Middle Name" ng-value="studentList.middleName" ng-blur="validateName(studentList.middleName)">
+</div>
+<div id="lnamediv" class="form-group col-md-4 col-sm-4">
+	<label for="lname">Surname* </label>
+	<input type="text" ng-model="studentList.lastName" class="form-control input-sm cap" id="lname" placeholder="Surname(if any)" ng-value="studentList.lastName" ng-blur="validateName(studentList.lastName)">
+</div>
+<div class="form-group col-md-6 col-sm-6" ng-init="m=false;studentList.gender='male'" >
+	<label>Gender* </label>
+<!-- <div class="radio">
+<label>
+<input type="radio" ng-model="studentList.gender" name="gender" id="male" value="male" ng-checked="m;m=!m" >
+Male
+</label>
+</div>
+<div class="radio">
+<label>
+<input type="radio" ng-model="studentList.gender" name="gender" id="female" value="female" ng-checked="m;m=!m;">
+Female
+</label>
+</div> -->
+
+<div ng-if="studentList.gender === 'male'" >
+	<div class="radio">
+		<label>
+			<input type="radio" ng-model="studentList.gender" name="gender" id="male" value="male"  ng-checked="true">
+			Male
+		</label>
+	</div>
+	<div class="radio">
+		<label>
+			<input type="radio" ng-model="studentList.gender" name="gender" id="female" value="female" >
+			Female
+		</label>
+	</div>
+</div>
+<div ng-if="studentList.gender === 'female'" >
+	<div class="radio">
+		<label>
+			<input type="radio" ng-model="studentList.gender" name="gender" id="male" value="male" >
+			Male
+		</label>
+	</div>
+	<div class="radio">
+		<label>
+			<input type="radio" ng-model="studentList.gender" name="gender" id="female" value="female"  ng-checked="true" >
+			Female
+		</label>
+	</div>
+</div>
+
+<div ng-if="studentList.gender=== NULL">
+	<div class="radio">
+		<label>
+			<input type="radio" ng-model="studentList.gender" name="gender" id="male" value="male">
+			Male
+		</label>
+	</div>
+	<div class="radio">
+		<label>
+			<input type="radio" ng-model="studentList.gender" name="gender" id="female" value="female" >
+			Female
+		</label>
+	</div>
+</div> 
+
+</div>
+<div id="dobdiv" class="form-group col-md-6 col-sm-6">
+	<label for="dob" class="control-label">Date of Birth* </label>
+	<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+	<input name="studentDOB" type="text" ng-model="studentList.dob" class="form-control input-sm cap" id="dob" placeholder="" ng-value="studentList.dob" ng-minlength="5" required>
+	</datepicker>
+	<span ng-show="admitform.studentDOB.$error.required">Please enter DOB!</span>
+</div>
+<div id="emaildiv" class="form-group col-md-6 col-sm-6">
+	<label for="email" class="col-lg-2 control-label">Email*</label>
+	<input type="text" ng-model="studentList.Email" class="form-control" id="email" placeholder="Email" ng-value="studentList.Email" ng-blur="validateEmail(studentList.Email)">
+</div>
+<div id="studentMobilediv" class="form-group col-md-6 col-sm-6">
+	<label for="studentMobile" class="col-lg-2 control-label">Mobile*</label>
+	<input type="text" ng-model="studentList.studentMobile" class="form-control input-sm cap" id="studentMobile" placeholder="" ng-value="studentList.studentMobile"  ng-blur="validateMobile(studentList.studentMobile)">
+</div>
+<div id="addressdiv" class="form-group col-md-6 col-sm-6">
+	<label for="address" class="col-lg-2 control-label">Address*</label>
+	<textarea id="address" name="studentAddress" ng-model="studentList.address" class="form-control input-sm cap" rows="3" ng-value="studentList.address" ng-minlength="5" required>{{studentList.address}}</textarea>
+	<span ng-show="admitform.studentAddress.$error.required">Please enter Address!</span>
+
+
+</div>
+<div id="citydiv" class="form-group col-md-6 col-sm-6">
+	<label for="city" class="col-lg-2 control-label">City*</label>
+	<input type="text" name="studentCity" ng-minlength='2' ng-model="studentList.city" class="form-control input-sm cap" id="city" placeholder="" ng-value="studentList.city" required>
+	<span ng-show="admitform.studentCity.$error.required">Please enter City!</span>
+</div>
+<div id="pincodediv" class="form-group col-md-6 col-sm-6">
+	<label for="pincode" class="col-lg-2 control-label">Pincode*</label>
+	<input name="studentPincode" type="text" ng-model="studentList.pincode" class="form-control input-sm cap" id="pincode" placeholder="" ng-value="studentList.pincode" ng-minlength='6' required>
+	<span ng-show="admitform.studentPincode.$error.required">Please enter Pincode!</span>
+</div>
+<!--<div class="form-group col-md-6 col-sm-6">
+<label for="" class="col-lg-2 control-label">Tel. No</label>
+<input type="text" id="pincode" placeholder="">
+</div>-->
+<div id="schoolnamediv" class="form-group col-md-6 col-sm-6">
+	<label for="schoolname" class="col-lg-6 control-label">School Name*</label>
+	<input name="schoolname" type="text" ng-model="studentList.schoolName" class="form-control input-sm cap" id="schoolname" placeholder="" ng-value="studentList.schoolName" ng-minlength="5" required>
+	<span ng-show="admitform.schoolname.$error.required">Please enter Schoolname!</span>
+</div>
+<div id="schooltimediv" class="form-group col-md-6 col-sm-6">
+	<label for="schooltime" class="col-lg-6 control-label">School Timings*</label>
+	<input type="text" name="schooltime" ng-model="studentList.schoolTiming" class="form-control input-sm cap" id="schooltime" placeholder="" ng-value="studentList.schoolTiming" ng-minlength="4" required>
+	<span ng-show="admitform.schooltime.$error.required">Please enter School Timings!</span>
+</div>
+<div id="aggregatediv" class="form-group col-md-6 col-sm-6">
+	<label for="aggregate">Aggregate Percentage %</label>
+	<input type="text" name="agg" ng-minlength="1" ng-model="studentList.aggregate" class="form-control input-sm cap" id="aggregate" placeholder="" ng-value="studentList.aggregate" required>
+	<span ng-show="admitform.agg.$error.required">Please enter aggregate score!</span>
+</div>
+
+ <div id="optionallang" class="form-group col-md-6 col-sm-6">
+                        <label for="langauge">Optional Langauge</label>
+                        <br>
+                        <select class="form-control" ng-model="studentList.optionallang">
+                            <option value="">Select Optional Langauge</option>>
+                            <option value="HINDI(E)">HINDI(E)</option>
+                            <option value="Sankrit(E)">Sankrit(E)</option>
+                            <option value="HINDI(C)+Sankrit(C)">HINDI(C)+Sankrit(C)</option>
+                            <option value="HINDI(C)+French(C)">HINDI(C)+French(C)</option>
+                            <option value="HINDI(C)+Other(C)">HINDI(C)+Other(C)</option>                            
+                            <option>Other</option>
+
+                        </select>
+
+                    </div>
+<!--   <div id="aggregatediv" class="form-group col-md-6 col-sm-6" ng-init="listbatches(studentList.Center,studentList.boardname)">
+<label for="aggregate">Batch</label>
+
+</div> -->
+<!-- <div class="form-group col-md-6">
+<label for="opLanguage">Optional Language</label>
+<div class="form-inline" id="opLanguage">
+<p>
+<input ng-model="opLang.hindiE" class="checkbox" type="checkbox" checked="checked">
+<label>Hindi(E) </label>
+<input ng-checked="sanskritE" class="checkbox" type="checkbox">
+<label>Sanskrit(E) </label>
+<input ng-checked="frenchC" class="checkbox" type="checkbox" >
+<label>French(C) </label>
+<input ng-checked="sanskritC" class="checkbox" type="checkbox" >
+<label>Sanskrit(C) </label>
+<input ng-checked="hindiC" class="checkbox" type="checkbox" >
+<label>Hindi(C) </label>
+</p>
+</div>
+</div> -->
+
+<br>
+<h5 class="alert alert-danger col-md-12" align="center">Parent's Details </h5>
+
+<div id="fatherNamediv" class="form-group col-md-6 col-sm-6">
+	<label for="fatherName" class="col-lg-6 control-label">Father's Name</label>
+	<input type="text" ng-model="studentList.fatherName" class="form-control input-sm cap" id="fatherName" placeholder="" ng-value="studentList.fatherName" ng-blur="validateName(studentList.fatherName)">
+</div>
+<div id="fatherOccdiv" class="form-group col-md-6 col-sm-6">
+	<label for="fatherOcc" class="col-lg-6 control-label">Father's Occupation</label>
+	<input name="fatherOcc" type="text" ng-model="studentList.fatherOcc" class="form-control input-sm cap" id="fatherOcc" placeholder="" ng-value="studentList.fatherOcc" ng-minlength="4" required>
+	<span ng-show="admitform.fatherOcc.$error.required">Please enter Father's Occupation!</span>
+</div>
+<div class="form-group col-md-6 col-sm-6">
+	<label for="fatherEmail" class="col-lg-6 control-label">Father's Email Id</label>
+	<input type="text" ng-model="studentList.fatherMail" class="form-control" id="fatherEmail" placeholder="" ng-value="studentList.fatherMail
+	" ng-blur="validateEmail(studentList.fatherMail)">
+</div>
+<div class="form-group col-md-6 col-sm-6">
+	<label for="fatherOfAdd" class="col-lg-6 control-label">Father's Office Address</label>
+	<textarea name="fatherOfAdd" ng-model="studentList.fatherOfficeAddress" id="fatherOfAdd" class="form-control input-sm cap" rows="3" ng-value="studentList.fatherOfficeAddress" ng-minlength="5" required></textarea>
+	<span ng-show="admitform.fatherOfAdd.$error.required">Please enter Father's Office Address!</span>
+</div>
+<!--<div class="form-group col-md-6 col-sm-6">
+<label for="fatherOfTel" class="col-lg-2 control-label">Tel No</label>
+<input type="text" id="fatherOfTel" placeholder="">
+</div>-->
+<div class="form-group col-md-6 col-sm-6">
+	<label for="fatherMobile" class="col-lg-6 control-label">Father's Mobile No*</label>
+	<input type="text" ng-model="studentList.fatherMobile" class="form-control input-sm cap" id="fatherMobile" placeholder="" ng-value="studentList.fatherMobile" ng-blur="validateMobile(studentList.fatherMobile)">
+</div>
+<div class="form-group col-md-6 col-sm-6">
+	<label for="motherName" class="col-lg-6 control-label">Mother's Name</label>
+	<input type="text" ng-model="studentList.motherName" class="form-control input-sm cap" id="motherName" placeholder="" ng-value="studentList.motherName">
+</div>
+<div class="form-group col-md-6 col-sm-6">
+	<label for="motherOcc" class="col-lg-6 control-label"> Mother's Occupation</label>
+	<input type="text" ng-model="studentList.motherOcc" class="form-control input-sm cap" id="motherOcc" placeholder="" ng-value="studentList.motherOcc">
+</div>
+<div class="form-group col-md-6 col-sm-6">
+	<label for="motherEmail" class="col-lg-6 control-label"> Mother's Email Id</label>
+	<input type="text" ng-model="studentList.motherMail" class="form-control" id="motherEmail" placeholder=""  ng-value="studentList.motherMail">
+</div>
+<div class="form-group col-md-6 col-sm-6">
+	<label for="motherOfAdd" class="col-lg-6 control-label">Mother's Office Address</label>
+	<input type="text" ng-model="studentList.motherOfficeAddress" class="form-control input-sm cap" id="motherOfAdd" placeholder="" ng-value="studentList.motherOfficeAddress">
+</div>
+<!--     <div class="form-group col-md-6 col-sm-6">
+<label for="pincode" class="col-lg-2 control-label">Tel No</label>
+<input type="text" id="per" placeholder="">
+</div>-->
+<div class="form-group col-md-6 col-sm-6">
+	<label for="motherMobile" class="col-lg-6 control-label">  Mother's Mobile No</label>
+	<input type="text" ng-model="studentList.motherMobile" class="form-control input-sm cap" id="motherMobile" placeholder="" ng-value="studentList.motherMobile">
+</div>
+
+</div>
+
+</div>
+</div>
+<div align="center" class="form-group col-md-12 col-sm-12">
+	<button type="button" class="btn btn-primary" ng-click="displaypayment()" ng-disabled="admitform.$invalid">Next</button>                       
+</div>
+</section>
+<section ng-show="payment">
+
+
+
+
+	<div class="panel panel-success" style="margin:20px;" id="paymentdetails">
+		<div class="panel-heading" style="background-color: rgb(2,122,251)">
+			<h2 class="panel-title text-center">Payment Details</h2>
+		</div>
+<!--  <div class="panel-heading" style="background-color: rgb(2,122,251)">
+<h4 class="text-center">Payment Details</h4>
+</div> -->
+<div class="panel-body">
+	<h5 class="alert alert-danger col-md-12" align="center">Fee Structure             
+	<a class="btn btn-alert text-right" target="_blank" href="#feeStructure"><i class="fa fa-eye">View</i></a></h5>
+	<!-- <a class="btn btn-alert text-right" newwindow="true"  ng-click="showfee_structure();"><i class="fa fa-eye">View</i></a> </h5> -->
+  
+
+	<div class="form-group col-md-2 col-sm-2">
+		<label for="fees" class="control-label">Fees</label>
+		<input type="text" readonly ng-model="studentList.fees" class="form-control input-sm cap" id="fees" placeholder="" ng-value="studentList.fees">
+	</div>
+
+	<div class="form-group col-md-1 col-sm-1">
+		<label for="discount" class="col-lg-2 control-label">Discount%</label>
+		<input type="text" ng-model="studentList.discount" ng-blur="calculateFees();" class="form-control input-sm cap" id="discount" placeholder="" ng-value="studentList.discount">
+	</div>
+
+	<div class="form-group col-md-2 col-sm-2">
+		<label for="netfees" class="control-label">Net Fees</label>
+		<input type="text" readonly=" " ng-model="studentList.netfees" class="form-control input-sm cap" id="netfees" placeholder="" ng-value="studentList.netfees">
+	</div>
+	<div class="form-group col-md-2 col-sm-1">
+		<label for="sgst" class="control-label">GST @ 15</label>
+		<input type="text" readonly ng-model="studentList.sgst" class="form-control input-sm cap" id="sgst" placeholder="" ng-value="studentList.gst/2">
+	</div>
+	<div class="form-group col-md-2 col-sm-2">
+		<label for="gst" class="control-label">GST @ 15</label>
+		<input type="text" readonly ng-model="studentList.cgst" class="form-control input-sm cap" id="gst" placeholder="" ng-value="studentList.gst/2">
+	</div>
+	<div class="form-group col-md-1 col-sm-1">
+	</div>
+	<div class="form-group col-md-2 col-sm-2">
+		<label for="total" class="control-label">Total Fees</label>
+		<input type="text" readonly ng-model="studentList.total" class="form-control input-sm cap" id="total" placeholder="" ng-value="studentList.total">
+	</div>
+<!--   <div class="form-group col-md-4 col-sm-4">
+<div class="col-lg-10">
+<label> Fee </label>
+<input type="text" class="form-control input-sm">
+</div>
+</div>
+<div class="form-group col-md-4 col-sm-4">
+<div class="col-lg-10">
+<label> Discount    </label>
+<input type="text" class="form-control input-sm">
+</div>
+</div>
+<div class="form-group col-md-4 col-sm-4">
+<div class="col-lg-10">
+<label> GST </label>
+<input type="text" class="form-control input-sm">
+</div>
+</div>
+<div class="form-group col-md-4 col-sm-4">
+<div class="col-lg-10">
+<label> Total Fees  </label>
+<input type="text" class="form-control input-sm">
+</div>
+</div> -->
+
+<h4 class="alert alert-danger col-md-12" align="center">Configure Insallments</h4>
+
+<!--   <h3 class="panel-title">Configure Installment</h3> -->
+
+
+<div class="form-group col-md-4 col-sm-4">
+	<div class="col-lg-10">
+		<label> Amount To Be Paid </label>
+		<input type="text" class="form-control input-sm cap" ng-model="studentList.total" readonly ng-value="studentList.total">
+	</div>
+</div>
+
+<div class="form-group col-md-4 col-sm-4">
+	<label for="select">Payment Mode</label>
+	<div class="col-lg-10">
+		<select class="form-control" id="select" ng-model="studentList.payment_Mode" ng-value="studentList.payment_Mode">
+			<option value="cash">Cash</option>
+			<option value="dd">DD</option>
+			<option value="cheque">Cheque</option>
+		</select>
+	</div>
+</div>
+
+<div class="cheque" ng-show="studentList.payment_Mode=='cheque'">
+	<div class="form-group col-md-4 col-sm-4" >
+		<label for="select">Number of installments</label>
+		<div class="col-lg-10">
+			<select class="form-control" id="installments" ng-model="cheque.NoOfInstallment" ng-value="cheque.NoOfInstallment"; ng-change="n=cheque.NoOfInstallment;">
+
+<!--                         <select class="form-control" id="installments" ng-model="studentList.NoOfInstallment"             ng-change="addCheque(studentList.NoOfInstallment)" ng-value="studentList.NoOfInstallment">
+-->                        <option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+</select>
+</div>
+</div>
+
+<div class="well well-sm col-md-12" align="center">
+	<div class="well well-sm col-md-12 w3-gray" align="center">Cheque Details</div>
+
+	<div class="form-group col-md-4 col-sm-4">
+		<div class="col-lg-10">
+			<label> Account Holder Name </label>
+			<input type="text" class="form-control input-sm" ng-model="cheque.ChequeAccountHolderName" ng-value="cheque.ChequeAccountHolderName">
+		</div>
+	</div>
+	<div class="form-group col-md-4 col-sm-4">
+		<div class="col-lg-10">
+			<label> Name Of Bank</label>
+			<input type="text" class="form-control input-sm cap" ng-model="cheque.ChequeNameOfBank" ng-value="cheque.ChequeNameOfBank">
+		</div>
+	</div>
+	<div class="form-group col-md-4 col-sm-4">
+		<div class="col-lg-10">
+			<label> Branch Name</label>
+			<input type="text" class="form-control input-sm" ng-model="cheque.ChequeBranchName" ng-value="cheque.ChequeBranchName">
+		</div>
+	</div>
+</div>
+
+
+<!--                 <div class="well" ng-bind-html="chequeData"></div> -->
+
+<div class="well well-sm col-lg-12" ng-repeat="n in [1,2,3,4,5] | limitTo : n">
+	<div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+	<div class="form-group col-md-3 col-sm-3">
+		<div class="col-lg-10">
+			<label> Cheque Number </label>
+			<input type="text" class="form-control input-sm" ng-model="cheque.ChequeNumber[$index]" ng-value="cheque.ChequeNumber[$index]">
+		</div>
+	</div>
+
+	<div class="form-group col-md-3 col-sm-3">
+		<div class="col-lg-10">
+			<label> Cheque Date</label>
+			<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+				<input class="w3-input w3-border from" ng-model="cheque.ChequeDate[$index]" type="text" ng-value="cheque.ChequeDate[$index]" >
+			</datepicker>
+		</div>
+	</div>
+	<div class="form-group col-md-3 col-sm-3">
+		<div class="col-lg-10">
+			<label> Cheque Amount</label>
+			<input type="text" class="form-control input-sm" ng-model="cheque.ChequeAmount[$index]" ng-value="cheque.ChequeAmount[$index]">
+		</div>
+	</div>
+	<div class="form-group col-md-3 col-sm-3">
+		<div class="col-lg-10">
+			<label> Status</label>
+		<select class="form-control" id="select" ng-model="cheque.ChequeStatus[$index]" ng-value="cheque.ChequeStatus[$index]">
+			<option>Paid</option>
+			<option>Pending</option>
+		</select>
+		</div>
+	</div>
+</div>
+
+
+</div>
+
+<div class="dd" ng-show="studentList.payment_Mode=='dd'">
+
+	<div class="form-group col-md-4 col-sm-4" >
+		<label for="select">Number of installments</label>
+		<div class="col-lg-10">
+			<select class="form-control" id="ddinstallments" ng-model="dd.NoOfInstallment" ng-value="dd.NoOfInstallment"; ng-change="ddn=dd.NoOfInstallment;calDDInstallments();">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+		</div>
+	</div>              
+
+	<div class="well well-sm col-md-12" align="center" ng-show="ddn >= 1">
+		<div class="col-lg-12 text-center w3-gray">Installment : 1</div>
+
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> Name Of Bank</label>
+				<input type="text" class="form-control input-sm cap" ng-model="dd.ddNameOfBank" ng-value="dd.ddNameOfBank">
+			</div>
+		</div>
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> Branch Name</label>
+				<input type="text" class="form-control input-sm" ng-model="dd.ddBranchName" ng-value="dd.ddBranchName">
+			</div>
+		</div>
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> DD Number </label>
+				<input type="text" class="form-control input-sm" ng-model="dd.ddNumber" ng-value="dd.ddNumber">
+			</div>
+		</div>
+
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> DD Date</label>
+				<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+					<input class="w3-input w3-border from" ng-model="dd.ddDate" type="text" ng-value="dd.ddDate" >
+				</datepicker>
+			</div>
+		</div>
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> DD Amount</label>
+				<input type="text" class="form-control input-sm" ng-model="dd.ddAmount" ng-value="dd.ddAmount">
+			</div>
+		</div>
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> Status</label>
+				<select class="form-control" id="select" ng-model="dd.ddStatus" ng-value="dd.ddStatus">
+			<option>Paid</option>
+			<option>Pending</option>
+		</select>
+<!-- 				<input type="text" class="form-control input-sm" ng-model="dd.ddStatus" ng-value="dd.ddStatus">
+ -->			</div>
+		</div>
+	</div>
+
+	<div class="chequeHeader" ng-show="ddn > 1">
+		<div class="well well-sm col-md-12" align="center">
+			<div class="well well-sm col-md-12 w3-gray" align="center">Cheque Details</div>
+
+			<div class="form-group col-md-4 col-sm-4">
+				<div class="col-lg-10">
+					<label> Account Holder Name </label>
+					<input type="text" class="form-control input-sm" ng-model="dd.ChequeAccountHolderName" ng-value="dd.ChequeAccountHolderName">
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-4">
+				<div class="col-lg-10">
+					<label> Name Of Bank</label>
+					<input type="text" class="form-control input-sm cap" ng-model="dd.ChequeNameOfBank" ng-value="dd.ChequeNameOfBank">
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-4">
+				<div class="col-lg-10">
+					<label> Branch Name</label>
+					<input type="text" class="form-control input-sm" ng-model="dd.ChequeBranchName" ng-value="dd.ChequeBranchName">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="well well-sm col-lg-12" ng-repeat="ddn in [2,3,4,5,6] | limitTo : ddn" ng-if="$index > 0">
+		<div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Cheque Number </label>
+				<input type="text" class="form-control input-sm" ng-model="dd.ChequeNumber[$index]" ng-value="dd.ChequeNumber[$index]">
+			</div>
+		</div>
+
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Cheque Date</label>
+				<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+					<input class="w3-input w3-border from" ng-model="dd.ChequeDate[$index]" type="text" ng-value="dd.ChequeDate[$index]" >
+				</datepicker>
+			</div>
+		</div>
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Cheque Amount</label>
+				<input type="text" class="form-control input-sm" ng-model="dd.ChequeAmount[$index]" ng-value="dd.ChequeAmount[$index]">
+			</div>
+		</div>
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Status</label>
+				<select class="form-control" id="select" ng-model="dd.ChequeStatus[$index]" ng-value="dd.ChequeStatus[$index]">
+			<option>Paid</option>
+			<option>Pending</option>
+		</select>
+<!-- 				<input type="text" class="form-control input-sm" ng-model="dd.ChequeStatus[$index]" ng-value="dd.ChequeStatus[$index]">
+ -->			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="cash" ng-show="studentList.payment_Mode=='cash'">
+
+	<div class="form-group col-md-4 col-sm-4" >
+		<label for="select">Number of installments</label>
+		<div class="col-lg-10">
+			<select class="form-control" id="cashinstallments" ng-model="cash.NoOfInstallment" ng-value="cash.NoOfInstallment"; ng-change="cn=cash.NoOfInstallment; calCashInstallments();" >
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+		</div>
+	</div>              
+
+	<div class="well well-sm col-md-12" align="center" ng-show="cn >= 1">
+		<div class="col-lg-12 text-center w3-gray">Installment : 1</div>
+
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> Date</label>
+				<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+					<input class="w3-input w3-border from" ng-model="cash.ddDate" type="text" ng-value="cash.ddDate" >
+				</datepicker>
+			</div>
+		</div>
+		<div class="form-group col-md-4 col-sm-4" >
+			<div class="col-lg-10" >
+				<label> Amount</label>
+				<input type="text" class="form-control input-sm" ng-model="cash.ddAmount" ng-value="cash.ddAmount">
+			</div>
+		</div>
+		<div class="form-group col-md-4 col-sm-4">
+			<div class="col-lg-10">
+				<label> Status</label>
+				<select class="form-control" id="select" ng-model="cash.ddStatus" ng-value="cash.ddStatus">
+			<option>Paid</option>
+			<option>Pending</option>
+		</select>
+<!-- 				<input type="text" class="form-control input-sm" ng-model="cash.ddStatus" ng-value="cash.ddStatus">
+ -->			</div>
+		</div>
+	</div>
+
+	<div class="chequeHeader" ng-show="cn > 1">
+		<div class="well well-sm col-md-12" align="center">
+			<div class="well well-sm col-md-12 w3-gray" align="center">Cheque Details</div>
+			<div class="form-group col-md-4 col-sm-4">
+				<div class="col-lg-10">
+					<label> Account Holder Name </label>
+					<input type="text" class="form-control input-sm" ng-model="cash.ChequeAccountHolderName" ng-value="cash.ChequeAccountHolderName">
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-4">
+				<div class="col-lg-10">
+					<label> Name Of Bank</label>
+					<input type="text" class="form-control input-sm cap" ng-model="cash.ChequeNameOfBank" ng-value="cash.ChequeNameOfBank">
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-4">
+				<div class="col-lg-10">
+					<label> Branch Name</label>
+					<input type="text" class="form-control input-sm" ng-model="cash.ChequeBranchName" ng-value="cash.ChequeBranchName">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="well well-sm col-lg-12" ng-repeat="cn in [2,3,4,5,6] | limitTo : cn" ng-if="$index > 0">
+		<div class="col-lg-12 text-center w3-gray">Installment :{{ $index +1 }}</div>
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Cheque Number </label>
+				<input type="text" class="form-control input-sm" ng-model="cash.ChequeNumber[$index]" ng-value="cash.ChequeNumber[$index]">
+			</div>
+		</div>
+
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Cheque Date</label>
+				<datepicker  date-format="dd/MM/yyyy" custom-class="getDayClass(date, mode)">
+					<input class="w3-input w3-border from" ng-model="cash.ChequeDate[$index]" type="text" ng-value="cash.ChequeDate[$index]" >
+				</datepicker>
+			</div>
+		</div>
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Cheque Amount</label>
+				<input type="text" class="form-control input-sm" ng-model="cash.ChequeAmount[$index]" ng-value="cash.ChequeAmount[$index]">
+			</div>
+		</div>
+		<div class="form-group col-md-3 col-sm-3">
+			<div class="col-lg-10">
+				<label> Status</label>
+				<select class="form-control" id="select" ng-model="cash.ChequeStatus[$index]" ng-value="cash.ChequeStatus[$index]">
+			<option>Paid</option>
+			<option>Pending</option>
+		</select>
+<!-- 				<input type="text" class="form-control input-sm" ng-model="cash.ChequeStatus[$index]" ng-value="cash.ChequeStatus[$index]">
+ -->			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+</div>
+<div class="form-group">
+	<div class="col-lg-10 col-lg-offset-5">
+		<button type="button" class="btn btn-default" ng-click="displayadmission()">Previous</button>
+		<button type="button" class="btn btn-default" ng-click="displayterms()">Next</button>
+		<!--  <button type="submit" class="btn btn-primary">Submit</button> -->
+		<!--  <button type="submit" class="btn btn-info">Submit</button> -->
+	</div>
+</div>
+
+</section>
+<section ng-show="terms">
+
+<!-- 
+<head>
+<link href="https://fonts.googleapis.com/css?family=Bellefair|Karla" rel="stylesheet">
+</head> -->
+<div class="container-fluid" style="border:2px solid  black;" id="TnC">
+	<div class="jumbotron" style="background-color: #00cccc" >
+		<h2 style="text-align: center;font-family: 'Bellefair', serif;">MAHESH TUTORIALS</h2></div>
+		<h3 style="text-align: center;font-size: 20px ;font-family: 'Bellefair', serif;">WE WELCOME YOU TO THE MAHESH TUTORIALS FAMILY <br>
+			FOLLOWING ARE THE RULES AND REGULATIONS WHICH YOU NEED TO FOLLOW VERY STRICTLY.</h3>
+			<input type="checkbox" ng-model="all"> Check all<br><br>
+
+
+			<div font-family: 'Bellefair', serif; ng-repeat="term in Terms">
+				<input type="checkbox" ng-checked="all" ng-model="term.selected"> {{$index+1}}. {{term.term}}<br>
+			</div>
+			<br>
+			<br>
+			<p>WISHING YOU ALL THE BEST FOR ROCKKING LEARNING EXPERIENCE…………………………………………………….
+				WHERE INSPIRATION LEADS TO SUCCESS……………………………….
+				P.S. Notes will not be given to the students unless all the cheques inthe  form of PDCs are submitted. Lectures may also get suspended. </p>
+
+<div class="container-fluid" style="margin-top: 20px">
+					<pre style="text-align: center;font-family: 'Bellefair', serif;">
+						PARENT CONSENT :WE HAVE CAREFULLY READ ALL THE RULES AND REGULATION AND THEY ARE ABIDE ON US .
+						WE WILL TAKE CARE THAT WE PARENT AND OUR WARD WILL FOLLOW  ALL THE RULES AND 
+						REGULATION OF THE INSTITUTION FOR THE BETTERMENT OF THE SOCIETY ..
+
+
+						Nilesh Saudagar                         signature of student                             signature of parent   
+
+					</pre>
+
+				</div>
+
+			</div>
+
+		
+
+
+			<div class="col-lg-12 text-center">
+				<button type="button" class="btn btn-default" ng-click="displaypayment()">Previous</button>
+				<button type="button" class="btn btn-info" data-toggle="modal" data-target="#printModal" ng-click="displayall();">Print</button>
+				<button type="submit" class="btn btn-success">Submit</button>
+
+			</div>
+		</section>
+	</form>
+</div>
+
+
+<div class="modal fade" id="printModal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header w3-pale-red" >
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Download PDF</h4>
+			</div>
+			<div class="modal-body text-center">
+				<button type="button" class="btn w3-red" ng-click="export('admissionform');">Form</button>
+				<button type="button" class="btn w3-red" ng-click="export('paymentdetails');">Payment</button>
+				<button type="button" class="btn w3-red" ng-click="export('TnC');">T & C</button>
+				<button type="button" class="btn w3-red" ng-click="export('admissionform');export('paymentdetails');export('TnC');">ALL</button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+</script>
